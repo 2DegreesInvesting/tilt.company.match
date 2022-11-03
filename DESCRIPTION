@@ -1,5 +1,5 @@
-Package: tilt.matching
-Title: Helpers for Matching Tasks in the tilt-Project
+Package: tilt.company.match
+Title: Helpers for Company Name Matching in the tilt-Project
 Version: 0.0.0.9000
 Authors@R:
     c(person(given = "Mirja",
@@ -10,7 +10,7 @@ Authors@R:
              family = "Delacombaz",
              role = "aut",
              email = "linda@2degrees-investing.org"))
-Description: Package holds helpers for matching tasks in the tilt-project.
+Description: Package holds helpers for company matching in the tilt-project.
     For details please refer to README.
 License: MIT + file LICENSE
 Depends: 

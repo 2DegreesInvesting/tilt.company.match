@@ -16,19 +16,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tilt.matching
+# tilt.company.match
 
-The goal of tilt.matching is to provide helpers for matching processes
+The goal of tilt.company.match is to provide helpers for company name matching 
 in the tilt-project,
 
 ## Installation
 
-You can install the development version of tilt.matching from
+You can install the development version of tilt.company.match from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("2DegreesInvesting/tilt.matching")
+devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
 ## Matching loanbooks to the tilt database
@@ -50,7 +50,7 @@ hold at least the columns **company_name**, **zip** and
 matching process may be present. For an example compare demo data below.
 
 ```{r}
-library(tilt.matching)
+library(tilt.company.match)
 knitr::kable(head(demo_loanbook))
 ```
 
