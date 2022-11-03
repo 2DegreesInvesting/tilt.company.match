@@ -1,0 +1,32 @@
+Package: tilt.company.match
+Title: Helpers for Company Name Matching in the tilt-Project
+Version: 0.0.0.9000
+Authors@R:
+    c(person(given = "Mirja",
+             family = "Hollmann",
+             role = c("aut", "cre"),
+             email = "mirja@2degrees-investing.org"),
+      person(given = "Linda",
+             family = "Delacombaz",
+             role = "aut",
+             email = "linda@2degrees-investing.org"))
+Description: Package holds helpers for company matching in the tilt-project.
+    For details please refer to README.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+Imports: 
+    dplyr,
+    glue,
+    magrittr,
+    purrr,
+    r2dii.match,
+    rlang,
+    spelling,
+    stringdist,
+    tibble
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
