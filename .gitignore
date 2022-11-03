@@ -37,3 +37,13 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# MacOS specific
+.DS_STORE
+**/.DS_STORE
+Desktop.ini
+*.icloud
+
+.Rproj.user
+tilt.company.match.Rproj
+docs
