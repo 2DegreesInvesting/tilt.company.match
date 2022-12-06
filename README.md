@@ -346,10 +346,9 @@ knitr::kable(not_matched)
 ### Report duplicate matches
 
 To check some manual errors during the manual matching process, we can
-use the **check\_duplicated\_relation** function, that checks if a
-company has been matched twice (or more) instead of one. (Reminder: the
-**accept\_match** column in the matched data set should only be set to
-TRUE if it is unique per id in the loanbook).
+use the **check\_duplicated\_relation** function. It checks if a company
+from loanbook has been matched to &gt; 1 company from the tilt dataset
+or reverse.
 
 Here, the demo\_matched data set is hand-matched correctly: the column
 **accept\_match** has been manually changed and verified.
@@ -386,31 +385,52 @@ found.
 
 ``` r
 check_duplicated_relation(manually_matched)
-#> There is no duplicated matches found in the data.
+#> No duplicated matches found in the data.
 ```
 
-Now let us insert a duplicated match at row 2 : let us put TRUE instead
-of NA.
+Now let us insert duplicated matches for the company with the ids 1 and
+2.
 
 ``` r
-manually_matched$accept_match[2] <- TRUE
+duplicate_in_loanbook <- manually_matched %>% 
+  dplyr::mutate(accept_match = dplyr::if_else(id %in% c(1, 2), TRUE, accept_match))
 
-knitr::kable(head(manually_matched))
+knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id %in% c(1, 2)))
 ```
 
 |  id | company\_name | zip   | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt | string\_sim | suggest\_match | accept\_match |
 |----:|:--------------|:------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|------------:|:---------------|:--------------|
 |   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |   1.0000000 | NA             | TRUE          |
 |   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |   1.0000000 | NA             | TRUE          |
-|   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | NA            |
-|   2 | Peasant Peter | 01234 | germany | Z          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |   1.0000000 | NA             | NA            |
+|   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | TRUE          |
+|   2 | Peasant Peter | 01234 | germany | Z          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |   1.0000000 | NA             | TRUE          |
 |   2 | Peasant Peter | 01234 | germany | Z          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |   1.0000000 | NA             | TRUE          |
-|   2 | Peasant Peter | 01234 | germany | Z          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | NA            |
+|   2 | Peasant Peter | 01234 | germany | Z          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | TRUE          |
 
 The function then abort and throws an error with the lines of the
 duplicated rows.
 
 ``` r
 # un-comment this line to have the error
-# check_duplicated_relation(manually_matched)
+# check_duplicated_relation(duplicate_in_loanbook)
+```
+
+Also, an error is thrown if we insert a duplicate match of a company
+from the tilt db to the loanbook.
+
+``` r
+duplicate_tilt_id <- demo_matched %>% 
+  dplyr::mutate(id_tilt = dplyr::if_else(accept_match == TRUE & id_tilt == 3, 1, id_tilt)) 
+
+knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 1))
+```
+
+|  id | company\_name | zip   | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt | string\_sim | suggest\_match | accept\_match |
+|----:|:--------------|:------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|------------:|:---------------|:--------------|
+|   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |           1 | NA             | TRUE          |
+|   3 | Peasant Peter | 11234 | germany | Z          | peasantpeter   |        1 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
+
+``` r
+# un-comment this line to have the error
+# check_duplicated_relation(duplicate_tilt_id)
 ```
