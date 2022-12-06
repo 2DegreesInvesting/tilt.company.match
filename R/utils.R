@@ -124,7 +124,7 @@ report_no_matches <- function(loanbook, manually_matched) {
 #' @return Input `manually_matched`
 #' @importFrom rlang .data
 #' @export
-check_duplicated_score <- function(manually_matched) {
+check_duplicated_relation <- function(manually_matched) {
   numbers_duplicates <- manually_matched %>%
     dplyr::filter(.data$accept_match) %>%
     dplyr::group_by(.data$id, .data$company_name) %>%

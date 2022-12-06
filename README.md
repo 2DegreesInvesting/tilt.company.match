@@ -346,8 +346,8 @@ knitr::kable(not_matched)
 ### Report duplicate matches
 
 To check some manual errors during the manual matching process, we can
-use the **check\_duplicated\_score** function, that checks if a company
-has been matched twice (or more) instead of one. (Reminder: the
+use the **check\_duplicated\_relation** function, that checks if a
+company has been matched twice (or more) instead of one. (Reminder: the
 **accept\_match** column in the matched data set should only be set to
 TRUE if it is unique per id in the loanbook).
 
@@ -385,7 +385,7 @@ The function does not throw an error and inform that no duplicates were
 found.
 
 ``` r
-check_duplicated_score(manually_matched)
+check_duplicated_relation(manually_matched)
 #> There is no duplicated matches found in the data.
 ```
 
@@ -412,5 +412,5 @@ duplicated rows.
 
 ``` r
 # un-comment this line to have the error
-# check_duplicated_score(manually_matched)
+# check_duplicated_relation(manually_matched)
 ```
