@@ -131,13 +131,13 @@ check_duplicated_relation <- function(manually_matched) {
 
   suggested_matches <- manually_matched %>%
     dplyr::filter(.data$accept_match)
-  
+
   duplicates_in_loanbook <- suggested_matches %>%
     dplyr::group_by(.data$id, .data$company_name) %>%
     dplyr::mutate(nrow = dplyr::n()) %>%
     dplyr::filter(nrow > 1)
   
-  if (nrow(duplicates_in_loanbook) > 1) {
+  if (nrow(duplicates_in_loanbook) > 0) {
     duplicated_companies <- duplicates_in_loanbook %>%
       dplyr::distinct(.data$id, .data$company_name)
     
@@ -152,13 +152,13 @@ check_duplicated_relation <- function(manually_matched) {
       )
     )
   } 
-  
+
   duplicates_in_tilt <- suggested_matches %>%
     dplyr::group_by(.data$id_tilt, .data$company_name_tilt) %>%
     dplyr::mutate(nrow = dplyr::n()) %>%
     dplyr::filter(nrow > 1)
   
-  if (nrow(duplicates_in_tilt) > 1) {
+  if (nrow(duplicates_in_tilt) > 0) {
     duplicated_companies <- duplicates_in_tilt %>%
       dplyr::distinct(.data$id_tilt)
     

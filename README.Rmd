@@ -260,13 +260,13 @@ found.
 check_duplicated_relation(manually_matched)
 ```
 
-Now let us insert a duplicated match for the company with the id 1 at
-row 2.
+Now let us insert duplicated matches for the company with the id 1.
 
 ```{r}
-manually_matched$accept_match[2] <- TRUE
+duplicate_in_loanbook <- manually_matched %>% 
+  dplyr::mutate(accept_match = dplyr::if_else(id == 1, TRUE, accept_match))
 
-knitr::kable(head(manually_matched))
+knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id == 1))
 ```
 
 The function then abort and throws an error with the lines of the
@@ -274,7 +274,7 @@ duplicated rows.
 
 ```{r}
 # un-comment this line to have the error
-# check_duplicated_relation(manually_matched)
+# check_duplicated_relation(duplicate_in_loanbook)
 ```
 
 Also, an error is thrown if we insert a duplicate match of a company
@@ -282,7 +282,8 @@ from the tilt db to the loanbook.
 
 ```{r}
 duplicate_tilt_id <- demo_matched %>% 
-  dplyr::mutate(id_tilt = dplyr::if_else(accept_match == TRUE & id_tilt == 2, 1, id_tilt))
+  dplyr::mutate(id_tilt = dplyr::if_else(accept_match == TRUE & id_tilt == 3, 1, id_tilt)) 
+
 knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 1))
 ```
 
