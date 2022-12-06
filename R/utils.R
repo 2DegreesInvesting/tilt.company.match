@@ -128,7 +128,7 @@ report_no_matches <- function(loanbook, manually_matched) {
 #' @importFrom rlang .data
 #' @export
 check_duplicated_relation <- function(manually_matched) {
-  
+
   suggested_matches <- manually_matched %>%
     dplyr::filter(.data$accept_match)
   
@@ -148,6 +148,26 @@ check_duplicated_relation <- function(manually_matched) {
         i = c(
           "Company names where `accept_match` is `TRUE` must be unique by `id`.",
           "Have you ensured that only one tilt-id per loanbook-id is set to `TRUE`?"
+        )
+      )
+    )
+  } 
+  
+  duplicates_in_tilt <- suggested_matches %>%
+    dplyr::group_by(.data$id_tilt, .data$company_name_tilt) %>%
+    dplyr::mutate(nrow = dplyr::n()) %>%
+    dplyr::filter(nrow > 1)
+  
+  if (nrow(duplicates_in_tilt) > 1) {
+    duplicated_companies <- duplicates_in_tilt %>%
+      dplyr::distinct(.data$id_tilt)
+    
+    rlang::abort(
+      c(
+        "Duplicated match of company from tilt db detected.",
+        x = duplicated_companies %>% glue::glue_data("Duplicated tilt company name: {company_name_tilt}, tilt id: {id_tilt}."),
+        i = c(
+          "Have you ensured that each tilt-id is set to `TRUE` for maximum 1 company from the loanbook?"
         )
       )
     )
