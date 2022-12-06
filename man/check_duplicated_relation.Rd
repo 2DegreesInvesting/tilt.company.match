@@ -2,17 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{check_duplicated_relation}
 \alias{check_duplicated_relation}
-\title{Reports duplicates id on manual matched errors}
+\title{Reports duplicates from manual matching outcome}
 \usage{
 check_duplicated_relation(manually_matched)
 }
 \arguments{
-\item{manually_matched}{Tibble holding the result of the matching process, after the
-user has manually verified and matched the results}
+\item{manually_matched}{Tibble holding the result of the matching process,
+after the user has manually verified and matched the results}
 }
 \value{
 Input \code{manually_matched}
 }
 \description{
-Reports duplicates id on manual matched errors
+Function throws a descriptive error if a company from the loanbook is
+matched to > 1 company in the tilt db or reverse.
 }
