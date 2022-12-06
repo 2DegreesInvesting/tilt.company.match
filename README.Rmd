@@ -274,7 +274,7 @@ duplicated rows.
 
 ```{r}
 # un-comment this line to have the error
- check_duplicated_relation(manually_matched)
+# check_duplicated_relation(manually_matched)
 ```
 
 Also, an error is thrown if we insert a duplicate match of a company
