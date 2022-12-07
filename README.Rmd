@@ -282,10 +282,12 @@ Also, an error is thrown if we insert a duplicate match of a company
 from the tilt db to the loanbook.
 
 ```{r}
-duplicate_tilt_id <- demo_matched %>% 
-  dplyr::mutate(id_tilt = dplyr::if_else(accept_match == TRUE & id_tilt == 3, 1, id_tilt)) 
+duplicate_tilt_id_row <- demo_matched %>% 
+  dplyr::filter(id_tilt == 3) %>% 
+  dplyr::mutate(id = 12)
+duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
 
-knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 1))
+knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 3))
 ```
 
 ```{r}
