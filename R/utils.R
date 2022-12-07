@@ -115,42 +115,66 @@ report_no_matches <- function(loanbook, manually_matched) {
   return(not_matched_companies)
 }
 
-#' Reports duplicates id on manual matched errors
+#' Reports duplicates from manual matching outcome
+#' 
+#' Function throws a descriptive error if a company from the loanbook is 
+#' matched to > 1 company in the tilt db or reverse.
 #'
 #'
-#' @param manually_matched Tibble holding the result of the matching process, after the
-#'   user has manually verified and matched the results
+#' @param manually_matched Tibble holding the result of the matching process,
+#'   after the user has manually verified and matched the results
 #'
 #' @return Input `manually_matched`
 #' @importFrom rlang .data
 #' @export
-check_duplicated_score <- function(manually_matched) {
-  numbers_duplicates <- manually_matched %>%
-    dplyr::filter(.data$accept_match) %>%
+check_duplicated_relation <- function(manually_matched) {
+
+  suggested_matches <- manually_matched %>%
+    dplyr::filter(.data$accept_match)
+
+  duplicates_in_loanbook <- suggested_matches %>%
     dplyr::group_by(.data$id, .data$company_name) %>%
-    dplyr::mutate(nrow = dplyr::n())
-
-  duplicates <- numbers_duplicates %>%
+    dplyr::mutate(nrow = dplyr::n()) %>%
     dplyr::filter(nrow > 1)
-
-  if (nrow(duplicates) > 1) {
-    duplicated_companies <- duplicates %>%
+  
+  if (nrow(duplicates_in_loanbook) > 0) {
+    duplicated_companies <- duplicates_in_loanbook %>%
       dplyr::distinct(.data$id, .data$company_name)
-
+    
     rlang::abort(
       c(
-        "Duplicated score detected on the data set.",
+        "Duplicated match of company in loanbook detected.",
         x = duplicated_companies %>% glue::glue_data("Duplicated company name: {company_name}, id: {id}."),
         i = c(
           "Company names where `accept_match` is `TRUE` must be unique by `id`.",
-          "Have you ensured that only one tilt-name per loanbook-name is set to `TRUE`?"
+          "Have you ensured that only one tilt-id per loanbook-id is set to `TRUE`?"
         )
       )
     )
-  } else {
-    rlang::inform(
-      message = "There is no duplicated matches found in the data."
+  } 
+
+  duplicates_in_tilt <- suggested_matches %>%
+    dplyr::group_by(.data$id_tilt, .data$company_name_tilt) %>%
+    dplyr::mutate(nrow = dplyr::n()) %>%
+    dplyr::filter(nrow > 1)
+  
+  if (nrow(duplicates_in_tilt) > 0) {
+    duplicated_companies <- duplicates_in_tilt %>%
+      dplyr::distinct(.data$id_tilt)
+    
+    rlang::abort(
+      c(
+        "Duplicated match of company from tilt db detected.",
+        x = duplicated_companies %>% glue::glue_data("Duplicated tilt company name: {company_name_tilt}, tilt id: {id_tilt}."),
+        i = c(
+          "Have you ensured that each tilt-id is set to `TRUE` for maximum 1 company from the loanbook?"
+        )
+      )
     )
-    return(invisible(manually_matched))
-  }
+  } 
+  
+  rlang::inform(message = "No duplicated matches found in the data.")
+  
+  return(invisible(manually_matched))
+  
 }

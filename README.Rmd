@@ -18,8 +18,8 @@ knitr::opts_chunk$set(
 
 # tilt.company.match
 
-The goal of tilt.company.match is to provide helpers for company name matching 
-in the tilt-project,
+The goal of tilt.company.match is to provide helpers for company name
+matching in the tilt-project,
 
 ## Installation
 
@@ -240,10 +240,9 @@ knitr::kable(not_matched)
 ### Report duplicate matches
 
 To check some manual errors during the manual matching process, we can
-use the **check_duplicated_score** function, that checks if a company
-has been matched twice (or more) instead of one. (Reminder: the
-**accept_match** column in the matched data set should only be set to
-TRUE if it is unique per id in the loanbook).
+use the **check_duplicated_relation** function. It checks if a company
+from loanbook has been matched to \> 1 company from the tilt dataset or
+reverse.
 
 Here, the demo_matched data set is hand-matched correctly: the column
 **accept_match** has been manually changed and verified.
@@ -258,16 +257,17 @@ The function does not throw an error and inform that no duplicates were
 found.
 
 ```{r}
-check_duplicated_score(manually_matched)
+check_duplicated_relation(manually_matched)
 ```
 
-Now let us insert a duplicated match at row 2 : let us put TRUE instead
-of NA.
+Now let us insert duplicated matches for the company with the ids 1 and
+2.
 
 ```{r}
-manually_matched$accept_match[2] <- TRUE
+duplicate_in_loanbook <- manually_matched %>% 
+  dplyr::mutate(accept_match = dplyr::if_else(id %in% c(1, 2), TRUE, accept_match))
 
-knitr::kable(head(manually_matched))
+knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id %in% c(1, 2)))
 ```
 
 The function then abort and throws an error with the lines of the
@@ -275,5 +275,22 @@ duplicated rows.
 
 ```{r}
 # un-comment this line to have the error
-# check_duplicated_score(manually_matched)
+# check_duplicated_relation(duplicate_in_loanbook)
+```
+
+Also, an error is thrown if we insert a duplicate match of a company
+from the tilt db to the loanbook.
+
+```{r}
+duplicate_tilt_id_row <- demo_matched %>% 
+  dplyr::filter(id_tilt == 3) %>% 
+  dplyr::mutate(id = 12)
+duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
+
+knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 3))
+```
+
+```{r}
+# un-comment this line to have the error
+# check_duplicated_relation(duplicate_tilt_id)
 ```
