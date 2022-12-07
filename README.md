@@ -419,16 +419,18 @@ Also, an error is thrown if we insert a duplicate match of a company
 from the tilt db to the loanbook.
 
 ``` r
-duplicate_tilt_id <- demo_matched %>% 
-  dplyr::mutate(id_tilt = dplyr::if_else(accept_match == TRUE & id_tilt == 3, 1, id_tilt)) 
+duplicate_tilt_id_row <- demo_matched %>% 
+  dplyr::filter(id_tilt == 3) %>% 
+  dplyr::mutate(id = 12)
+duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
 
-knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 1))
+knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 3))
 ```
 
 |  id | company\_name | zip   | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt | string\_sim | suggest\_match | accept\_match |
 |----:|:--------------|:------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|------------:|:---------------|:--------------|
-|   1 | Peasant Peter | 01234 | germany | A          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |           1 | NA             | TRUE          |
-|   3 | Peasant Peter | 11234 | germany | Z          | peasantpeter   |        1 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
+|   3 | Peasant Peter | 11234 | germany | Z          | peasantpeter   |        3 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
+|  12 | Peasant Peter | 11234 | germany | Z          | peasantpeter   |        3 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
 
 ``` r
 # un-comment this line to have the error
