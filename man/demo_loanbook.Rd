@@ -19,7 +19,7 @@ demo_loanbook
 }
 \description{
 A simplified demo tilt company data set to illustrate and test matching with
-loanbook. For details on included cases please refer to data generation
+loanbook. For details on included cases please refer to the data generation
 script.
 }
 \examples{
