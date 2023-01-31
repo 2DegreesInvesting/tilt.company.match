@@ -10,6 +10,13 @@
 #' convert from a name to its alias. You may amend this table and pass it to
 #' `to_alias()` via the `from_to` argument.
 #'
+#' @section Assigning aliases:
+#' The transformation process used to compare names between loanbook and tilt
+#' datasets applies best practices commonly used in name matching algorithms:
+#' * Remove special characters.
+#' * Replace language specific characters.
+#' * Abbreviate certain names to reduce their importance in the matching.
+#' * Spell out numbers to increase their importance.
 #'
 #' @author person(given = "Evgeny", family = "Petrovsky", role = c("aut",
 #'   "ctr"))
@@ -59,7 +66,6 @@
 #'
 #' # And in combination with `to_alias()`
 #' to_alias(c("AA", "BB", "1"), from_to = append_replacements)
-#' @noRd
 #' @export
 to_alias <- function(x,
                      from_to = NULL,
@@ -118,67 +124,68 @@ may_remove_ownership <- function(remove_ownership, ownership, .init) {
   purrr::reduce(out, replace_abbrev, .init = .init)
 }
 
-`%||%` <- function(x, y) {
-  if (is.null(x)) {
-    y
-  } else {
-    x
-  }
-}
-
-#' Check if a named object contains expected names
-#'
-#' Based on fgeo.tool::check_crucial_names()
-#'
-#' @param x A named object.
-#' @param expected_names String; expected names of `x`.
-#'
-#' @return Invisible `x`, or an error with informative message.
-#'
-#' @examples
-#' x <- c(a = 1)
-#' check_crucial_names(x, "a")
-#' try(check_crucial_names(x, "bad"))
-#' @noRd
-check_crucial_names <- function(x, expected_names) {
-  stopifnot(rlang::is_named(x))
-  stopifnot(is.character(expected_names))
-
-  ok <- all(unique(expected_names) %in% names(x))
-  if (!ok) {
-    abort_missing_names(sort(setdiff(expected_names, names(x))))
-  }
-
-  invisible(x)
-}
-
-abort_missing_names <- function(missing_names) {
-  rlang::abort(
-    "missing_names",
-    message = glue(
-      "Must have missing names:
-      {paste0('`', missing_names, '`', collapse = ', ')}"
-    )
+# Technology mix for analysis
+get_ownership_type <- function() {
+  c(
+    "ab",
+    "ag",
+    "as",
+    "asa",
+    "bhd",
+    "bsc",
+    "bv",
+    "co",
+    "corp",
+    "cv",
+    "dac",
+    "gmbh",
+    "govt",
+    "hldgs",
+    "inc",
+    "intl",
+    "jsc",
+    "llc",
+    "lp",
+    "ltd",
+    "nv",
+    "pcl",
+    "pjsc",
+    "plc",
+    "pt",
+    "pte",
+    "sa",
+    "sarl",
+    "sas",
+    "se",
+    "spa",
+    "spzoo",
+    "srl"
   )
 }
 
-replace_with_abbreviation <- function(replacement, .init) {
-  replacement <- replacement %||% from_name_to_alias()
-  replacement <- purrr::set_names(replacement, tolower)
-
-  check_crucial_names(replacement, c("from", "to"))
-
-  abbrev <- purrr::map2(tolower(replacement$from), tolower(replacement$to), c)
-  purrr::reduce(abbrev, replace_abbrev, fixed = TRUE, .init = .init)
-}
-
-# replace long words with abbreviations
-replace_abbrev <- function(text, abr, fixed = FALSE) {
-  gsub(abr[1], abr[2], text, fixed = fixed)
+# replace each lhs with rhs
+get_sym_replace <- function() {
+  list(
+    c(".", " "),
+    c(",", " "),
+    c("_", " "),
+    c("/", " "),
+    c("$", "")
+  )
 }
 
 # Source: @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
-#' @noRd
+
+#' From name to alias
+#'
+#' Function that outputs a table giving default strings used to
+#' convert from a name to its alias. You may amend this table and pass it to
+#' `to_alias()` via the `from_to` argument.
+#'
+#'
+#' @return [tibble::tibble] with columns `from` and
+#' `to`.
+#' @export
 from_name_to_alias <- function() {
   # styler: off
   tibble::tribble(
@@ -248,54 +255,63 @@ from_name_to_alias <- function() {
   # styler: on
 }
 
-# Technology mix for analysis
-get_ownership_type <- function() {
-  c(
-    "ab",
-    "ag",
-    "as",
-    "asa",
-    "bhd",
-    "bsc",
-    "bv",
-    "co",
-    "corp",
-    "cv",
-    "dac",
-    "gmbh",
-    "govt",
-    "hldgs",
-    "inc",
-    "intl",
-    "jsc",
-    "llc",
-    "lp",
-    "ltd",
-    "nv",
-    "pcl",
-    "pjsc",
-    "plc",
-    "pt",
-    "pte",
-    "sa",
-    "sarl",
-    "sas",
-    "se",
-    "spa",
-    "spzoo",
-    "srl"
+`%||%` <- function(x, y) {
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}
+
+#' Check if a named object contains expected names
+#'
+#' Based on fgeo.tool::check_crucial_names()
+#'
+#' @param x A named object.
+#' @param expected_names String; expected names of `x`.
+#'
+#' @return Invisible `x`, or an error with informative message.
+#'
+#' @examples
+#' x <- c(a = 1)
+#' check_crucial_names(x, "a")
+#' try(check_crucial_names(x, "bad"))
+#' @noRd
+check_crucial_names <- function(x, expected_names) {
+  stopifnot(rlang::is_named(x))
+  stopifnot(is.character(expected_names))
+
+  ok <- all(unique(expected_names) %in% names(x))
+  if (!ok) {
+    abort_missing_names(sort(setdiff(expected_names, names(x))))
+  }
+
+  invisible(x)
+}
+
+abort_missing_names <- function(missing_names) {
+  rlang::abort(
+    "missing_names",
+    message = glue::glue(
+      "Must have missing names:
+      {paste0('`', missing_names, '`', collapse = ', ')}"
+    )
   )
 }
 
-# replace each lhs with rhs
-get_sym_replace <- function() {
-  list(
-    c(".", " "),
-    c(",", " "),
-    c("_", " "),
-    c("/", " "),
-    c("$", "")
-  )
+replace_with_abbreviation <- function(replacement, .init) {
+  replacement <- replacement %||% from_name_to_alias()
+  replacement <- purrr::set_names(replacement, tolower)
+
+  check_crucial_names(replacement, c("from", "to"))
+
+  abbrev <- purrr::map2(tolower(replacement$from), tolower(replacement$to), c)
+  purrr::reduce(abbrev, replace_abbrev, fixed = TRUE, .init = .init)
+}
+
+# replace long words with abbreviations
+replace_abbrev <- function(text, abr, fixed = FALSE) {
+  gsub(abr[1], abr[2], text, fixed = fixed)
 }
 
 #' Report missing
