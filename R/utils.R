@@ -10,7 +10,6 @@
 #' convert from a name to its alias. You may amend this table and pass it to
 #' `to_alias()` via the `from_to` argument.
 #'
-#' @template alias-assign
 #'
 #' @author person(given = "Evgeny", family = "Petrovsky", role = c("aut",
 #'   "ctr"))
@@ -61,6 +60,7 @@
 #' # And in combination with `to_alias()`
 #' to_alias(c("AA", "BB", "1"), from_to = append_replacements)
 #' @noRd
+#' @export
 to_alias <- function(x,
                      from_to = NULL,
                      ownership = NULL,
@@ -73,7 +73,7 @@ to_alias <- function(x,
   out <- stringi::stri_trans_general(out, "latin-ascii")
 
   # symbols
-  out <- reduce(get_sym_replace(), replace_abbrev, fixed = TRUE, .init = out)
+  out <- purrr::reduce(get_sym_replace(), replace_abbrev, fixed = TRUE, .init = out)
 
   # only one space between words
   out <- gsub("[[:space:]]+", " ", out)
@@ -115,17 +115,61 @@ may_remove_ownership <- function(remove_ownership, ownership, .init) {
   }
 
   out <- purrr::map(ownership, ~ paste_or_not(.x, remove_ownership))
-  reduce(out, replace_abbrev, .init = .init)
+  purrr::reduce(out, replace_abbrev, .init = .init)
+}
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}
+
+#' Check if a named object contains expected names
+#'
+#' Based on fgeo.tool::check_crucial_names()
+#'
+#' @param x A named object.
+#' @param expected_names String; expected names of `x`.
+#'
+#' @return Invisible `x`, or an error with informative message.
+#'
+#' @examples
+#' x <- c(a = 1)
+#' check_crucial_names(x, "a")
+#' try(check_crucial_names(x, "bad"))
+#' @noRd
+check_crucial_names <- function(x, expected_names) {
+  stopifnot(rlang::is_named(x))
+  stopifnot(is.character(expected_names))
+
+  ok <- all(unique(expected_names) %in% names(x))
+  if (!ok) {
+    abort_missing_names(sort(setdiff(expected_names, names(x))))
+  }
+
+  invisible(x)
+}
+
+abort_missing_names <- function(missing_names) {
+  rlang::abort(
+    "missing_names",
+    message = glue(
+      "Must have missing names:
+      {paste0('`', missing_names, '`', collapse = ', ')}"
+    )
+  )
 }
 
 replace_with_abbreviation <- function(replacement, .init) {
   replacement <- replacement %||% from_name_to_alias()
-  replacement <- set_names(replacement, tolower)
+  replacement <- purrr::set_names(replacement, tolower)
 
   check_crucial_names(replacement, c("from", "to"))
 
   abbrev <- purrr::map2(tolower(replacement$from), tolower(replacement$to), c)
-  reduce(abbrev, replace_abbrev, fixed = TRUE, .init = .init)
+  purrr::reduce(abbrev, replace_abbrev, fixed = TRUE, .init = .init)
 }
 
 # replace long words with abbreviations
@@ -137,7 +181,7 @@ replace_abbrev <- function(text, abr, fixed = FALSE) {
 #' @noRd
 from_name_to_alias <- function() {
   # styler: off
-  tribble(
+  tibble::tribble(
     ~from,               ~to,
     " and ",             " & ",
     " en ",             " & ",
