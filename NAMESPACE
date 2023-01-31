@@ -2,8 +2,10 @@
 
 export("%>%")
 export(check_duplicated_relation)
+export(from_name_to_alias)
 export(report_duplicates)
 export(report_missings)
 export(report_no_matches)
+export(to_alias)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
