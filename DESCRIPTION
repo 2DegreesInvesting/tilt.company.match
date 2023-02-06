@@ -24,6 +24,7 @@ Imports:
     spelling,
     stringdist,
     stringi,
+    stringr,
     tibble
 Encoding: UTF-8
 Language: en-US
