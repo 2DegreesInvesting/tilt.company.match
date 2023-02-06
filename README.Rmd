@@ -110,18 +110,18 @@ tilt_m[sample(nr, 3), sample(nc, 2)] <- NA
 ### Preprocessing
 
 In a first step, the company_names are preprocessed to reduce noise and
-increase consistency. To this end we borrow a function from 2DII\`s
-package r2dii.match. We assign the result of the preprocessing to a new
+increase consistency. To this end use a function called to_alias(). 
+We assign the result of the preprocessing to a new
 column **company_alias**.
 
 ```{r}
 loanbook <- demo_loanbook %>% 
-  dplyr::mutate(company_alias = r2dii.match:::to_alias(company_name))
+  dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(loanbook))
 
 tilt <- demo_tilt %>% 
-  dplyr::mutate(company_alias = r2dii.match:::to_alias(company_name))
+  dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(tilt))
 ```
