@@ -21,7 +21,6 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    spelling,
     stringdist,
     stringi,
     tibble
@@ -30,3 +29,5 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Suggests: 
+    spelling
