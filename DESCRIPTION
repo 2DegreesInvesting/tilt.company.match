@@ -21,7 +21,6 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    stringdist,
     stringi,
     tibble
 Encoding: UTF-8
