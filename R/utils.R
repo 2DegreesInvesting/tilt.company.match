@@ -99,7 +99,7 @@ to_alias <- function(x,
   out <- may_remove_ownership(remove_ownership, ownership, .init = out)
 
   # remove inconsistent legal designation like "s.l.", "s l" and replace it with "sl"
-  legal_designation_patterns = "(?<=\\s)s(\\.?l|l|\\sl|)\\.?"
+  legal_designation_patterns <- "(?<=\\s)s(\\.?l|l|\\sl|)\\.?"
 
   out <- stringr::str_replace_all(out, legal_designation_patterns, "sl")
 
