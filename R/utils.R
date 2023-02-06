@@ -21,7 +21,9 @@
 #' @author person(given = "Evgeny", family = "Petrovsky", role = c("aut",
 #'   "ctr"))
 #'
-#' @source Adapted from [r2dii.match](https://cran.r-project.org/package=r2dii.match) version 0.1.3.
+#' Adapted from: https://github.com/RMI-PACTA/r2dii.match/blob/main/R/to_alias.R
+#'
+#' @source [r2dii.match](https://cran.r-project.org/package=r2dii.match) version 0.1.3.
 #'
 #' @param x Character string, commonly from the columns `name_direct_loantaker`
 #'   or `name_ultimate_parent` of a loanbook dataset, or from the column
@@ -177,6 +179,7 @@ get_sym_replace <- function() {
 #' convert from a name to its alias. You may amend this table and pass it to
 #' `to_alias()` via the `from_to` argument.
 #'
+#' Source: @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
 #'
 #' @return [tibble::tibble] with columns `from` and
 #' `to`.
@@ -266,7 +269,8 @@ from_name_to_alias <- function() {
 #' @param expected_names String; expected names of `x`.
 #'
 #' @return Invisible `x`, or an error with informative message.
-#' @source Adapted from @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
+#'
+#' Adapted from: https://github.com/RMI-PACTA/r2dii.match/blob/main/R/check_crucial_names.R
 #'
 #' @examples
 #' x <- c(a = 1)
