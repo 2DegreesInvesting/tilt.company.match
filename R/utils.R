@@ -21,6 +21,8 @@
 #' @author person(given = "Evgeny", family = "Petrovsky", role = c("aut",
 #'   "ctr"))
 #'
+#' @source Adapted from [r2dii.match](https://cran.r-project.org/package=r2dii.match) version 0.1.3.
+#'
 #' @param x Character string, commonly from the columns `name_direct_loantaker`
 #'   or `name_ultimate_parent` of a loanbook dataset, or from the column
 #'   `name_company` of an asset-level dataset.
@@ -169,8 +171,6 @@ get_sym_replace <- function() {
   )
 }
 
-# Source: @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
-
 #' From name to alias
 #'
 #' Function that outputs a table giving default strings used to
@@ -266,6 +266,7 @@ from_name_to_alias <- function() {
 #' @param expected_names String; expected names of `x`.
 #'
 #' @return Invisible `x`, or an error with informative message.
+#' @source Adapted from @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
 #'
 #' @examples
 #' x <- c(a = 1)
