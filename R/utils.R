@@ -444,7 +444,6 @@ report_no_matches <- function(loanbook, manually_matched) {
 #' @importFrom rlang .data
 #' @export
 check_duplicated_relation <- function(manually_matched) {
-
   suggested_matches <- manually_matched %>%
     dplyr::filter(.data$accept_match)
 
@@ -492,5 +491,4 @@ check_duplicated_relation <- function(manually_matched) {
   rlang::inform(message = "No duplicated matches found in the data.")
 
   return(invisible(manually_matched))
-
 }
