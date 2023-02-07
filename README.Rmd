@@ -38,14 +38,14 @@ The matching problem is characterised as follows:
 -   matching companies from banks\` loanbooks to tilt will face problems
     of inconsistent company names (typos, conventions...)
 
--   zip will be available as relatively reliable additional information
+-   postcode will be available as relatively reliable additional information
 
 -   not all companies in loanbooks will be in tilt db (thus not have a
     match)
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
-hold at least the columns **company_name**, **zip** and
+hold at least the columns **company_name**, **postcode** and
 **country**.Further columns that educate decisions made by humans in the
 matching process may be present. For an example compare demo data below.
 
@@ -63,18 +63,18 @@ functions to check your data before the matching process.
 
 The function **report_duplicates** shows whether there are duplicates on
 some columns of interest. In this case, we strongly suggest duplicates
-on the **company_name**, **zip** and **country** columns combination. We
+on the **company_name**, **postcode** and **country** columns combination. We
 strongly encourage to use it on the loanbook data set.
 
 ```{r}
 loanbook <- demo_loanbook
-columns <- c("company_name", "zip", "country")
+columns <- c("company_name", "postcode", "country")
 
 report_duplicates(loanbook, columns)
 ```
 
 Note: In our example we see, that while there are duplicate rows on
-columns company_name, zip, country they seem to do belong to different
+columns company_name, postcode, country they seem to do belong to different
 companies so we do not need to fix this in our loanbook.
 
 #### Report missing values
@@ -130,22 +130,22 @@ knitr::kable(head(tilt))
 
 To identify which entries from the tilt db match to the companies in the
 loanbook, we identify in a first step all companies with a matching
-country and zip code. This is based on the assumptions that zip codes
+country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
 ```{r}
 loanbook_with_candidates <- loanbook %>% 
-  dplyr::left_join(tilt, by = c("country", "zip"), suffix = c("", "_tilt"))
+  dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 
 knitr::kable(head(loanbook_with_candidates))
 ```
 
 One can see that e.g. the company with the loanbook id 1 has 3 potential
-matches in the tilt db that have the same zip (tilt id 1, 2, 4).
+matches in the tilt db that have the same postcode (tilt id 1, 2, 4).
 
 Next, we are calculating the string similarity between the aliased
 company name in the loanbook with the aliased company names in the tilt
-db in the same zip code and ordering by descending proximity. A complete
+db in the same postcode and ordering by descending proximity. A complete
 similarity corresponds to 1, complete dissimilarity corresponds to 0.
 There are several string similarity metrics available with the
 **stringdist**-package. Depending on the nature and generation modality
@@ -194,7 +194,7 @@ highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
   dplyr::filter(string_sim > threshold) 
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
-  dplyr::mutate(duplicates = any(duplicated(company_name, zip))) %>%
+  dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
   dplyr::filter(duplicates == FALSE) %>% 
   dplyr::select(id, id_tilt) %>% 
   dplyr::mutate(suggest_match = TRUE)
@@ -206,7 +206,7 @@ loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and
 knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 ```
 
-**Note**: even a match of 1 in the same zip code can in rare cases be a
+**Note**: even a match of 1 in the same postcode can in rare cases be a
 False positive, compare e.g. company 4 ("Peasant Paul") in the example
 data.
 
