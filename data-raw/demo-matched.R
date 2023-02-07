@@ -1,5 +1,5 @@
 demo_matched <- tibble::tribble(
-  ~id, ~company_name, ~zip, ~country, ~misc_info, ~company_alias, ~id_tilt, ~company_name_tilt, ~misc_info_tilt, ~company_alias_tilt, ~string_sim, ~suggest_match, ~accept_match,
+  ~id, ~company_name, ~postcode, ~country, ~misc_info, ~company_alias, ~id_tilt, ~company_name_tilt, ~misc_info_tilt, ~company_alias_tilt, ~string_sim, ~suggest_match, ~accept_match,
   1, "Peasant Peter", "01234", "germany", "A", "peasantpeter", 1, "Peasant Peter", "A", "peasantpeter", 1, NA, TRUE,
   1, "Peasant Peter", "01234", "germany", "A", "peasantpeter", 2, "Peasant Peter", "Z", "peasantpeter", 1, NA, NA,
   1, "Peasant Peter", "01234", "germany", "A", "peasantpeter", 4, "Peasant Paul", "B", "peasantpaul", 0.878787878787879, NA, NA,
