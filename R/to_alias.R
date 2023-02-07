@@ -232,6 +232,8 @@ from_name_to_alias <- function() {
     "limited",             "ltd",
     "limited partnership",              "lp",
     "ltd liability co",             "llc",
+    "l.s.", "ls",
+    "l s", "ls",
     "ograniczona odpowiedzialnoscia",              "oo",
     "partner",             "prt",
     "partners",             "prt",
