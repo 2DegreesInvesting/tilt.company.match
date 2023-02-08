@@ -119,6 +119,16 @@ test_that("from_name_to_alias outputs the expectes tibble", {
   expect_named(from_name_to_alias(), c("from", "to"))
 })
 
+test_that("standardizes legal designation of companies in Spanish", {
+  expect_equal(to_alias("s.l."), "sl")
+  expect_equal(to_alias("s l"), "sl")
+  expect_equal(to_alias("abc s.l"), to_alias("abc sl"))
+  expect_equal(to_alias("abc s.l"), to_alias("abc s l"))
+  expect_equal(to_alias("ABC S.L."), to_alias("abc s l"))
+  expect_equal(to_alias("abcsl"), to_alias("abc s l"))
+  expect_equal(to_alias("ABCSL"), to_alias("abc s l"))
+})
+
 # pacta_data_name_reductions ----------------------------------------------
 
 # WARNING
