@@ -193,8 +193,6 @@ pacta_data_name_reductions <- tibble::tribble(
   "sirketi",             "sti",
   "san tic ltd sti",    "santicltdsti",
   "san tic anonim sti", "santicanonimsti",
-  "s.l.",                    "sl",
-  "s l",                     "sl",
   "1",             "one",
   "2",             "two",
   "3",           "three",
