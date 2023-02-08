@@ -120,8 +120,8 @@ test_that("from_name_to_alias outputs the expectes tibble", {
 })
 
 test_that("inconsistent spanish legislations are removed", {
-  expect_equal(to_alias("l.s."), "ls")
-  expect_equal(to_alias("l s"), "ls")
+  expect_equal(to_alias("s.l."), "sl")
+  expect_equal(to_alias("s l"), "sl")
 })
 
 # pacta_data_name_reductions ----------------------------------------------
@@ -159,8 +159,6 @@ pacta_data_name_reductions <- tibble::tribble(
   "public co ltd",             "pcl",
   "corporation",            "corp",
   "ltd liability co",             "llc",
-  "l.s.",                    "ls",
-  "l s",                     "ls",
   "aktg",              "ag",
   "incorporated",             "inc",
   "holdings",           "hldgs",
@@ -190,6 +188,8 @@ pacta_data_name_reductions <- tibble::tribble(
   "sirketi",             "sti",
   "san tic ltd sti",    "santicltdsti",
   "san tic anonim sti", "santicanonimsti",
+  "s.l.",                    "sl",
+  "s l",                     "sl",
   "1",             "one",
   "2",             "two",
   "3",           "three",
