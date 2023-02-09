@@ -56,7 +56,7 @@ functions to check your data before the matching process.
 
 #### Check crucial columns names
 
-It is crucial to have the right columns’names in your loanbook, exactly
+It is crucial to have the right columns’ names in your loanbook, exactly
 like in our demo_loanbook. Here is a function to check if your loanbook
 has the necessary names, which are declared under “crucial_names”.
 
@@ -71,10 +71,11 @@ Now, let us rename the loanbook “country” column into “countries” and
 hashtag) the line, it throws an error.
 
 ``` r
-wrongly_named_loanbook = loanbook |> dplyr::rename(
+wrongly_named_loanbook = loanbook |> 
+  dplyr::rename(
   "countries" = "country",
   "Company Name" = "company_name"
-)
+  )
 
 #un-comment this line to have the error
 #check_crucial_names(wrongly_named_loanbook, crucial_names)
