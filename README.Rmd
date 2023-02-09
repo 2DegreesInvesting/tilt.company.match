@@ -59,6 +59,45 @@ knitr::kable(head(demo_loanbook))
 I order to run the matching process optimally, here are some useful
 functions to check your data before the matching process.
 
+#### Check crucial columns names
+
+It is crucial to have the right columns'names in your loanbook, exactly like in 
+our demo_loanbook. Here is a function to check if your loanbook has the necessary 
+names, which are declared under "crucial_names".
+
+```{r}
+loanbook <- demo_loanbook
+crucial_names <- c("id", "company_name", "postcode", "country", "misc_info")
+check_crucial_names(loanbook, crucial_names)
+```
+
+Now, let us rename the loanbook "country" column into "countries" and "company_name"
+into "Company Name".
+If you un-comment (remove the hashtag) the line, it throws an error.
+
+```{r}
+wrongly_named_loanbook = loanbook |> dplyr::rename(
+  "countries" = "country",
+  "Company Name" = "company_name"
+)
+
+#un-comment this line to have the error
+#check_crucial_names(wrongly_named_loanbook, crucial_names)
+```
+
+If you have an error in your loanbook, you can rename your loanbook columns, 
+using the dplyr::rename() function, and perform a sanity check just after.
+
+```{r}
+corrected_loanbook = wrongly_named_loanbook |> 
+  dplyr::rename(
+    "country" = "countries",
+    "company_name" = "Company Name"
+  )
+
+check_crucial_names(corrected_loanbook, crucial_names)
+```
+
 #### Report duplicates
 
 The function **report_duplicates** shows whether there are duplicates on

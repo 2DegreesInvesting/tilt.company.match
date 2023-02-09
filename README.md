@@ -54,6 +54,46 @@ knitr::kable(head(demo_loanbook))
 I order to run the matching process optimally, here are some useful
 functions to check your data before the matching process.
 
+#### Check crucial columns names
+
+It is crucial to have the right columns’names in your loanbook, exactly
+like in our demo_loanbook. Here is a function to check if your loanbook
+has the necessary names, which are declared under “crucial_names”.
+
+``` r
+loanbook <- demo_loanbook
+crucial_names <- c("id", "company_name", "postcode", "country", "misc_info")
+check_crucial_names(loanbook, crucial_names)
+```
+
+Now, let us rename the loanbook “country” column into “countries” and
+“company_name” into “Company Name”. If you un-comment (remove the
+hashtag) the line, it throws an error.
+
+``` r
+wrongly_named_loanbook = loanbook |> dplyr::rename(
+  "countries" = "country",
+  "Company Name" = "company_name"
+)
+
+#un-comment this line to have the error
+#check_crucial_names(wrongly_named_loanbook, crucial_names)
+```
+
+If you have an error in your loanbook, you can rename your loanbook
+columns, using the dplyr::rename() function, and perform a sanity check
+just after.
+
+``` r
+corrected_loanbook = wrongly_named_loanbook |> 
+  dplyr::rename(
+    "country" = "countries",
+    "company_name" = "Company Name"
+  )
+
+check_crucial_names(corrected_loanbook, crucial_names)
+```
+
 #### Report duplicates
 
 The function **report_duplicates** shows whether there are duplicates on
@@ -120,14 +160,14 @@ loanbook <- demo_loanbook %>%
 knitr::kable(head(loanbook))
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias  |
-|----:|:-----------------------|:---------|:--------|:----------|:---------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter   |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter   |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter   |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul    |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co |
+|  id | company_name           | postcode | country | misc_info | company_alias   |
+|----:|:-----------------------|:---------|:--------|:----------|:----------------|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter    |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter    |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter    |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul     |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |
 
 ``` r
 tilt <- demo_tilt %>% 
@@ -142,7 +182,7 @@ knitr::kable(head(tilt))
 |   2 | Peasant Peter                | 01234    | germany | Z         | peasantpeter          |
 |   3 | Peasant Peter                | 11234    | germany | Z         | peasantpeter          |
 |   4 | Peasant Paul                 | 01234    | germany | B         | peasantpaul           |
-|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakersltd     |
+|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakers ltd    |
 |   6 | Flower Power Friends and Co. | 34567    | germany | D         | flowerpowerfriends co |
 
 ### Deriving Candidates
@@ -206,7 +246,7 @@ knitr::kable(loanbook_with_candidates_and_dist)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA |
@@ -271,7 +311,7 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 | NA            | NA           |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
