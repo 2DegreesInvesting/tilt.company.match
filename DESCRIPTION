@@ -14,7 +14,8 @@ Description: Package holds helpers for company matching in the tilt-project.
     For details please refer to README.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 2.10)
+    R (>= 2.10),
+    stringdist
 Imports: 
     dplyr,
     glue,
@@ -30,6 +31,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     spelling,
-    stringdist,
     testthat (>= 3.0.0)
 Config/testthat/editPRion: 3
