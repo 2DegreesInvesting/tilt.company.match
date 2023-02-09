@@ -276,7 +276,7 @@ from_name_to_alias <- function() {
 #' x <- c(a = 1)
 #' check_crucial_names(x, "a")
 #' try(check_crucial_names(x, "bad"))
-#' @noRd
+#' @export
 check_crucial_names <- function(x, expected_names) {
   stopifnot(rlang::is_named(x))
   stopifnot(is.character(expected_names))
