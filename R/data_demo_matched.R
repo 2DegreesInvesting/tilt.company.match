@@ -8,7 +8,7 @@
 #' \describe{
 #' \item{id}{a numeric id}
 #' \item{company_name}{name of company}
-#' \item{zip}{zip code of company}
+#' \item{postcode}{postcode of company}
 #' \item{country}{country name in lowercase}
 #' \item{misc_info}{A placeholder column that holds additional information that human matchers would consider in matching}
 #' \item{company_alias}{name of the company, preprocessed}

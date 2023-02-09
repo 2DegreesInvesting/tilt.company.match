@@ -14,6 +14,6 @@ duplicates on.}
 }
 \description{
 Reports duplicates in \code{data} on columns \code{cols}. More specifically, we are
-interested in this case on the \code{company_name}, \code{zip} and \code{country} columns.
+interested in this case on the \code{company_name}, \code{postcode} and \code{country} columns.
 Duplicates are reported via a warning.
 }

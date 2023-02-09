@@ -40,7 +40,7 @@ report_missings <- function(data) {
 #' Report duplicate rows
 #'
 #' Reports duplicates in `data` on columns `cols`. More specifically, we are
-#' interested in this case on the `company_name`, `zip` and `country` columns.
+#' interested in this case on the `company_name`, `postcode` and `country` columns.
 #' Duplicates are reported via a warning.
 #'
 #' @param data Tibble holding a result data set.
@@ -60,7 +60,7 @@ report_duplicates <- function(data, cols) {
     rlang::inform(
       c(
         paste0("Found duplicate(s) on columns ", paste(cols, collapse = ", "), " of the data set."),
-        x = duplicates %>% glue::glue_data("Found for the company {company_name}, zip: {zip}, country: {country}"),
+        x = duplicates %>% glue::glue_data("Found for the company {company_name}, postcode: {postcode}, country: {country}"),
         i = "Please check if these duplicates are intended and have an unique id."
       )
     )
