@@ -1,4 +1,3 @@
-
 #' Check if a named object contains expected names
 #'
 #' Based on fgeo.tool::check_crucial_names()
