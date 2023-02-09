@@ -82,7 +82,6 @@ report_duplicates <- function(data, cols) {
 #'
 #' @export
 report_no_matches <- function(loanbook, manually_matched) {
-
   # Filter first by all the manual successful matches in order to
   # suppress the duplicates caused by the string matching.
   matched <- manually_matched %>%
