@@ -11,7 +11,7 @@ report_no_matches(loanbook, manually_matched)
 
 \item{manually_matched}{Tibble holding the result of the matching process, after the
 user has manually selected and matched the companies in the loanbook with
-the tiltdata set.}
+the tilt data set.}
 }
 \value{
 \code{not_matched_companies} Tibble holding id and company name of the companies
