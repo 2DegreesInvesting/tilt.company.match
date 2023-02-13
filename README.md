@@ -54,6 +54,47 @@ knitr::kable(head(demo_loanbook))
 I order to run the matching process optimally, here are some useful
 functions to check your data before the matching process.
 
+#### Check crucial columns names
+
+It is crucial to have the right columns’ names in your loanbook, exactly
+like in our demo_loanbook. Here is a function to check if your loanbook
+has the necessary names, which are declared under “crucial_names”.
+
+``` r
+loanbook <- demo_loanbook
+crucial_names <- c("id", "company_name", "postcode", "country", "misc_info")
+check_crucial_names(loanbook, crucial_names)
+```
+
+Now, let us rename the loanbook “country” column into “countries” and
+“company_name” into “Company Name”. If you un-comment (remove the
+hashtag) the line, it throws an error.
+
+``` r
+wrongly_named_loanbook <- loanbook %>%
+  dplyr::rename(
+    "countries" = "country",
+    "Company Name" = "company_name"
+  )
+
+# un-comment this line to have the error
+# check_crucial_names(wrongly_named_loanbook, crucial_names)
+```
+
+If you have an error in your loanbook, you can rename your loanbook
+columns, using the dplyr::rename() function, and perform a sanity check
+just after.
+
+``` r
+corrected_loanbook <- wrongly_named_loanbook %>%
+  dplyr::rename(
+    "country" = "countries",
+    "company_name" = "Company Name"
+  )
+
+check_crucial_names(corrected_loanbook, crucial_names)
+```
+
 #### Report duplicates
 
 The function **report_duplicates** shows whether there are duplicates on
@@ -114,23 +155,24 @@ assign the result of the preprocessing to a new column
 **company_alias**.
 
 ``` r
-loanbook <- demo_loanbook %>% 
+loanbook <- demo_loanbook %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(loanbook))
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias  |
-|----:|:-----------------------|:---------|:--------|:----------|:---------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter   |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter   |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter   |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul    |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co |
+|  id | company_name           | postcode | country | misc_info | company_alias   |
+|----:|:-----------------------|:---------|:--------|:----------|:----------------|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter    |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter    |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter    |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul     |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |
 
 ``` r
-tilt <- demo_tilt %>% 
+
+tilt <- demo_tilt %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(tilt))
@@ -142,7 +184,7 @@ knitr::kable(head(tilt))
 |   2 | Peasant Peter                | 01234    | germany | Z         | peasantpeter          |
 |   3 | Peasant Peter                | 11234    | germany | Z         | peasantpeter          |
 |   4 | Peasant Paul                 | 01234    | germany | B         | peasantpaul           |
-|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakersltd     |
+|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakers ltd    |
 |   6 | Flower Power Friends and Co. | 34567    | germany | D         | flowerpowerfriends co |
 
 ### Deriving Candidates
@@ -153,7 +195,7 @@ country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
 ``` r
-loanbook_with_candidates <- loanbook %>% 
+loanbook_with_candidates <- loanbook %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
@@ -187,8 +229,8 @@ tends to be suitable for comparing human typed text that might have
 typos.
 
 ``` r
-loanbook_with_candidates_and_dist <- loanbook_with_candidates %>% 
-  dplyr::mutate(string_sim = stringdist::stringsim(a = .data$company_alias, b = .data$company_alias_tilt, method = "jw", p = 0.1)) %>% 
+loanbook_with_candidates_and_dist <- loanbook_with_candidates %>%
+  dplyr::mutate(string_sim = stringdist::stringsim(a = .data$company_alias, b = .data$company_alias_tilt, method = "jw", p = 0.1)) %>%
   dplyr::arrange(id, -string_sim)
 
 knitr::kable(loanbook_with_candidates_and_dist)
@@ -206,7 +248,7 @@ knitr::kable(loanbook_with_candidates_and_dist)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA |
@@ -237,23 +279,23 @@ The **suggest_match** column is set to TRUE if:
     combination to avoid duplicates.
 
 ``` r
-highest_matches_per_company <- loanbook_with_candidates_and_dist %>% 
-  dplyr::group_by(id) %>% 
+highest_matches_per_company <- loanbook_with_candidates_and_dist %>%
+  dplyr::group_by(id) %>%
   dplyr::filter(string_sim == max(string_sim))
 
-threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes  
+threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold) 
+  dplyr::filter(string_sim > threshold)
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
   dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
-  dplyr::filter(duplicates == FALSE) %>% 
-  dplyr::select(id, id_tilt) %>% 
+  dplyr::filter(duplicates == FALSE) %>%
+  dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
-  
-loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>% 
-  dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>% 
+
+loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>%
+  dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>%
   dplyr::mutate(accept_match = NA)
 
 knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
@@ -271,7 +313,7 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 | NA            | NA           |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
@@ -397,7 +439,7 @@ Now let us insert duplicated matches for the company with the ids 1 and
 2.
 
 ``` r
-duplicate_in_loanbook <- manually_matched %>% 
+duplicate_in_loanbook <- manually_matched %>%
   dplyr::mutate(accept_match = dplyr::if_else(id %in% c(1, 2), TRUE, accept_match))
 
 knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id %in% c(1, 2)))
@@ -424,8 +466,8 @@ Also, an error is thrown if we insert a duplicate match of a company
 from the tilt db to the loanbook.
 
 ``` r
-duplicate_tilt_id_row <- demo_matched %>% 
-  dplyr::filter(id_tilt == 3) %>% 
+duplicate_tilt_id_row <- demo_matched %>%
+  dplyr::filter(id_tilt == 3) %>%
   dplyr::mutate(id = 12)
 duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
 
