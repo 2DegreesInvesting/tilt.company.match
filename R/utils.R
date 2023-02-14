@@ -21,9 +21,9 @@ report_missings <- function(data, not_nullable_cols = c("id", "company_name")) {
       if (nas_in_col > 0) {
         return(x)
       }
-    })
+    }) %>%
+    unlist()
 
-browser()
   if (has_missings) {
     cat("Reporting missings on the dataset", "\n")
     purrr::iwalk(as.list(missings_per_col), function(n_na, name) {
@@ -32,14 +32,16 @@ browser()
       }
     })
     cat("\n\n")
-browser()
-    rlang::abort(
+
+    if (!is.null(not_nullable_cols_w_missings)) {    rlang::abort(
       c(
         "Missings detected on the data set.",
         x = glue::glue("We expect no NAs in the tilt or loanbook data set."),
         i = "Please check the columns that have missing information."
       )
-    )
+    )}
+
+
   } else {
     rlang::inform(
       message = "No missings values found in the data."
