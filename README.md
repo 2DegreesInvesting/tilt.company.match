@@ -31,9 +31,10 @@ The matching problem is characterised as follows:
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
-hold at least the columns **company_name**, **postcode** and
-**country**.Further columns that educate decisions made by humans in the
-matching process may be present. For an example compare demo data below.
+hold at least the columns **company_name**, **postcode** and **country**
+and a column **id** holding unique row identifiers. Further columns that
+educate decisions made by humans in the matching process may be present.
+For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
@@ -62,7 +63,7 @@ has the necessary names, which are declared under “crucial_names”.
 
 ``` r
 loanbook <- demo_loanbook
-crucial_names <- c("id", "company_name", "postcode", "country", "misc_info")
+crucial_names <- c("id", "company_name", "postcode", "country")
 check_crucial_names(loanbook, crucial_names)
 ```
 
