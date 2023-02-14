@@ -1,7 +1,7 @@
 Package: tilt.company.match
 Title: Helpers for Company Name Matching in the tilt-Project
 Version: 0.0.0.9000
-Authors@R:c(
+Authors@R: c(
     person("Mirja", "Hollmann", , "mirja@2degrees-investing.org", role = c("aut", "cre")),
     person("Linda", "Delacombaz", , "linda@2degrees-investing.org", role = "aut")
   )
@@ -9,18 +9,18 @@ Description: Package holds helpers for company matching in the
     tilt-project.  For details please refer to README.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 2.10)
+    R (>= 2.10),
+    stringdist
 Imports: 
     dplyr,
     glue,
     magrittr,
     purrr,
     rlang,
-    spelling,
-    stringdist,
     stringi,
     tibble
-Suggests: 
+Suggests:
+    spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
