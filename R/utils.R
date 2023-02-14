@@ -33,15 +33,15 @@ report_missings <- function(data, not_nullable_cols = c("id", "company_name")) {
     })
     cat("\n\n")
 
-    if (!is.null(not_nullable_cols_w_missings)) {    rlang::abort(
-      c(
-        "Missings detected on the data set.",
-        x = glue::glue("We expect no NAs in the tilt or loanbook data set."),
-        i = "Please check the columns that have missing information."
+    if (!is.null(not_nullable_cols_w_missings)) {
+      rlang::abort(
+        c(
+          "Missings detected on the data set.",
+          x = glue::glue("We expect no NAs in the tilt or loanbook data set."),
+          i = "Please check the columns that have missing information."
+        )
       )
-    )}
-
-
+    }
   } else {
     rlang::inform(
       message = "No missings values found in the data."
