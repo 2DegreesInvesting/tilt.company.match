@@ -22,11 +22,10 @@ test_that("function reports NAs if NAs are present on nullable cols", {
 
 test_that("fucntion report NAs and throws error if NAs are present on nullable cols", {
 
-  test_data <- tibble::tibble(id = 1:2,
+  test_data <- tibble::tibble(id = c(NA, 2),
                               company_name = c("A", NA),
                               some_col = 3:4)
 
-  testthat::expect_error(report_missings(test_data), "Reporting missings")
-
+  testthat::expect_error(report_missings(test_data), "We expect no NAs")
 
 })

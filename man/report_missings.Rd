@@ -4,14 +4,18 @@
 \alias{report_missings}
 \title{Report missing}
 \usage{
-report_missings(data)
+report_missings(data, not_nullable_cols = c("id", "company_name"))
 }
 \arguments{
 \item{data}{Tibble holding a result data set.}
+
+\item{not_nullable_cols}{A character vector holding names of columns on which
+NAs are not allowed.}
 }
 \value{
-Input \code{data}.
+Input \code{data} invisibly.
 }
 \description{
-Function that reports number of missing values per columns found in the data set.
+Function that reports number of missing values per columns found in the data
+and throw error if missing are around on \code{not_nullable_cols}.
 }
