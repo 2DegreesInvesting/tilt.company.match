@@ -1,4 +1,4 @@
-test_that("function returns input if not NAs are present", {
+test_that("returns input if not NAs are present", {
 
   test_data <- tibble::tibble(id = 1:2,
                               company_name = c("A", "B"),
@@ -9,7 +9,7 @@ test_that("function returns input if not NAs are present", {
 
 })
 
-test_that("function reports NAs if NAs are present on nullable cols", {
+test_that("reports NAs if NAs are present on nullable cols", {
 
   test_data <- tibble::tibble(id = 1:2,
                               company_name = c("A", "B"),
