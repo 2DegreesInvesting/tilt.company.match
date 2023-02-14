@@ -20,14 +20,14 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 
 The matching problem is characterised as follows:
 
--   matching companies from banks\` loanbooks to tilt will face problems
-    of inconsistent company names (typos, conventions…)
+- matching companies from banks\` loanbooks to tilt will face problems
+  of inconsistent company names (typos, conventions…)
 
--   postcode will be available as relatively reliable additional
-    information
+- postcode will be available as relatively reliable additional
+  information
 
--   not all companies in loanbooks will be in tilt db (thus not have a
-    match)
+- not all companies in loanbooks will be in tilt db (thus not have a
+  match)
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
@@ -54,6 +54,47 @@ knitr::kable(head(demo_loanbook))
 
 I order to run the matching process optimally, here are some useful
 functions to check your data before the matching process.
+
+#### Check crucial columns names
+
+It is crucial to have the right columns’ names in your loanbook, exactly
+like in our demo_loanbook. Here is a function to check if your loanbook
+has the necessary names, which are declared under “crucial_names”.
+
+``` r
+loanbook <- demo_loanbook
+crucial_names <- c("id", "company_name", "postcode", "country", "misc_info")
+check_crucial_names(loanbook, crucial_names)
+```
+
+Now, let us rename the loanbook “country” column into “countries” and
+“company_name” into “Company Name”. If you un-comment (remove the
+hashtag) the line, it throws an error.
+
+``` r
+wrongly_named_loanbook <- loanbook %>%
+  dplyr::rename(
+    "countries" = "country",
+    "Company Name" = "company_name"
+  )
+
+# un-comment this line to have the error
+# check_crucial_names(wrongly_named_loanbook, crucial_names)
+```
+
+If you have an error in your loanbook, you can rename your loanbook
+columns, using the dplyr::rename() function, and perform a sanity check
+just after.
+
+``` r
+corrected_loanbook <- wrongly_named_loanbook %>%
+  dplyr::rename(
+    "country" = "countries",
+    "company_name" = "Company Name"
+  )
+
+check_crucial_names(corrected_loanbook, crucial_names)
+```
 
 #### Report duplicates
 
@@ -115,7 +156,7 @@ assign the result of the preprocessing to a new column
 **company_alias**.
 
 ``` r
-loanbook <- demo_loanbook %>% 
+loanbook <- demo_loanbook %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(loanbook))
@@ -132,7 +173,7 @@ knitr::kable(head(loanbook))
 
 ``` r
 
-tilt <- demo_tilt %>% 
+tilt <- demo_tilt %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(tilt))
@@ -155,7 +196,7 @@ country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
 ``` r
-loanbook_with_candidates <- loanbook %>% 
+loanbook_with_candidates <- loanbook %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
@@ -189,8 +230,8 @@ tends to be suitable for comparing human typed text that might have
 typos.
 
 ``` r
-loanbook_with_candidates_and_dist <- loanbook_with_candidates %>% 
-  dplyr::mutate(string_sim = stringdist::stringsim(a = .data$company_alias, b = .data$company_alias_tilt, method = "jw", p = 0.1)) %>% 
+loanbook_with_candidates_and_dist <- loanbook_with_candidates %>%
+  dplyr::mutate(string_sim = stringdist::stringsim(a = .data$company_alias, b = .data$company_alias_tilt, method = "jw", p = 0.1)) %>%
   dplyr::arrange(id, -string_sim)
 
 knitr::kable(loanbook_with_candidates_and_dist)
@@ -233,29 +274,29 @@ is provided.
 
 The **suggest_match** column is set to TRUE if:
 
--   The match is above a determined threshold.
--   It is the highest match of all matches.
--   There is only 1 highest match per **company_name** x **id**
-    combination to avoid duplicates.
+- The match is above a determined threshold.
+- It is the highest match of all matches.
+- There is only 1 highest match per **company_name** x **id**
+  combination to avoid duplicates.
 
 ``` r
-highest_matches_per_company <- loanbook_with_candidates_and_dist %>% 
-  dplyr::group_by(id) %>% 
+highest_matches_per_company <- loanbook_with_candidates_and_dist %>%
+  dplyr::group_by(id) %>%
   dplyr::filter(string_sim == max(string_sim))
 
-threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes  
+threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold) 
+  dplyr::filter(string_sim > threshold)
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
   dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
-  dplyr::filter(duplicates == FALSE) %>% 
-  dplyr::select(id, id_tilt) %>% 
+  dplyr::filter(duplicates == FALSE) %>%
+  dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
-  
-loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>% 
-  dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>% 
+
+loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>%
+  dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>%
   dplyr::mutate(accept_match = NA)
 
 knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
@@ -399,7 +440,7 @@ Now let us insert duplicated matches for the company with the ids 1 and
 2.
 
 ``` r
-duplicate_in_loanbook <- manually_matched %>% 
+duplicate_in_loanbook <- manually_matched %>%
   dplyr::mutate(accept_match = dplyr::if_else(id %in% c(1, 2), TRUE, accept_match))
 
 knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id %in% c(1, 2)))
@@ -426,8 +467,8 @@ Also, an error is thrown if we insert a duplicate match of a company
 from the tilt db to the loanbook.
 
 ``` r
-duplicate_tilt_id_row <- demo_matched %>% 
-  dplyr::filter(id_tilt == 3) %>% 
+duplicate_tilt_id_row <- demo_matched %>%
+  dplyr::filter(id_tilt == 3) %>%
   dplyr::mutate(id = 12)
 duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
 
