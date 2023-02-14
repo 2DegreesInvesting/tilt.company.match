@@ -3,6 +3,11 @@
 
 # tilt.company.match
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/2DegreesInvesting/tilt.company.match/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/2DegreesInvesting/tilt.company.match/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 The goal of tilt.company.match is to provide helpers for company name
 matching in the tilt-project,
 
@@ -20,14 +25,14 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 
 The matching problem is characterised as follows:
 
--   matching companies from banks\` loanbooks to tilt will face problems
-    of inconsistent company names (typos, conventions…)
+- matching companies from banks\` loanbooks to tilt will face problems
+  of inconsistent company names (typos, conventions…)
 
--   postcode will be available as relatively reliable additional
-    information
+- postcode will be available as relatively reliable additional
+  information
 
--   not all companies in loanbooks will be in tilt db (thus not have a
-    match)
+- not all companies in loanbooks will be in tilt db (thus not have a
+  match)
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
@@ -120,16 +125,17 @@ loanbook <- demo_loanbook %>%
 knitr::kable(head(loanbook))
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias  |
-|----:|:-----------------------|:---------|:--------|:----------|:---------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter   |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter   |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter   |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul    |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co |
+|  id | company_name           | postcode | country | misc_info | company_alias   |
+|----:|:-----------------------|:---------|:--------|:----------|:----------------|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter    |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter    |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter    |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul     |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |
 
 ``` r
+
 tilt <- demo_tilt %>% 
   dplyr::mutate(company_alias = to_alias(company_name))
 
@@ -142,7 +148,7 @@ knitr::kable(head(tilt))
 |   2 | Peasant Peter                | 01234    | germany | Z         | peasantpeter          |
 |   3 | Peasant Peter                | 11234    | germany | Z         | peasantpeter          |
 |   4 | Peasant Paul                 | 01234    | germany | B         | peasantpaul           |
-|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakersltd     |
+|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakers ltd    |
 |   6 | Flower Power Friends and Co. | 34567    | germany | D         | flowerpowerfriends co |
 
 ### Deriving Candidates
@@ -206,7 +212,7 @@ knitr::kable(loanbook_with_candidates_and_dist)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA |
@@ -231,10 +237,10 @@ is provided.
 
 The **suggest_match** column is set to TRUE if:
 
--   The match is above a determined threshold.
--   It is the highest match of all matches.
--   There is only 1 highest match per **company_name** x **id**
-    combination to avoid duplicates.
+- The match is above a determined threshold.
+- It is the highest match of all matches.
+- There is only 1 highest match per **company_name** x **id**
+  combination to avoid duplicates.
 
 ``` r
 highest_matches_per_company <- loanbook_with_candidates_and_dist %>% 
@@ -271,7 +277,7 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
 |   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakersltd      |       5 | The Bread Bakers Ltd         | C              | thebreadbakersltd     |  0.8340336 | NA            | NA           |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | NA           |
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
 |   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
