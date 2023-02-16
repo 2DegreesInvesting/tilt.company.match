@@ -120,33 +120,39 @@ different companies so we do not need to fix this in our loanbook.
 
 #### Report missing values
 
-Missing values or NAs should not exist in neither the loanbook or tilt
-data set. The function **report_missings** checks how many NAs there are
-in each columns of the data set and report them to the user.
+Missing values or NAs should ideally not in the loanbook. The function
+**abort_if_incomplete()** aborts execution if any non-nullable column has missing values.
 
-Here, the tilt data set does not have any NAs so it should not throw any
-error message.
+Here, the loanbook data set does not have any NAs.
 
 ``` r
-tilt <- demo_tilt
-
-report_missings(tilt)
-#> No missings values found in the data.
+abort_if_incomplete(demo_loanbook)
 ```
 
-Whereas if we insert random NAs in the dataset, the function should
-report these latter and throw an error.
+There are some columns (currently **id** and **company_name**) on which
+we do not allow missings. In case there are missings on these columns
+report_missings() will throw an error. You then have to removed affected
+rows from your data. On other columns, e.g. **postcode** missings will
+be reported for information purposes. However they do not require action
+from user side.
 
 ``` r
-nr <- nrow(tilt)
-nc <- ncol(tilt)
+# missings on a non-crucial column
+missing_non_crucial <- demo_loanbook %>% 
+  dplyr::mutate(postcode = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-tilt_m <- tilt
+missing_non_crucial %>% 
+  abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
 
-tilt_m[sample(nr, 3), sample(nc, 2)] <- NA
+# missings on a crucial column
+missing_crucial <- demo_loanbook %>% 
+  dplyr::mutate(company_name = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-# un-comment this line to have the error
-# report_missings(tilt_m)
+missing_crucial %>% 
+  abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
+#> Error in `abort_if_incomplete()`:
+#> ! Non-nullable columns must not have `NA`s.
+#> ✖ Columns to review: company_name
 ```
 
 ### Preprocessing
