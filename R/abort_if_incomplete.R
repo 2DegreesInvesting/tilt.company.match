@@ -20,7 +20,7 @@
 #'
 #' # Takes all columns are non-nullable by default
 #' data %>% abort_if_incomplete() %>% try()
-abort_if_incomplete <- function(data, non_nullable_cols) {
+abort_if_incomplete <- function(data, non_nullable_cols = names(data)) {
   incomplete <- select_incomplete(data[non_nullable_cols])
   if (any(incomplete)) {
     cols <- toString(names(incomplete[incomplete]))
