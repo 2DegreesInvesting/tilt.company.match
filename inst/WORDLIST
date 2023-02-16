@@ -10,12 +10,14 @@ Tibble
 Winkler
 aliase
 breadbakers
-breadbakersltd
 characterised
 check’
+columns’
 comapny
 dataraw
 dii
+dplyr
+fgeo
 flowerpower
 flowerpowerfriends
 germany
@@ -30,6 +32,7 @@ loanbooks
 magrittr
 matchers
 norway
+nullable
 peasantpaul
 peasantpeter
 preprocessed
@@ -37,5 +40,5 @@ screwdriverexpert
 screwdriverexperts
 stringdist
 thebreadbakers
-thebreadbakersltd
 tibble
+un
