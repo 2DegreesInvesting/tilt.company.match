@@ -9,12 +9,12 @@ test_that("with complete data returns invisibly", {
 
 test_that("with NA in non-nullable columns shows columns to review as error", {
   data <- tibble(x = NA)
-  expect_error(abort_if_incomplete(data, "x"), "review")
+  expect_error(abort_if_incomplete(data, "x"), "review.*x$")
 })
 
 test_that("takes all columns as non-nullable by default", {
   data <- tibble(x = NA, y = NA)
-  expect_error(abort_if_incomplete(data), "x, y$")
+  expect_error(abort_if_incomplete(data), "x.*y$")
 
   data <- tibble(x = NA, y = 1)
   expect_error(abort_if_incomplete(data), "x$")
