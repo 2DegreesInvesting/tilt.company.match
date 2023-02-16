@@ -19,7 +19,7 @@ Input \code{data} invisibly.
 Aborts when data has missing values on non-nullable columns
 }
 \examples{
-data <- tibble(x = NA, y = 1, z = NA)
+data <- tibble::tibble(x = NA, y = 1, z = NA)
 
 # With NA in nullable columns returns data invisibly
 data \%>\% abort_if_incomplete(non_nullable_cols = "y")
