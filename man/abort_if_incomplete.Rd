@@ -4,7 +4,7 @@
 \alias{abort_if_incomplete}
 \title{Aborts when data has missing values on non-nullable columns}
 \usage{
-abort_if_incomplete(data, non_nullable_cols)
+abort_if_incomplete(data, non_nullable_cols = names(data))
 }
 \arguments{
 \item{data}{Tibble holding a result data set.}
@@ -29,6 +29,6 @@ identical(out, data)
 # With NA in one nullable column, alerts the column to review as an error
 data \%>\% abort_if_incomplete(non_nullable_cols = c("x", "y")) \%>\% try()
 
-# Takes all columns are non-nullable by default
+# By default, it takes all columns as non-nullable
 data \%>\% abort_if_incomplete() \%>\% try()
 }
