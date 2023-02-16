@@ -38,6 +38,7 @@ For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
+#> Loading required package: stringdist
 knitr::kable(head(demo_loanbook))
 ```
 
@@ -120,14 +121,12 @@ different companies so we do not need to fix this in our loanbook.
 #### Report missing values
 
 Missing values or NAs should ideally not in the loanbook. The function
-**report_missings** checks how many NAs there are in each columns of the
-data set and report them to the user.
+**abort_if_incomplete()** aborts execution if any non-nullable column has missing values.
 
 Here, the loanbook data set does not have any NAs.
 
 ``` r
-report_missings(demo_loanbook)
-#> No missings values found in the data.
+abort_if_incomplete(demo_loanbook)
 ```
 
 There are some columns (currently **id** and **company_name**) on which
@@ -142,16 +141,18 @@ from user side.
 missing_non_crucial <- demo_loanbook %>% 
   dplyr::mutate(postcode = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-report_missings(missing_non_crucial)
-#> Reporting missings on the dataset 
-#> Counted 1 missings on column postcode
+missing_non_crucial %>% 
+  abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
 
 # missings on a crucial column
 missing_crucial <- demo_loanbook %>% 
   dplyr::mutate(company_name = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-# un-comment this line to see the error
-# report_missings(missing_crucial)
+missing_crucial %>% 
+  abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
+#> Error in `abort_if_incomplete()`:
+#> ! Non-nullable columns must not have `NA`s.
+#> ✖ Columns to review: company_name
 ```
 
 ### Preprocessing
