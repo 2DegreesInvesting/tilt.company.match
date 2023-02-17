@@ -199,7 +199,7 @@ these conditions:
 
 ```{r}
 # Decided upon extensive experience with r2dii.match function and processes
-threshold <- 0.9
+threshold <- 0.75
 
 candidates_suggest_match <- candidates_similarity %>%
   # - It's the highest among all other candidates.
