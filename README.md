@@ -261,6 +261,7 @@ knitr::kable(loanbook_with_candidates_and_dist)
 |   9 | John Meier’s Groceries | 56789    | germany | E          | johnmeiersgroceries |        8 | John and Jacques Groceries   | E                | johnjacquesgroceries  |   0.8478947 |
 |  10 | John Meier’s Groceries | 55555    | germany | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA |
 |  11 | John Meier’s Groceries | 55555    | norway  | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA |
+|  12 | Best Bakers            | 65656    | france  | F          | bestbakers          |       11 | Cranes and Friends           | F                | cranesfriends         |   0.5482906 |
 
 Based an empiric research we decided to remove match candidates with a
 similarity under a certain threshold. This helps drastically reduce the
@@ -296,6 +297,7 @@ knitr::kable(lost_companies)
 
 |  id | company\_name |
 |----:|:--------------|
+|  12 | Best Bakers   |
 
 ## Selecting matches
 
@@ -414,8 +416,8 @@ not_matched <- report_no_matches(loanbook, manually_matched)
 #> "company_alias")
 #> Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread
 #> Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries
-#> John Meier's Groceries John Meier's Groceries ℹ Did you match these companies
-#> manually correctly ?
+#> John Meier's Groceries John Meier's Groceries Best Bakers ℹ Did you match these
+#> companies manually correctly ?
 
 knitr::kable(not_matched)
 ```
@@ -429,6 +431,7 @@ knitr::kable(not_matched)
 |   9 | John Meier’s Groceries |
 |  10 | John Meier’s Groceries |
 |  11 | John Meier’s Groceries |
+|  12 | Best Bakers            |
 
 ### Report duplicate matches
 
