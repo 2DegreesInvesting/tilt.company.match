@@ -38,6 +38,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
+  <a class="nav-link" href="articles/tilt-company-match.html">Get started</a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
       </ul>
@@ -62,7 +65,7 @@
 <p>You can install the development version of tilt.company.match from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"2DegreesInvesting/tilt.company.match"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"2DegreesInvesting/tilt.company.match"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="matching-loanbooks-to-the-tilt-database">Matching loanbooks to the tilt database<a class="anchor" aria-label="anchor" href="#matching-loanbooks-to-the-tilt-database"></a>
@@ -75,7 +78,7 @@
 </ul>
 <p>To match the companies provided in a loanbook to companies in the tilt database we expect a loanbook dataframe and a tilt db dataframe that hold at least the columns <strong>company_name</strong>, <strong>postcode</strong> and <strong>country</strong> and a column <strong>id</strong> holding unique row identifiers. Further columns that educate decisions made by humans in the matching process may be present. For an example compare demo data below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tilt.company.match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: stringdist</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demo_loanbook</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -180,7 +183,7 @@
 <div class="section level4">
 <h4 id="report-missing-values">Report missing values<a class="anchor" aria-label="anchor" href="#report-missing-values"></a>
 </h4>
-<p>Missing values or NAs should ideally not in the loanbook. The function <strong>abort_if_incomplete()</strong> aborts execution if any non-nullable column has missing values.</p>
+<p>Missing values or NAs should ideally not in the loanbook. The function <strong>abort_if_incomplete()</strong> checks how many NAs there are in each columns of the data set and report them to the user.</p>
 <p>Here, the loanbook data set does not have any NAs.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">demo_loanbook</span><span class="op">)</span></span></code></pre></div>
