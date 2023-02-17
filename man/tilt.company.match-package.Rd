@@ -8,6 +8,13 @@
 \description{
 Package holds helpers for company matching in the tilt-project. For details please refer to README.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://2degreesinvesting.github.io/tilt.company.match/}
+}
+
+}
 \author{
 \strong{Maintainer}: Mirja Hollmann \email{mirja@2degrees-investing.org}
 
