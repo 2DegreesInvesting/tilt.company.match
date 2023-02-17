@@ -38,7 +38,8 @@ The matching problem is characterised as follows:
 -   matching companies from banks\` loanbooks to tilt will face problems
     of inconsistent company names (typos, conventions...)
 
--   postcode will be available as relatively reliable additional information
+-   it is expected that postcode will be available as relatively reliable 
+    additional information for most companies
 
 -   not all companies in loanbooks will be in tilt db (thus not have a
     match)
@@ -206,6 +207,21 @@ loanbook_with_candidates_and_dist <- loanbook_with_candidates %>%
 
 knitr::kable(loanbook_with_candidates_and_dist)
 ```
+
+Based an empiric research we decided to remove match candidates with a similarity
+under a certain threshold. This helps drastically reduce the number of 
+candidates, making the data easier to process for a human. Note that, in very
+rare cases, we might loose matches this way, however we concluded that the 
+improved ease of use justifies those edgecases.
+
+
+```{r}
+min_threshold <- 0.75
+
+loanbook_with_candidates_and_dist <- loanbook_with_candidates_and_dist %>% 
+  dplyr::filter(is.na(string_sim) | string_sim > min_threshold)
+```
+
 
 ## Selecting matches
 
