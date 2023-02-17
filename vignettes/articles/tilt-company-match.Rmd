@@ -1,0 +1,343 @@
+---
+title: "tilt.company.match"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The goal of tilt.company.match is to help you match companies in a bank's
+loanbook to companies in a dataset from the tilt-project.
+
+## Installation
+
+You can install the development version of tilt.company.match from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("2DegreesInvesting/tilt.company.match")
+```
+
+## Considerations
+
+When matching a company in a bank's loanbook to a company in the tilt
+dataset, there are a number of things to consider:
+
+- The company's name may be different in each dataset, for example because of typos.
+- The company's country and postcode are useful. A match by name, country, and postcode is more
+reliable than a match by name alone.
+- The company may not exist in the tilt dataset.
+
+## Requirements
+
+For each of the loanbook and tilt datasets, the following must be true:
+
+- It's an R dataframe.
+- It has the columns `id`, `company_name`, `postcode`, and `country`.
+- It may or may not have other columns.
+- The column `id` holds unique row-identifiers.
+
+## 1. In R (session 1)
+
+### Use R packages and read data 
+
+We'll use general purpose tools from
+packages in the [tidyverse](https://www.tidyverse.org/), and more specific tools
+from the packages [stringdist](https://CRAN.R-project.org/package=stringdist)
+and
+[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(tilt.company.match)
+```
+
+Here we'll use a "demo" loanbook. You should replace with your real loanbook.
+
+```{r}
+# TODO: Replace with your real loanbook and tilt datasets
+# loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
+loanbook <- demo_loanbook
+# tilt <- readr::read_csv("path/to/your/real/tilt.csv")
+tilt <- demo_tilt
+```
+
+### Check the loanbook
+
+Let's first check you `loanbook` is as we expect.
+
+**Expected columns:** Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
+
+```{r}
+expected <- c("id", "company_name", "postcode", "country")
+loanbook %>% check_crucial_names(expected)
+
+# Anything different throws an error
+bad <- rename(loanbook, ids = id)
+bad %>% check_crucial_names(expected) %>% try()
+```
+
+**Duplicates:** Do you have duplicates in `company_name`, `postcode` or `country`?
+
+It's best if there is no duplicate in the columns `company_name`, `postcode` or
+`country`. But if they have duplicates and they belong to different companies,
+then you don't have to fix them.
+
+```{r}
+best_without_duplicates <- c("company_name", "postcode", "country")
+report_duplicates(loanbook, best_without_duplicates)
+
+# `misc_info` suggest the duplicates belong to different companies, so we're ok
+loanbook %>% 
+  filter(company_name == "Peasant Peter") %>% 
+  filter(postcode == "01234")
+```
+
+**Missing values:** Do you have missing values (`NA`s) in non-nullable columns?
+
+Non-nullable columns must not have missing values. If they do you have to remove
+them. Missing values in other columns are fine.
+
+```{r}
+non_nullable <- c("id", "company_name")
+
+loanbook %>% abort_if_incomplete(non_nullable)
+
+# A non-nullable columns has NA's. 
+bad_loanbook <- tribble(
+  ~id,             ~company_name, ~postcode,  ~country, ~misc_info,
+   NA,  "John Meier's Groceries",   "55555", "germany",        "Y",
+   11,  "John Meier's Groceries",   "55555",  "norway",        "Y"
+  )
+bad_loanbook %>% abort_if_incomplete(non_nullable) %>% try()
+
+fixed_loanbook <- filter(bad_loanbook, !is.na(id))
+# NA's are OK in columns other than non-nullable ones
+fixed_loanbook
+
+fixed_loanbook %>% abort_if_incomplete(non_nullable)
+```
+
+### Create a standard alias of `company_name` in both datasets
+
+Use `to_alias()` to reduce the change you'll miss a match because of spurious
+differences in the company name between the loanbook and tilt dataset. It helps
+you get a less noisy, more consistent version of `company_name` in each of the
+two datasets before matching them.
+
+```{r}
+loanbook_alias <- loanbook %>% mutate(company_alias = to_alias(company_name))
+loanbook_alias
+
+tilt_alias <- tilt %>% mutate(company_alias = to_alias(company_name))
+tilt_alias
+```
+
+### Match candidates
+
+To identify matching candidates, join the two datasets allowing any one company
+in the loanbook to match `"all"` the potentially `multiple` companies with the
+same `country` and `postcode`.
+
+```{r}
+reliable_shared_columns <- c("country", "postcode")
+# WARNING: If you lack `postcode` use this instead:
+# reliable_shared_columns <- "country"
+
+candidates <- left_join(
+    loanbook_alias, tilt_alias, 
+    by = reliable_shared_columns,
+    # Add the suffix "_tilt" to each column from the tilt dataset
+    suffix = c("", "_tilt"),
+    # Allow matching one to many
+    multiple = "all"
+)
+
+# Example: 1 company in the loanbook matches 3 candidates in the tilt dataset
+candidates %>% 
+  filter(id == 1) %>%
+  select(country, postcode, id, company_alias, id_tilt, company_alias_tilt)
+```
+
+Next, calculate the string similarity between the aliased `company_name` from
+the loanbook and tilt datasets. Complete similarity corresponds to `1`, and
+complete dissimilarity corresponds to `0`. For each company in the loanbook,
+arrange matching candidates by descending similarity.
+
+```{r}
+candidates_similarity <- candidates %>%
+  # Other parameters may perform best. See `?stringdist::stringsim`
+  mutate(similarity = stringsim(
+    company_alias, company_alias_tilt, 
+    # Good to compare human typed text that might have typos.
+    method = "jw", 
+    p = 0.1
+  )) %>% 
+  # Arrange matching candidates from more to less similar
+  arrange(id, -similarity)
+
+candidates_similarity
+```
+
+### Suggest matches
+
+Later you'll need to manually decide which of all candidates if any is a true
+match. To make that job easier, we can automatically make some suggestions in a
+new column `suggest_match`.
+
+The values of `suggest_match` are either `TRUE` or `FALSE`. By default they are
+set to `FALSE`, then set to `TRUE` where the value of `similarity` meets all of
+these conditions:
+
+- It's the highest among all other candidates.
+- It's above a given threshold.
+- It's the only such highest value in the group defined by a combination of `company_name` x `id` -- to avoid duplicates.
+
+```{r}
+# Decided upon extensive experience with r2dii.match function and processes
+threshold <- 0.9
+
+candidates_suggest_match <- candidates_similarity %>%
+  # - It's the highest among all other candidates.
+  group_by(id) %>%
+  filter(similarity == max(similarity)) %>% 
+  # - It's above a given threshold.
+  filter(similarity > threshold) %>% 
+  # - It's the only such highest value in the group defined by a combination of
+  # `company_name` x `id` -- to avoid duplicates.
+  mutate(duplicates = any(duplicated(company_name, postcode))) %>%
+  filter(duplicates == FALSE) %>%
+  select(id, id_tilt) %>%
+  mutate(suggest_match = TRUE)
+
+to_edit <- candidates_similarity %>%
+  left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
+  mutate(accept_match = NA)
+
+to_edit
+```
+
+Note that even a `similarity` of `1` in the same `postcode` can be a false
+positive.
+
+```{r}
+# Example of a false positive
+to_edit %>% 
+  filter(id == 4, id_tilt == 4) %>%
+  select(suggest_match, similarity, postcode, matches("misc_info"))
+```
+
+Now write the dataset `to_edit` so that you can explore it in a spreadsheet
+editor. For example, you may write it as a .csv or .xlsx then open it in Excel
+or GoogleSheets.
+
+```r
+# You can install the readr package with: `install.packages("readr")`
+readr::write_csv(to_edit, "to_edit.csv")
+
+# Or, you can install the writexl package with: `install.packages("writexl")`
+writexl::write_xlsx(to_edit, "to_edit.xlsx")
+```
+
+## 2. In a spreadsheet editor
+
+### Accept or reject matches
+
+- Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
+- For each row decide if you want to reject or accept the suggested match. By default
+each row is rejected. To accept it type TRUE in the column `accept_match`.
+- Save the edited file to later use it again in R, for example e.g. as "edited.csv".
+
+## 3. In R (session 2)
+
+### Use R packages and read data 
+
+Restart R to ensure nothing from the previous R session affects this one.
+
+Reload the required packages.
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(tilt.company.match)
+```
+
+Read the "edited.csv" file, and again your lookbook.
+
+```{r}
+# TODO: Replace our "demo" dataset with the file you really edited
+# edited <- readr::read_csv("path/to/the/file/you/really/edited.csv")
+edited <- demo_matched
+
+# TODO: Replace our "demo" dataset with your real loanbook
+# loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
+loanbook <- demo_loanbook
+```
+
+### Check the edited dataset
+
+Manual work is prone to errors. Check the edited dataset to ensure it's correct:
+
+- Use `report_no_matches()` to explore companies in the loanbook that didn't match
+any company in the tilt dataset.
+
+```{r}
+not_matched <- loanbook %>% report_no_matches(edited)
+not_matched
+```
+
+- Use `check_duplicated_relation()` to check if a company
+from loanbook has been matched to more than one company from the tilt dataset or
+reverse.
+
+```{r}
+# Good
+edited %>% check_duplicated_relation()
+```
+
+With bad data you get informative errors.
+
+```{r}
+# Bad: A single loanbook-company can't match multiple tilt-companies
+bad_edited <- edited %>%
+  mutate(accept_match = if_else(id %in% c(1, 2), TRUE, accept_match))
+bad_edited %>% filter(id %in% c(1, 2))
+
+bad_edited %>% check_duplicated_relation() %>% try()
+
+# Bad: Multiple loanbook-companies can't match a single tilt-company
+bad_edited2 <- demo_matched %>%
+  filter(id_tilt == 3) %>%
+  mutate(id = 12) %>% 
+  bind_rows(demo_matched)
+bad_edited2 %>% 
+  filter(accept_match == TRUE & id_tilt == 3)
+
+bad_edited2 %>% check_duplicated_relation() %>% try()
+```
+
+If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
+
+### Pick the matching companies
+
+Once your edited dataset is correct, pick the matching companies and you're
+done. Your final dataset will have as many rows as the number `TRUE` values in
+your edited dataset.
+
+```{r}
+edited %>% count(accept_match)
+
+final <- edited %>% filter(accept_match)
+final
+```
+
+If you need to use your final dataset elsewhere, you may write it to a .csv file
+like before with:
+
+```r
+# You can install the readr package with: `install.packages("readr")`
+final %>% readr::write_csv("final.csv")
+```

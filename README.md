@@ -121,7 +121,8 @@ different companies so we do not need to fix this in our loanbook.
 #### Report missing values
 
 Missing values or NAs should ideally not in the loanbook. The function
-**abort_if_incomplete()** aborts execution if any non-nullable column has missing values.
+**abort_if_incomplete()** checks how many NAs there are in each columns
+of the data set and report them to the user.
 
 Here, the loanbook data set does not have any NAs.
 
