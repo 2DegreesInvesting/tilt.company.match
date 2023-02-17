@@ -22,25 +22,28 @@ You can install the development version of tilt.company.match from
 devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
-## Overview
+## Considerations
 
-Say you want to match a company in a bank's loanbook to a company in the tilt
-dataset. Consider the following:
+When matching a company in a bank's loanbook to a company in the tilt
+dataset, there are a number of things to consider:
 
 - The company's name may be different in each dataset, for example because of typos.
 - The company's country and postcode are useful. A match by name, country, and postcode is more
 reliable than a match by name alone.
 - The company may not exist in the tilt dataset.
 
-For each of the two datasets -- the loanbook and tilt dataset -- the code here
-expects these properties:
+## Requirements
 
-- The dataset is an R dataframe.
-- The dataset has the columns `id`, `company_name`, `postcode`, and `country`.
-- The dataset may or may not have other columns.
+For each of the loanbook and tilt datasets, the following must be true:
+
+- It's an R dataframe.
+- It has the columns `id`, `company_name`, `postcode`, and `country`.
+- It may or may not have other columns.
 - The column `id` holds unique row-identifiers.
 
-## Example
+## 1. In R (session 1)
+
+### Use R packages and read data 
 
 We'll use general purpose tools from
 packages in the [tidyverse](https://www.tidyverse.org/), and more specific tools
@@ -63,7 +66,7 @@ loanbook <- demo_loanbook
 tilt <- demo_tilt
 ```
 
-### Checking inputs
+### Check the loanbook
 
 Let's first check you `loanbook` is as we expect.
 
@@ -119,7 +122,7 @@ fixed_loanbook
 fixed_loanbook %>% abort_if_incomplete(non_nullable)
 ```
 
-### Preprocessing
+### Create a standard alias of `company_name` in both datasets
 
 Use `to_alias()` to reduce the change you'll miss a match because of spurious
 differences in the company name between the loanbook and tilt dataset. It helps
@@ -134,7 +137,7 @@ tilt_alias <- tilt %>% mutate(company_alias = to_alias(company_name))
 tilt_alias
 ```
 
-### Matching candidates
+### Match candidates
 
 To identify matching candidates, join the two datasets allowing any one company
 in the loanbook to match `"all"` the potentially `multiple` companies with the
@@ -180,7 +183,7 @@ candidates_similarity <- candidates %>%
 candidates_similarity
 ```
 
-### Suggesting matches
+### Suggest matches
 
 Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
@@ -232,43 +235,54 @@ Now write the dataset `to_edit` so that you can explore it in a spreadsheet
 editor. For example, you may write it as a .csv or .xlsx then open it in Excel
 or GoogleSheets.
 
-```{r eval=FALSE}
-# install.packages("writexl")
+```r
+# You can install the readr package with: `install.packages("readr")`
 readr::write_csv(to_edit, "to_edit.csv")
 
-# install.packages("writexl")
+# Or, you can install the writexl package with: `install.packages("writexl")`
 writexl::write_xlsx(to_edit, "to_edit.xlsx")
 ```
 
-### Accepting or rejecting matches
+## 2. In a spreadsheet editor
+
+### Accept or reject matches
 
 - Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
 - For each row decide if you want to reject or accept the suggested match. By default
 each row is rejected. To accept it type TRUE in the column `accept_match`.
 - Save the edited file to later use it again in R, for example e.g. as "edited.csv".
 
-### Checking the dataset you edited
+## 3. In R (session 2)
 
-Manual work is prone to errors. Here you'll explore the edited dataset to ensure
-it's correct.
+### Use R packages and read data 
 
-- Ensure your R session is fresh (restart R if necessary).
-- Read the "edited.csv" file back into R. Here we'll use a "demo" dataset but you
-should use the real file you edited.
-- Re-read your loanbook.
+Restart R to ensure nothing from the previous R session affects this one.
+
+Reload the required packages.
 
 ```{r}
-# TODO: Replace with the file you really edited
+library(dplyr, warn.conflicts = FALSE)
+library(tilt.company.match)
+```
+
+Read the "edited.csv" file, and again your lookbook.
+
+```{r}
+# TODO: Replace our "demo" dataset with the file you really edited
 # edited <- readr::read_csv("path/to/the/file/you/really/edited.csv")
 edited <- demo_matched
 
-# TODO: Replace with your real loanbook
+# TODO: Replace our "demo" dataset with your real loanbook
 # loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
 loanbook <- demo_loanbook
 ```
 
-- Use `report_no_matches()` to explore companies in the loanbook without a match
-in the tilt dataset.
+### Check the edited dataset
+
+Manual work is prone to errors. Check the edited dataset to ensure it's correct:
+
+- Use `report_no_matches()` to explore companies in the loanbook that didn't match
+any company in the tilt dataset.
 
 ```{r}
 not_matched <- loanbook %>% report_no_matches(edited)
@@ -305,3 +319,25 @@ bad_edited2 %>%
 bad_edited2 %>% check_duplicated_relation() %>% try()
 ```
 
+If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
+
+### Pick the matching companies
+
+Once your edited dataset is correct, pick the matching companies and you're
+done. Your final dataset will have as many rows as the number `TRUE` values in
+your edited dataset.
+
+```{r}
+edited %>% count(accept_match)
+
+final <- edited %>% filter(accept_match)
+final
+```
+
+If you need to use your final dataset elsewhere, you may write it to a .csv file
+like before with:
+
+```r
+# You can install the readr package with: `install.packages("readr")`
+final %>% readr::write_csv("final.csv")
+```
