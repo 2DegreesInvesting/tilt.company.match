@@ -265,15 +265,37 @@ knitr::kable(loanbook_with_candidates_and_dist)
 Based an empiric research we decided to remove match candidates with a
 similarity under a certain threshold. This helps drastically reduce the
 number of candidates, making the data easier to process for a human.
-Note that, in very rare cases, we might loose matches this way, however
-we concluded that the improved ease of use justifies those edgecases.
 
 ``` r
 min_threshold <- 0.75
 
-loanbook_with_candidates_and_dist <- loanbook_with_candidates_and_dist %>% 
+loanbook_with_candidates_and_dist_filtered <- loanbook_with_candidates_and_dist %>% 
   dplyr::filter(is.na(string_sim) | string_sim > min_threshold)
 ```
+
+Note that, in very rare cases, we might loose matches this way, however
+we concluded that the improved ease of use justifies those edgecases.
+Companies that have no more candidates after filtering with the lower
+threshold are reported.
+
+``` r
+before_filter_id_and_company <- loanbook_with_candidates_and_dist %>% 
+  dplyr::select(id, company_name) %>% 
+  dplyr::distinct_all()
+
+after_filter_id_and_company <- loanbook_with_candidates_and_dist_filtered %>% 
+  dplyr::select(id, company_name) %>% 
+  dplyr::distinct_all()
+
+lost_companies <- before_filter_id_and_company %>% 
+  dplyr::anti_join(after_filter_id_and_company)
+#> Joining, by = c("id", "company_name")
+
+knitr::kable(lost_companies)
+```
+
+|  id | company\_name |
+|----:|:--------------|
 
 ## Selecting matches
 
@@ -297,7 +319,7 @@ The **suggest\_match** column is set to TRUE if:
     combination to avoid duplicates.
 
 ``` r
-highest_matches_per_company <- loanbook_with_candidates_and_dist %>%
+highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
   dplyr::group_by(id) %>%
   dplyr::filter(string_sim == max(string_sim))
 
@@ -312,7 +334,7 @@ highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_co
   dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
 
-loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>%
+loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist_filtered %>%
   dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>%
   dplyr::mutate(accept_match = NA)
 
