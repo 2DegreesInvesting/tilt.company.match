@@ -67,9 +67,9 @@
 
     
     
-<p>This article is for you if you have have companies in a bank’s
-loanbook and want to match them to companies in a “tilt” dataset that we
-created at 2 Degrees Investing Initiative and and shared with you.</p>
+<p>This document explains how to match companies in a loanbook from a
+bank to companies in a tilt dataset from 2 Degrees Investing
+Initiative.</p>
 <div class="section level2">
 <h2 id="considerations">Considerations<a class="anchor" aria-label="anchor" href="#considerations"></a>
 </h2>
@@ -108,7 +108,7 @@ with:</p>
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"2DegreesInvesting/tilt.company.match"</span><span class="op">)</span></span></code></pre></div>
 <p>You’ll also use the packages dplyr and stringdist but they install
-automatically with tilt.company.match:</p>
+automatically with tilt.company.match. You can use them all with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/markvanderloo/stringdist" class="external-link">stringdist</a></span><span class="op">)</span></span>
@@ -155,13 +155,18 @@ loanbook instead</p>
 <div class="section level4">
 <h4 id="duplicates">Duplicates<a class="anchor" aria-label="anchor" href="#duplicates"></a>
 </h4>
+<p>Do you have any duplicates in the column <code>id</code>?</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">has_no_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">anyDuplicated</a></span><span class="op">(</span><span class="va">demo_loanbook</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>, <span class="fl">0L</span><span class="op">)</span></span>
+<span><span class="co"># If you get an error, remove the duplicates and try again</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">has_no_duplicates</span><span class="op">)</span></span></code></pre></div>
 <p>Do you have duplicates in <code>company_name</code>,
 <code>postcode</code> or <code>country</code>?</p>
 <p>It’s best if there is no duplicate in the columns
 <code>company_name</code>, <code>postcode</code> or
 <code>country</code>. But if they have duplicates and they belong to
 different companies, then you don’t have to fix them.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best_without_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"company_name"</span>, <span class="st">"postcode"</span>, <span class="st">"country"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/report_duplicates.html">report_duplicates</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">best_without_duplicates</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Found duplicate(s) on columns company_name, postcode, country of the data set.</span></span>
@@ -185,7 +190,7 @@ different companies, then you don’t have to fix them.</p>
 columns?</p>
 <p>Non-nullable columns must not have missing values. If they do you
 have to remove them. Missing values in other columns are fine.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">non_nullable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">non_nullable</span><span class="op">)</span></span>
@@ -221,7 +226,7 @@ because of spurious differences in the company name between the loanbook
 and tilt dataset. It helps you get a less noisy, more consistent version
 of <code>company_name</code> in each of the two datasets before matching
 them.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loanbook_alias</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">loanbook_alias</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 6</span></span></span>
@@ -262,7 +267,7 @@ them.</p>
 one company in the loanbook to match <code>"all"</code> the potentially
 <code>multiple</code> companies with the same <code>country</code> and
 <code>postcode</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reliable_shared_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span></span>
 <span><span class="co"># WARNING: If you lack `postcode` use this instead:</span></span>
 <span><span class="co"># reliable_shared_columns &lt;- "country"</span></span>
@@ -291,7 +296,7 @@ one company in the loanbook to match <code>"all"</code> the potentially
 similarity corresponds to <code>1</code>, and complete dissimilarity
 corresponds to <code>0</code>. For each company in the loanbook, arrange
 matching candidates by descending similarity.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">candidates_similarity</span> <span class="op">&lt;-</span> <span class="va">candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Other parameters may perform best. See `?stringdist::stringsim`</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>similarity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stringdist/man/stringsim.html" class="external-link">stringsim</a></span><span class="op">(</span></span>
@@ -346,7 +351,7 @@ meets all of these conditions:</p>
 combination of <code>company_name</code> x <code>id</code> – to avoid
 duplicates.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Decided upon extensive experience with r2dii.match function and processes</span></span>
 <span><span class="va">threshold</span> <span class="op">&lt;-</span> <span class="fl">0.9</span></span>
 <span></span>
@@ -395,7 +400,7 @@ duplicates.</li>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span></code></pre></div>
 <p>Note that even a <code>similarity</code> of <code>1</code> in the
 same <code>postcode</code> can be a false positive.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example of a false positive</span></span>
 <span><span class="va">to_edit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">4</span>, <span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -407,7 +412,7 @@ same <code>postcode</code> can be a false positive.</p>
 <p>Now write the dataset <code>to_edit</code> so that you can explore it
 in a spreadsheet editor. For example, you may write it as a .csv or
 .xlsx then open it in Excel or GoogleSheets.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.csv"</span><span class="op">)</span></span>
 <span></span>
@@ -441,11 +446,11 @@ column <code>accept_match</code>.</li>
 <p>Restart R to ensure nothing from the previous R session affects this
 one.</p>
 <p>Reload the required packages.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
 <p>Read the “edited.csv” file, and again your lookbook.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># TODO: Use your real edited dataset with something like:</span></span>
 <span><span class="co"># edited &lt;- readr::read_csv("path/to/the/file/you/really/edited.csv")</span></span>
 <span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
@@ -463,7 +468,7 @@ it’s correct:</p>
 <li>Use <code><a href="../reference/report_no_matches.html">report_no_matches()</a></code> to explore companies in the
 loanbook that didn’t match any company in the tilt dataset.</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info)`</span></span>
 <span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
@@ -486,12 +491,12 @@ loanbook that didn’t match any company in the tilt dataset.</li>
 from loanbook has been matched to more than one company from the tilt
 dataset or reverse.</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Good</span></span>
 <span><span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No duplicated matches found in the data.</span></span></code></pre></div>
 <p>With bad data you get informative errors.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bad: A single loanbook-company can't match multiple tilt-companies</span></span>
 <span><span class="va">bad_edited</span> <span class="op">&lt;-</span> <span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="cn">TRUE</span>, <span class="va">accept_match</span><span class="op">)</span><span class="op">)</span></span>
@@ -550,7 +555,7 @@ dataset or reverse.</li>
 <p>Once your edited dataset is correct, pick the matching companies and
 you’re done. Your final dataset will have as many rows as the number
 <code>TRUE</code> values in your edited dataset.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">accept_match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
 <span><span class="co">#&gt;   accept_match     n</span></span>
@@ -573,7 +578,7 @@ you’re done. Your final dataset will have as many rows as the number
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span></code></pre></div>
 <p>If you need to use your final dataset elsewhere, you may write it to
 a .csv file like before with:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="va">final</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="st">"final.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
