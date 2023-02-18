@@ -45,7 +45,7 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
 You'll also use the packages dplyr and stringdist but they install automatically
-with tilt.company.match:
+with tilt.company.match. You can use them all with:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
