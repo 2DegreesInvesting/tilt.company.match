@@ -9,9 +9,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article is for you if you have have companies in a bank's loanbook and want
-to match them to companies in a "tilt" dataset that we created at 2 Degrees
-Investing Initiative and and shared with you.
+This document explains how to match companies in a loanbook from a bank to
+companies in a tilt dataset from 2 Degrees Investing Initiative.
 
 ## Considerations
 
