@@ -9,68 +9,75 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of tilt.company.match is to help you match companies in a bank's
-loanbook to companies in a dataset from the tilt-project.
+This article is for you if you have have companies in a bank's loanbook and want
+to match them to companies in a "tilt" dataset that we created at 2 Degrees
+Investing Initiative and and shared with you.
 
-## Installation
+## Considerations
 
-You can install the development version of tilt.company.match from
-[GitHub](https://github.com/) with:
+* The company's name may be different in each dataset, for example because of typos.
+* The company's country and postcode are useful. A match by name, country, and postcode is more
+reliable than a match by name alone.
+* The company may not exist in the tilt dataset.
+
+## Data requirements
+
+Both your loanbook and tilt dataset must meet these requirements:
+
+* It's an R dataframe.
+* It has the columns `id`, `company_name`, `postcode`, and `country`.
+* It may or may not have other columns.
+* The column `id` holds unique row-identifiers.
+
+## 1. In R (session 1)
+
+In this first R session you'll create a dataset with candidate matches for the
+companies in your loanbook.
+
+### Install and use R packages
+
+You need the package
+[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).
+You can install it from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
-## Considerations
-
-When matching a company in a bank's loanbook to a company in the tilt
-dataset, there are a number of things to consider:
-
-- The company's name may be different in each dataset, for example because of typos.
-- The company's country and postcode are useful. A match by name, country, and postcode is more
-reliable than a match by name alone.
-- The company may not exist in the tilt dataset.
-
-## Requirements
-
-For each of the loanbook and tilt datasets, the following must be true:
-
-- It's an R dataframe.
-- It has the columns `id`, `company_name`, `postcode`, and `country`.
-- It may or may not have other columns.
-- The column `id` holds unique row-identifiers.
-
-## 1. In R (session 1)
-
-### Use R packages and read data 
-
-We'll use general purpose tools from
-packages in the [tidyverse](https://www.tidyverse.org/), and more specific tools
-from the packages [stringdist](https://CRAN.R-project.org/package=stringdist)
-and
-[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).
+You'll also use the packages dplyr and stringdist but they install automatically
+with tilt.company.match:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
+library(stringdist)
 library(tilt.company.match)
 ```
 
-Here we'll use a "demo" loanbook. You should replace with your real loanbook.
+### Read the datasets
+
+This example uses a "demo" loanbook. You should use your real loanbook instead
 
 ```{r}
-# TODO: Replace with your real loanbook and tilt datasets
+# If you don't have the readr package you can install it with
+# install.packages("readr")
+
+# TODO: Use your real loanbook with something like:
 # loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
 loanbook <- demo_loanbook
+
+# TODO: Use your real tilt dataset with something like:
 # tilt <- readr::read_csv("path/to/your/real/tilt.csv")
 tilt <- demo_tilt
 ```
 
-### Check the loanbook
+### Check data quality
 
 Let's first check you `loanbook` is as we expect.
 
-**Expected columns:** Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
+#### Expected columns
+
+Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
 
 ```{r}
 expected <- c("id", "company_name", "postcode", "country")
@@ -81,7 +88,9 @@ bad <- rename(loanbook, ids = id)
 bad %>% check_crucial_names(expected) %>% try()
 ```
 
-**Duplicates:** Do you have duplicates in `company_name`, `postcode` or `country`?
+#### Duplicates
+
+Do you have duplicates in `company_name`, `postcode` or `country`?
 
 It's best if there is no duplicate in the columns `company_name`, `postcode` or
 `country`. But if they have duplicates and they belong to different companies,
@@ -97,7 +106,9 @@ loanbook %>%
   filter(postcode == "01234")
 ```
 
-**Missing values:** Do you have missing values (`NA`s) in non-nullable columns?
+#### Missing values
+
+Do you have missing values (`NA`s) in non-nullable columns?
 
 Non-nullable columns must not have missing values. If they do you have to remove
 them. Missing values in other columns are fine.
@@ -268,11 +279,11 @@ library(tilt.company.match)
 Read the "edited.csv" file, and again your lookbook.
 
 ```{r}
-# TODO: Replace our "demo" dataset with the file you really edited
+# TODO: Use your real edited dataset with something like:
 # edited <- readr::read_csv("path/to/the/file/you/really/edited.csv")
 edited <- demo_matched
 
-# TODO: Replace our "demo" dataset with your real loanbook
+# TODO: Use your real loanbook with something like:
 # loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
 loanbook <- demo_loanbook
 ```
