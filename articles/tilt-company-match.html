@@ -67,21 +67,12 @@
 
     
     
-<p>The goal of tilt.company.match is to help you match companies in a
-bank’s loanbook to companies in a dataset from the tilt-project.</p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>You can install the development version of tilt.company.match from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"2DegreesInvesting/tilt.company.match"</span><span class="op">)</span></span></code></pre></div>
-</div>
+<p>This article is for you if you have have companies in a bank’s
+loanbook and want to match them to companies in a “tilt” dataset that we
+created at 2 Degrees Investing Initiative and and shared with you.</p>
 <div class="section level2">
 <h2 id="considerations">Considerations<a class="anchor" aria-label="anchor" href="#considerations"></a>
 </h2>
-<p>When matching a company in a bank’s loanbook to a company in the tilt
-dataset, there are a number of things to consider:</p>
 <ul>
 <li>The company’s name may be different in each dataset, for example
 because of typos.</li>
@@ -91,10 +82,9 @@ country, and postcode is more reliable than a match by name alone.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+<h2 id="data-requirements">Data requirements<a class="anchor" aria-label="anchor" href="#data-requirements"></a>
 </h2>
-<p>For each of the loanbook and tilt datasets, the following must be
-true:</p>
+<p>Both your loanbook and tilt dataset must meet these requirements:</p>
 <ul>
 <li>It’s an R dataframe.</li>
 <li>It has the columns <code>id</code>, <code>company_name</code>,
@@ -106,31 +96,50 @@ true:</p>
 <div class="section level2">
 <h2 id="in-r-session-1">1. In R (session 1)<a class="anchor" aria-label="anchor" href="#in-r-session-1"></a>
 </h2>
+<p>In this first R session you’ll create a dataset with candidate
+matches for the companies in your loanbook.</p>
 <div class="section level3">
-<h3 id="use-r-packages-and-read-data">Use R packages and read data<a class="anchor" aria-label="anchor" href="#use-r-packages-and-read-data"></a>
+<h3 id="install-and-use-r-packages">Install and use R packages<a class="anchor" aria-label="anchor" href="#install-and-use-r-packages"></a>
 </h3>
-<p>We’ll use general purpose tools from packages in the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a>, and more specific tools
-from the packages <a href="https://CRAN.R-project.org/package=stringdist" class="external-link">stringdist</a> and
-<a href="https://github.com/2DegreesInvesting/tilt.company.match" class="external-link">tilt.company.match</a>.</p>
+<p>You need the package <a href="https://github.com/2DegreesInvesting/tilt.company.match" class="external-link">tilt.company.match</a>.
+You can install it from <a href="https://github.com/" class="external-link">GitHub</a>
+with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"2DegreesInvesting/tilt.company.match"</span><span class="op">)</span></span></code></pre></div>
+<p>You’ll also use the packages dplyr and stringdist but they install
+automatically with tilt.company.match:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: stringdist</span></span></code></pre></div>
-<p>Here we’ll use a “demo” loanbook. You should replace with your real
-loanbook.</p>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/markvanderloo/stringdist" class="external-link">stringdist</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="read-the-datasets">Read the datasets<a class="anchor" aria-label="anchor" href="#read-the-datasets"></a>
+</h3>
+<p>This example uses a “demo” loanbook. You should use your real
+loanbook instead</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># TODO: Replace with your real loanbook and tilt datasets</span></span>
+<code class="sourceCode R"><span><span class="co"># If you don't have the readr package you can install it with</span></span>
+<span><span class="co"># install.packages("readr")</span></span>
+<span></span>
+<span><span class="co"># TODO: Use your real loanbook with something like:</span></span>
 <span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
 <span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
+<span></span>
+<span><span class="co"># TODO: Use your real tilt dataset with something like:</span></span>
 <span><span class="co"># tilt &lt;- readr::read_csv("path/to/your/real/tilt.csv")</span></span>
 <span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="check-the-loanbook">Check the loanbook<a class="anchor" aria-label="anchor" href="#check-the-loanbook"></a>
+<h3 id="check-data-quality">Check data quality<a class="anchor" aria-label="anchor" href="#check-data-quality"></a>
 </h3>
 <p>Let’s first check you <code>loanbook</code> is as we expect.</p>
-<p><strong>Expected columns:</strong> Do you have the expected columns
-<code>id</code>, <code>company_name</code>, <code>postcode</code>, and
+<div class="section level4">
+<h4 id="expected-columns">Expected columns<a class="anchor" aria-label="anchor" href="#expected-columns"></a>
+</h4>
+<p>Do you have the expected columns <code>id</code>,
+<code>company_name</code>, <code>postcode</code>, and
 <code>country</code>?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">expected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span>, <span class="st">"postcode"</span>, <span class="st">"country"</span><span class="op">)</span></span>
@@ -142,9 +151,12 @@ loanbook.</p>
 <span><span class="co">#&gt; Error in abort_missing_names(sort(setdiff(expected_names, names(x)))) : </span></span>
 <span><span class="co">#&gt;   Must have missing names:</span></span>
 <span><span class="co">#&gt; `id`</span></span></code></pre></div>
-<p><strong>Duplicates:</strong> Do you have duplicates in
-<code>company_name</code>, <code>postcode</code> or
-<code>country</code>?</p>
+</div>
+<div class="section level4">
+<h4 id="duplicates">Duplicates<a class="anchor" aria-label="anchor" href="#duplicates"></a>
+</h4>
+<p>Do you have duplicates in <code>company_name</code>,
+<code>postcode</code> or <code>country</code>?</p>
 <p>It’s best if there is no duplicate in the columns
 <code>company_name</code>, <code>postcode</code> or
 <code>country</code>. But if they have duplicates and they belong to
@@ -165,8 +177,12 @@ different companies, then you don’t have to fix them.</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 Peasant Peter 01234    germany A        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 Peasant Peter 01234    germany Z</span></span></code></pre></div>
-<p><strong>Missing values:</strong> Do you have missing values
-(<code>NA</code>s) in non-nullable columns?</p>
+</div>
+<div class="section level4">
+<h4 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
+</h4>
+<p>Do you have missing values (<code>NA</code>s) in non-nullable
+columns?</p>
 <p>Non-nullable columns must not have missing values. If they do you
 have to remove them. Missing values in other columns are fine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -194,6 +210,7 @@ have to remove them. Missing values in other columns are fine.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    11 John Meier's Groceries 55555    norway  Y</span></span>
 <span></span>
 <span><span class="va">fixed_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">non_nullable</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="create-a-standard-alias-of-company_name-in-both-datasets">Create a standard alias of <code>company_name</code> in both
@@ -419,7 +436,7 @@ column <code>accept_match</code>.</li>
 <h2 id="in-r-session-2">3. In R (session 2)<a class="anchor" aria-label="anchor" href="#in-r-session-2"></a>
 </h2>
 <div class="section level3">
-<h3 id="use-r-packages-and-read-data-1">Use R packages and read data<a class="anchor" aria-label="anchor" href="#use-r-packages-and-read-data-1"></a>
+<h3 id="use-r-packages-and-read-data">Use R packages and read data<a class="anchor" aria-label="anchor" href="#use-r-packages-and-read-data"></a>
 </h3>
 <p>Restart R to ensure nothing from the previous R session affects this
 one.</p>
@@ -429,11 +446,11 @@ one.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
 <p>Read the “edited.csv” file, and again your lookbook.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># TODO: Replace our "demo" dataset with the file you really edited</span></span>
+<code class="sourceCode R"><span><span class="co"># TODO: Use your real edited dataset with something like:</span></span>
 <span><span class="co"># edited &lt;- readr::read_csv("path/to/the/file/you/really/edited.csv")</span></span>
 <span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
 <span></span>
-<span><span class="co"># TODO: Replace our "demo" dataset with your real loanbook</span></span>
+<span><span class="co"># TODO: Use your real loanbook with something like:</span></span>
 <span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
 <span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span></code></pre></div>
 </div>
