@@ -90,6 +90,14 @@ bad %>% check_crucial_names(expected) %>% try()
 
 #### Duplicates
 
+Do you have any duplicates in the column `id`?
+
+```{r}
+has_no_duplicates <- identical(anyDuplicated(demo_loanbook$id), 0L)
+# If you get an error, remove the duplicates and try again
+stopifnot(has_no_duplicates)
+```
+
 Do you have duplicates in `company_name`, `postcode` or `country`?
 
 It's best if there is no duplicate in the columns `company_name`, `postcode` or
