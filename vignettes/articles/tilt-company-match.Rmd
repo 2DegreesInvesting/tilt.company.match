@@ -209,7 +209,7 @@ candidates_similarity <- candidates %>%
   # Arrange matching candidates from more to less similar
   arrange(id, -similarity)
 
-candidates_similarity
+candidates_similarity %>% relocate(similarity)
 ```
 
 ### Suggest matches
@@ -247,7 +247,7 @@ to_edit <- candidates_similarity %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
   mutate(accept_match = NA)
 
-to_edit
+to_edit %>% relocate(similarity, suggest_match)
 ```
 
 Note that even a `similarity` of `1` in the same `postcode` can be a false
