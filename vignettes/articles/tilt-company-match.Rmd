@@ -218,9 +218,8 @@ Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
 new column `suggest_match`.
 
-The values of `suggest_match` are either `TRUE` or `FALSE`. By default they are
-set to `FALSE`, then set to `TRUE` where the value of `similarity` meets all of
-these conditions:
+The values of `suggest_match` are fist set to missing (`NA`) then set to `TRUE`
+where the value of `similarity` meets all of these conditions:
 
 - It's the highest among all other candidates.
 - It's above a given threshold.
