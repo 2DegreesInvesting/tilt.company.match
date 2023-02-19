@@ -38,7 +38,6 @@ For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
-#> Loading required package: stringdist
 knitr::kable(head(demo_loanbook))
 ```
 
@@ -127,7 +126,7 @@ of the data set and report them to the user.
 Here, the loanbook data set does not have any NAs.
 
 ``` r
-#abort_if_incomplete(demo_loanbook)
+abort_if_incomplete(demo_loanbook)
 ```
 
 There are some columns (currently **id** and **company_name**) on which
@@ -144,7 +143,6 @@ missing_non_crucial <- demo_loanbook %>%
 
 missing_non_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
-#> Error in abort_if_incomplete(., non_nullable_cols = c("id", "company_name")): could not find function "abort_if_incomplete"
 
 # missings on a crucial column
 missing_crucial <- demo_loanbook %>% 
@@ -152,7 +150,9 @@ missing_crucial <- demo_loanbook %>%
 
 missing_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
-#> Error in abort_if_incomplete(., non_nullable_cols = c("id", "company_name")): could not find function "abort_if_incomplete"
+#> Error in `abort_if_incomplete()`:
+#> ! Non-nullable columns must not have `NA`s.
+#> ✖ Columns to review: company_name
 ```
 
 ### Preprocessing
@@ -207,8 +207,8 @@ loanbook_with_candidates <- loanbook %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-#>   warning.
+#> ℹ If multiple matches are expected, set `multiple = "all"`
+#>   to silence this warning.
 
 knitr::kable(head(loanbook_with_candidates))
 ```
@@ -384,12 +384,13 @@ companies in the loanbook for which no match was selected or found.
 
 ``` r
 not_matched <- report_no_matches(loanbook, manually_matched)
-#> Joining with `by = join_by(id, company_name, postcode, country, misc_info,
-#> company_alias)`
-#> Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread
-#> Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries
-#> John Meier's Groceries John Meier's Groceries ℹ Did you match these companies
-#> manually correctly ?
+#> Joining with `by = join_by(id, company_name, postcode,
+#> country, misc_info, company_alias)`
+#> Companies not matched in the loanbook by the tilt data set:
+#> Peasant Paul Bread Bakers Limited Screwdriver Experts
+#> Screwdriver Expert John Meier's Groceries John Meier's
+#> Groceries John Meier's Groceries ℹ Did you match these
+#> companies manually correctly ?
 
 knitr::kable(not_matched)
 ```
