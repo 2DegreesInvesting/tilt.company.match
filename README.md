@@ -127,7 +127,7 @@ of the data set and report them to the user.
 Here, the loanbook data set does not have any NAs.
 
 ``` r
-abort_if_incomplete(demo_loanbook)
+#abort_if_incomplete(demo_loanbook)
 ```
 
 There are some columns (currently **id** and **company_name**) on which
@@ -144,6 +144,7 @@ missing_non_crucial <- demo_loanbook %>%
 
 missing_non_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
+#> Error in abort_if_incomplete(., non_nullable_cols = c("id", "company_name")): could not find function "abort_if_incomplete"
 
 # missings on a crucial column
 missing_crucial <- demo_loanbook %>% 
@@ -151,9 +152,7 @@ missing_crucial <- demo_loanbook %>%
 
 missing_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
-#> Error in `abort_if_incomplete()`:
-#> ! Non-nullable columns must not have `NA`s.
-#> ✖ Columns to review: company_name
+#> Error in abort_if_incomplete(., non_nullable_cols = c("id", "company_name")): could not find function "abort_if_incomplete"
 ```
 
 ### Preprocessing
@@ -331,9 +330,15 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
 |  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
 
-**Note**: even a match of 1 in the same postcode can in rare cases be a
-False positive, compare e.g. company 4 (“Peasant Paul”) in the example
-data.
+**Notes**:
+
+- Even a match of 1 in the same postcode can in rare cases be a False
+  positive, compare e.g. company 4 (“Peasant Paul”) in the example data.
+- We do not want to automatically approve unique matches because there
+  may be few cases where multiple companies in the same ZIP code have
+  the same name. In these cases, additional information (for example,
+  the sector, street name, or main activity etc.) can help to make a
+  final decision.
 
 ### Check matching process
 
