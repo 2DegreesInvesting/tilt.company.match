@@ -99,15 +99,19 @@ stopifnot(has_no_duplicates)
 
 Do you have duplicates in `company_name`, `postcode` or `country`?
 
-It's best if there is no duplicate in the columns `company_name`, `postcode` or
-`country`. But if they have duplicates and they belong to different companies,
-then you don't have to fix them.
+It's best if there is none. But if you find duplicates and they belong to
+different companies, then you don't have to fix them.
 
 ```{r}
 best_without_duplicates <- c("company_name", "postcode", "country")
 report_duplicates(loanbook, best_without_duplicates)
+```
 
-# `misc_info` suggest the duplicates belong to different companies, so we're ok
+For example, here the column `misc_info` suggests the duplicates belong to
+different companies, so it's OK:
+
+```{r}
+
 loanbook %>% 
   filter(company_name == "Peasant Peter") %>% 
   filter(postcode == "01234")
@@ -124,8 +128,11 @@ them. Missing values in other columns are fine.
 non_nullable <- c("id", "company_name")
 
 loanbook %>% abort_if_incomplete(non_nullable)
+```
 
-# A non-nullable columns has NA's. 
+For example, here a non-nullable columns has `NA`'s:
+
+```{r}
 bad_loanbook <- tribble(
   ~id,             ~company_name, ~postcode,  ~country, ~misc_info,
    NA,  "John Meier's Groceries",   "55555", "germany",        "Y",
@@ -174,8 +181,12 @@ candidates <- left_join(
     # Allow matching one to many
     multiple = "all"
 )
+```
 
-# Example: 1 company in the loanbook matches 3 candidates in the tilt dataset
+For example, here one company in the loanbook matches three candidates in the
+tilt dataset:
+
+```{r}
 candidates %>% 
   filter(id == 1) %>%
   select(country, postcode, id, company_alias, id_tilt, company_alias_tilt)
@@ -242,8 +253,9 @@ to_edit
 Note that even a `similarity` of `1` in the same `postcode` can be a false
 positive.
 
+For example, this is false positive:
+
 ```{r}
-# Example of a false positive
 to_edit %>% 
   filter(id == 4, id_tilt == 4) %>%
   select(suggest_match, similarity, postcode, matches("misc_info"))
@@ -276,7 +288,7 @@ each row is rejected. To accept it type TRUE in the column `accept_match`.
 
 Restart R to ensure nothing from the previous R session affects this one.
 
-Reload the required packages.
+Use the required packages for this section.
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
