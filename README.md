@@ -38,6 +38,7 @@ For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
+#> Loading required package: stringdist
 knitr::kable(head(demo_loanbook))
 ```
 
