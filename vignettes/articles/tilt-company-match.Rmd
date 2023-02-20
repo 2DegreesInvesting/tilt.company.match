@@ -171,8 +171,6 @@ same `country` and `postcode`.
 
 ```{r}
 reliable_shared_columns <- c("country", "postcode")
-# WARNING: If you lack `postcode` use this instead:
-# reliable_shared_columns <- "country"
 
 candidates <- left_join(
     loanbook_alias, tilt_alias, 
