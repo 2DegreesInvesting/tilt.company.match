@@ -199,14 +199,14 @@ these conditions:
 
 ```{r}
 # Decided upon extensive experience with r2dii.match function and processes
-threshold <- 0.75
+suggestions_threshold <- 0.9
 
 candidates_suggest_match <- candidates_similarity %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
   # - It's above a given threshold.
-  filter(similarity > threshold) %>% 
+  filter(similarity > suggestions_threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `id` -- to avoid duplicates.
   mutate(duplicates = any(duplicated(company_name, postcode))) %>%
