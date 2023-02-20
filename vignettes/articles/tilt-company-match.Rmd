@@ -64,10 +64,12 @@ This example uses a "demo" loanbook. You should use your real loanbook instead
 # TODO: Use your real loanbook with something like:
 # loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
 loanbook <- demo_loanbook
+loanbook
 
 # TODO: Use your real tilt dataset with something like:
 # tilt <- readr::read_csv("path/to/your/real/tilt.csv")
 tilt <- demo_tilt
+tilt
 ```
 
 ### Check data quality
