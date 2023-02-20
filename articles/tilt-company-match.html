@@ -341,10 +341,9 @@ matching candidates by descending similarity.</p>
 <p>Later you’ll need to manually decide which of all candidates if any
 is a true match. To make that job easier, we can automatically make some
 suggestions in a new column <code>suggest_match</code>.</p>
-<p>The values of <code>suggest_match</code> are either <code>TRUE</code>
-or <code>FALSE</code>. By default they are set to <code>FALSE</code>,
-then set to <code>TRUE</code> where the value of <code>similarity</code>
-meets all of these conditions:</p>
+<p>The values of <code>suggest_match</code> are fist set to missing
+(<code>NA</code>) then set to <code>TRUE</code> where the value of
+<code>similarity</code> meets all of these conditions:</p>
 <ul>
 <li>It’s the highest among all other candidates.</li>
 <li>It’s above a given threshold.</li>
