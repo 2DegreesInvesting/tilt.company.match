@@ -170,11 +170,9 @@ in the loanbook to match `"all"` the potentially `multiple` companies with the
 same `country` and `postcode`.
 
 ```{r}
-reliable_shared_columns <- c("country", "postcode")
-
 candidates <- left_join(
     loanbook_alias, tilt_alias, 
-    by = reliable_shared_columns,
+    by = c("country", "postcode"),
     # Add the suffix "_tilt" to each column from the tilt dataset
     suffix = c("", "_tilt"),
     # Allow matching each company in loanbook to many companies in tilt
