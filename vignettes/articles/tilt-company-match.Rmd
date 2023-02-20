@@ -223,7 +223,7 @@ where the value of `similarity` meets all of these conditions:
 
 - It's the highest among all other candidates.
 - It's above a given threshold.
-- It's the only such highest value in the group defined by a combination of `company_name` x `id` -- to avoid duplicates.
+- It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
 
 ```{r}
 # Decided upon extensive experience with r2dii.match function and processes
