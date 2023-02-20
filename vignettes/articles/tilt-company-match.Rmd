@@ -236,11 +236,12 @@ candidates_suggest_match <- candidates_similarity %>%
   # - It's above a given threshold.
   filter(similarity > threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
-  # `company_name` x `id` -- to avoid duplicates.
+  # `company_name` x `postcode` -- to avoid duplicates.
   mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
-  filter(duplicates == FALSE) %>%
+  filter(!duplicates) %>%
   select(id, id_tilt) %>%
-  mutate(suggest_match = TRUE)
+  mutate(suggest_match = TRUE) %>% 
+  ungroup()
 
 to_edit <- candidates_similarity %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
