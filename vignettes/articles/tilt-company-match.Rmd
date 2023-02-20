@@ -237,7 +237,7 @@ candidates_suggest_match <- candidates_similarity %>%
   filter(similarity > threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `id` -- to avoid duplicates.
-  mutate(duplicates = any(duplicated(company_name, postcode))) %>%
+  mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
   filter(duplicates == FALSE) %>%
   select(id, id_tilt) %>%
   mutate(suggest_match = TRUE)
