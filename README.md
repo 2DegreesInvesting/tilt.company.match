@@ -208,8 +208,8 @@ loanbook_with_candidates <- loanbook %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"`
-#>   to silence this warning.
+#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
+#>   warning.
 
 knitr::kable(head(loanbook_with_candidates))
 ```
@@ -385,13 +385,12 @@ companies in the loanbook for which no match was selected or found.
 
 ``` r
 not_matched <- report_no_matches(loanbook, manually_matched)
-#> Joining with `by = join_by(id, company_name, postcode,
-#> country, misc_info, company_alias)`
-#> Companies not matched in the loanbook by the tilt data set:
-#> Peasant Paul Bread Bakers Limited Screwdriver Experts
-#> Screwdriver Expert John Meier's Groceries John Meier's
-#> Groceries John Meier's Groceries ℹ Did you match these
-#> companies manually correctly ?
+#> Joining with `by = join_by(id, company_name, postcode, country, misc_info,
+#> company_alias)`
+#> Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread
+#> Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries
+#> John Meier's Groceries John Meier's Groceries ℹ Did you match these companies
+#> manually correctly ?
 
 knitr::kable(not_matched)
 ```
