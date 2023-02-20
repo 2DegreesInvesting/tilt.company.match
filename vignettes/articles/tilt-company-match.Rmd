@@ -177,7 +177,7 @@ candidates <- left_join(
     by = reliable_shared_columns,
     # Add the suffix "_tilt" to each column from the tilt dataset
     suffix = c("", "_tilt"),
-    # Allow matching one to many
+    # Allow matching each company in loanbook to many companies in tilt
     multiple = "all"
 )
 ```
