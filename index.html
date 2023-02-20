@@ -73,7 +73,7 @@
 <p>The matching problem is characterised as follows:</p>
 <ul>
 <li><p>matching companies from banks` loanbooks to tilt will face problems of inconsistent company names (typos, conventions…)</p></li>
-<li><p>postcode will be available as relatively reliable additional information</p></li>
+<li><p>it is expected that postcode will be available as relatively reliable additional information for most companies</p></li>
 <li><p>not all companies in loanbooks will be in tilt db (thus not have a match)</p></li>
 </ul>
 <p>To match the companies provided in a loanbook to companies in the tilt database we expect a loanbook dataframe and a tilt db dataframe that hold at least the columns <strong>company_name</strong>, <strong>postcode</strong> and <strong>country</strong> and a column <strong>id</strong> holding unique row identifiers. Further columns that educate decisions made by humans in the matching process may be present. For an example compare demo data below.</p>
@@ -220,9 +220,9 @@
 <colgroup>
 <col width="6%">
 <col width="31%">
-<col width="13%">
+<col width="12%">
 <col width="11%">
-<col width="14%">
+<col width="15%">
 <col width="22%">
 </colgroup>
 <thead><tr class="header">
@@ -285,19 +285,18 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tilt</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="5%">
-<col width="34%">
+<col width="33%">
 <col width="11%">
 <col width="10%">
-<col width="12%">
-<col width="26%">
+<col width="13%">
+<col width="25%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">id</th>
@@ -366,23 +365,19 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loanbook_with_candidates</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">tilt</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.</span></span>
-<span><span class="co">#&gt; ℹ Row 1 of `x` matches multiple rows.</span></span>
-<span><span class="co">#&gt; ℹ If multiple matches are expected, set `multiple = "all"` to silence this</span></span>
-<span><span class="co">#&gt;   warning.</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">loanbook_with_candidates</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="3%">
-<col width="11%">
+<col width="10%">
 <col width="7%">
 <col width="6%">
 <col width="8%">
 <col width="11%">
-<col width="6%">
-<col width="14%">
-<col width="12%">
+<col width="7%">
+<col width="15%">
+<col width="13%">
 <col width="15%">
 </colgroup>
 <thead><tr class="header">
@@ -483,14 +478,14 @@
 <table class="table">
 <colgroup>
 <col width="2%">
-<col width="14%">
+<col width="13%">
 <col width="5%">
 <col width="5%">
 <col width="6%">
 <col width="12%">
 <col width="5%">
 <col width="17%">
-<col width="9%">
+<col width="10%">
 <col width="13%">
 <col width="7%">
 </colgroup>
@@ -742,7 +737,51 @@
 <td align="left">NA</td>
 <td align="right">NA</td>
 </tr>
+<tr class="odd">
+<td align="right">12</td>
+<td align="left">Best Bakers</td>
+<td align="left">65656</td>
+<td align="left">france</td>
+<td align="left">F</td>
+<td align="left">bestbakers</td>
+<td align="right">11</td>
+<td align="left">Cranes and Friends</td>
+<td align="left">F</td>
+<td align="left">cranesfriends</td>
+<td align="right">0.5482906</td>
+</tr>
 </tbody>
+</table>
+<p>Based an empiric research we decided to remove match candidates with a similarity under a certain threshold. This helps drastically reduce the number of candidates, making the data easier to process for a human.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">min_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span>
+<span></span>
+<span><span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">string_sim</span><span class="op">)</span> <span class="op">|</span> <span class="va">string_sim</span> <span class="op">&gt;</span> <span class="va">min_threshold</span><span class="op">)</span></span></code></pre></div>
+<p>Note that, in very rare cases, we might loose matches this way, since candidates that are removed here due to the lower threshold are no longer included in the matching. We concluded that the improved ease of use justifies those edgecases. Companies that have no more candidates after filtering with the lower threshold are reported.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">before_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">after_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lost_companies</span> <span class="op">&lt;-</span> <span class="va">before_filter_id_and_company</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">after_filter_id_and_company</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining, by = c("id", "company_name")</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">lost_companies</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="left">company_name</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="right">12</td>
+<td align="left">Best Bakers</td>
+</tr></tbody>
 </table>
 </div>
 </div>
@@ -757,8 +796,8 @@
 <li>It is the highest match of all matches.</li>
 <li>There is only 1 highest match per <strong>company_name</strong> x <strong>id</strong> combination to avoid duplicates.</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">highest_matches_per_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">highest_matches_per_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">string_sim</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">string_sim</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -773,7 +812,7 @@
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id_tilt</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">loanbook_with_candidates_and_dist_and_suggestion</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">loanbook_with_candidates_and_dist_and_suggestion</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">highest_matches_per_company_above_thresh_wo_duplicates</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"id_tilt"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span></span>
@@ -781,13 +820,13 @@
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="12%">
-<col width="5%">
+<col width="11%">
+<col width="4%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="15%">
+<col width="14%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1087,20 +1126,20 @@
 <h3 id="check-matching-process">Check matching process<a class="anchor" aria-label="anchor" href="#check-matching-process"></a>
 </h3>
 <p>After having matched manually each companies, we can check for the companies that were not matched in the loanbook. This can be used as a ‘double-check’ to see if the two data sets were correctly manually matched. The demo-matched data set is an example of what the data set should look like after being manually checked: the <strong>accept_match</strong> column is now changed to TRUE or NA, depending on whether a company should be matched or not.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">manually_matched</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="12%">
-<col width="5%">
+<col width="11%">
+<col width="4%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="15%">
+<col width="14%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1400,49 +1439,53 @@
 <h3 id="report-companies-with-no-matches">Report companies with no matches<a class="anchor" aria-label="anchor" href="#report-companies-with-no-matches"></a>
 </h3>
 <p>We can then use the <strong>report_no_matches</strong> function and determine companies in the loanbook for which no match was selected or found.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">manually_matched</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info,</span></span>
-<span><span class="co">#&gt; company_alias)`</span></span>
+<span><span class="co">#&gt; Joining, by = c("id", "company_name", "postcode", "country", "misc_info",</span></span>
+<span><span class="co">#&gt; "company_alias")</span></span>
 <span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
 <span><span class="co">#&gt; Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries</span></span>
-<span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries ℹ Did you match these companies</span></span>
-<span><span class="co">#&gt; manually correctly ?</span></span>
+<span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries Best Bakers ℹ Did you match these</span></span>
+<span><span class="co">#&gt; companies manually correctly ?</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">not_matched</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">company_name</th>
 <th align="right">id</th>
+<th align="left">company_name</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Peasant Paul</td>
 <td align="right">4</td>
+<td align="left">Peasant Paul</td>
 </tr>
 <tr class="even">
-<td align="left">Bread Bakers Limited</td>
 <td align="right">5</td>
+<td align="left">Bread Bakers Limited</td>
 </tr>
 <tr class="odd">
-<td align="left">Screwdriver Experts</td>
 <td align="right">7</td>
+<td align="left">Screwdriver Experts</td>
 </tr>
 <tr class="even">
-<td align="left">Screwdriver Expert</td>
 <td align="right">8</td>
+<td align="left">Screwdriver Expert</td>
 </tr>
 <tr class="odd">
-<td align="left">John Meier’s Groceries</td>
 <td align="right">9</td>
+<td align="left">John Meier’s Groceries</td>
 </tr>
 <tr class="even">
-<td align="left">John Meier’s Groceries</td>
 <td align="right">10</td>
+<td align="left">John Meier’s Groceries</td>
 </tr>
 <tr class="odd">
-<td align="left">John Meier’s Groceries</td>
 <td align="right">11</td>
+<td align="left">John Meier’s Groceries</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="left">Best Bakers</td>
 </tr>
 </tbody>
 </table>
@@ -1452,20 +1495,20 @@
 </h3>
 <p>To check some manual errors during the manual matching process, we can use the <strong>check_duplicated_relation</strong> function. It checks if a company from loanbook has been matched to &gt; 1 company from the tilt dataset or reverse.</p>
 <p>Here, the demo_matched data set is hand-matched correctly: the column <strong>accept_match</strong> has been manually changed and verified.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">manually_matched</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="12%">
-<col width="5%">
+<col width="11%">
+<col width="4%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="15%">
+<col width="14%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1761,11 +1804,11 @@
 </tbody>
 </table>
 <p>The function does not throw an error and inform that no duplicates were found.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No duplicated matches found in the data.</span></span></code></pre></div>
 <p>Now let us insert duplicated matches for the company with the ids 1 and 2.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">duplicate_in_loanbook</span> <span class="op">&lt;-</span> <span class="va">manually_matched</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="cn">TRUE</span>, <span class="va">accept_match</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -1775,13 +1818,13 @@
 <col width="2%">
 <col width="8%">
 <col width="5%">
-<col width="5%">
+<col width="4%">
 <col width="6%">
 <col width="8%">
 <col width="5%">
 <col width="11%">
 <col width="9%">
-<col width="11%">
+<col width="12%">
 <col width="7%">
 <col width="8%">
 <col width="8%">
@@ -1895,11 +1938,11 @@
 </tbody>
 </table>
 <p>The function then abort and throws an error with the lines of the duplicated rows.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># un-comment this line to have the error</span></span>
 <span><span class="co"># check_duplicated_relation(duplicate_in_loanbook)</span></span></code></pre></div>
 <p>Also, an error is thrown if we insert a duplicate match of a company from the tilt db to the loanbook.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">duplicate_tilt_id_row</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
@@ -1911,13 +1954,13 @@
 <col width="2%">
 <col width="8%">
 <col width="5%">
-<col width="5%">
+<col width="4%">
 <col width="6%">
 <col width="8%">
 <col width="5%">
 <col width="11%">
 <col width="9%">
-<col width="11%">
+<col width="12%">
 <col width="7%">
 <col width="8%">
 <col width="8%">
@@ -1970,7 +2013,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># un-comment this line to have the error</span></span>
 <span><span class="co"># check_duplicated_relation(duplicate_tilt_id)</span></span></code></pre></div>
 </div>
