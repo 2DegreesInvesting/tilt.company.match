@@ -186,7 +186,7 @@ tilt dataset:
 ```{r}
 candidates %>% 
   filter(id == 1) %>%
-  select(country, postcode, id, company_alias, id_tilt, company_alias_tilt)
+  select(company_alias, id_tilt, company_alias_tilt)
 ```
 
 Next, calculate the string similarity between the aliased `company_name` from
