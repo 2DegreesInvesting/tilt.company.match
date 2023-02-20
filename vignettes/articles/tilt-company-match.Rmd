@@ -128,7 +128,6 @@ them. Missing values in other columns are fine.
 
 ```{r}
 non_nullable <- c("id", "company_name")
-
 loanbook %>% abort_if_incomplete(non_nullable)
 ```
 
