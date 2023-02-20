@@ -198,7 +198,7 @@ complete dissimilarity corresponds to `0`. For each company in the loanbook,
 arrange matching candidates by descending similarity.
 
 ```{r}
-candidates_similarity <- candidates %>%
+okay_candidates <- candidates %>%
   # Other parameters may perform best. See `?stringdist::stringsim`
   mutate(similarity = stringsim(
     company_alias, company_alias_tilt, 
@@ -209,7 +209,36 @@ candidates_similarity <- candidates %>%
   # Arrange matching candidates from more to less similar
   arrange(id, -similarity)
 
-candidates_similarity %>% relocate(similarity)
+okay_candidates %>% relocate(similarity)
+```
+
+### Pick best candidates
+
+```{r}
+best_threshold <- 0.75
+```
+
+Empirically we found that candidates under a `similarity` threshold of 
+`r best_threshold` are false positives. Pick `similarity` values above that
+threshold to drastically reduce the number of candidates you'll need to validate
+manually. We believe this benefit outweighs the potential loss of a few true
+positives.
+
+```{r}
+best_candidates <- okay_candidates %>% 
+  filter(similarity > best_threshold | is.na(similarity))
+```
+
+After picking the best candidates, some companies in your `loanbook` might no
+longer have any candidate in the `tilt` dataset.
+
+```{r}
+unmatched <- anti_join(
+  okay_candidates %>% distinct(id, company_name),
+  best_candidates %>% distinct(id, company_name)
+)
+
+unmatched
 ```
 
 ### Suggest matches
@@ -229,7 +258,7 @@ where the value of `similarity` meets all of these conditions:
 # Decided upon extensive experience with r2dii.match function and processes
 threshold <- 0.9
 
-candidates_suggest_match <- candidates_similarity %>%
+candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
@@ -243,7 +272,7 @@ candidates_suggest_match <- candidates_similarity %>%
   mutate(suggest_match = TRUE) %>% 
   ungroup()
 
-to_edit <- candidates_similarity %>%
+to_edit <- best_candidates %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
   mutate(accept_match = NA)
 
