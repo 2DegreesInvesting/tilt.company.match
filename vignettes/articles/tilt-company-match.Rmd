@@ -131,7 +131,7 @@ non_nullable <- c("id", "company_name")
 loanbook %>% abort_if_incomplete(non_nullable)
 ```
 
-For example, here a non-nullable columns has `NA`'s:
+For example, here the non-nullable `id` column has one missing value:
 
 ```{r}
 bad_loanbook <- tribble(
