@@ -87,6 +87,14 @@ bad <- rename(loanbook, ids = id)
 bad %>% check_crucial_names(expected) %>% try()
 ```
 
+If you lack the `postcode` column you can create one with "fake" values and move
+on. This will add more manual-validation work.
+
+```{r}
+# You may add a "fake' `postcode` column with
+# loanbook <- loanbook %>% mutate(postcode = "fake")
+```
+
 #### Duplicates
 
 Do you have any duplicates in the column `id`?
@@ -170,8 +178,10 @@ same `country` and `postcode`.
 
 ```{r}
 reliable_shared_columns <- c("country", "postcode")
-# WARNING: If you lack `postcode` use this instead:
-# reliable_shared_columns <- "country"
+# If you lack `postcode` we fallback to matching in the entire country instead
+if (all(loanbook$postcode == "fake")) {
+  reliable_shared_columns <- "country"
+}
 
 candidates <- left_join(
     loanbook_alias, tilt_alias, 
