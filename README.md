@@ -20,21 +20,21 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 
 The matching problem is characterised as follows:
 
-- matching companies from banks\` loanbooks to tilt will face problems
-  of inconsistent company names (typos, conventions…)
+-   matching companies from banks\` loanbooks to tilt will face problems
+    of inconsistent company names (typos, conventions…)
 
-- postcode will be available as relatively reliable additional
-  information
+-   it is expected that postcode will be available as relatively
+    reliable additional information for most companies
 
-- not all companies in loanbooks will be in tilt db (thus not have a
-  match)
+-   not all companies in loanbooks will be in tilt db (thus not have a
+    match)
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
-hold at least the columns **company_name**, **postcode** and **country**
-and a column **id** holding unique row identifiers. Further columns that
-educate decisions made by humans in the matching process may be present.
-For an example compare demo data below.
+hold at least the columns **company\_name**, **postcode** and
+**country** and a column **id** holding unique row identifiers. Further
+columns that educate decisions made by humans in the matching process
+may be present. For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
@@ -42,14 +42,14 @@ library(tilt.company.match)
 knitr::kable(head(demo_loanbook))
 ```
 
-|  id | company_name           | postcode | country | misc_info |
-|----:|:-----------------------|:---------|:--------|:----------|
-|   1 | Peasant Peter          | 01234    | germany | A         |
-|   2 | Peasant Peter          | 01234    | germany | Z         |
-|   3 | Peasant Peter          | 11234    | germany | Z         |
-|   4 | Peasant Paul           | 01234    | germany | Z         |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         |
-|   6 | Flower Power & Company | 34567    | germany | Z         |
+|  id | company\_name          | postcode | country | misc\_info |
+|----:|:-----------------------|:---------|:--------|:-----------|
+|   1 | Peasant Peter          | 01234    | germany | A          |
+|   2 | Peasant Peter          | 01234    | germany | Z          |
+|   3 | Peasant Peter          | 11234    | germany | Z          |
+|   4 | Peasant Paul           | 01234    | germany | Z          |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          |
+|   6 | Flower Power & Company | 34567    | germany | Z          |
 
 ### Pre-matching functions to check the data
 
@@ -59,8 +59,8 @@ functions to check your data before the matching process.
 #### Check crucial columns names
 
 It is crucial to have the right columns’ names in your loanbook, exactly
-like in our demo_loanbook. Here is a function to check if your loanbook
-has the necessary names, which are declared under “crucial_names”.
+like in our demo\_loanbook. Here is a function to check if your loanbook
+has the necessary names, which are declared under “crucial\_names”.
 
 ``` r
 loanbook <- demo_loanbook
@@ -69,7 +69,7 @@ check_crucial_names(loanbook, crucial_names)
 ```
 
 Now, let us rename the loanbook “country” column into “countries” and
-“company_name” into “Company Name”. If you un-comment (remove the
+“company\_name” into “Company Name”. If you un-comment (remove the
 hashtag) the line, it throws an error.
 
 ``` r
@@ -99,10 +99,11 @@ check_crucial_names(corrected_loanbook, crucial_names)
 
 #### Report duplicates
 
-The function **report_duplicates** shows whether there are duplicates on
-some columns of interest. In this case, we strongly suggest duplicates
-on the **company_name**, **postcode** and **country** columns
-combination. We strongly encourage to use it on the loanbook data set.
+The function **report\_duplicates** shows whether there are duplicates
+on some columns of interest. In this case, we strongly suggest
+duplicates on the **company\_name**, **postcode** and **country**
+columns combination. We strongly encourage to use it on the loanbook
+data set.
 
 ``` r
 loanbook <- demo_loanbook
@@ -115,14 +116,14 @@ report_duplicates(loanbook, columns)
 ```
 
 Note: In our example we see, that while there are duplicate rows on
-columns company_name, postcode, country they seem to do belong to
+columns company\_name, postcode, country they seem to do belong to
 different companies so we do not need to fix this in our loanbook.
 
 #### Report missing values
 
 Missing values or NAs should ideally not in the loanbook. The function
-**abort_if_incomplete()** checks how many NAs there are in each columns
-of the data set and report them to the user.
+**abort\_if\_incomplete()** checks how many NAs there are in each
+columns of the data set and report them to the user.
 
 Here, the loanbook data set does not have any NAs.
 
@@ -130,12 +131,12 @@ Here, the loanbook data set does not have any NAs.
 abort_if_incomplete(demo_loanbook)
 ```
 
-There are some columns (currently **id** and **company_name**) on which
+There are some columns (currently **id** and **company\_name**) on which
 we do not allow missings. In case there are missings on these columns
-report_missings() will throw an error. You then have to removed affected
-rows from your data. On other columns, e.g. **postcode** missings will
-be reported for information purposes. However they do not require action
-from user side.
+report\_missings() will throw an error. You then have to removed
+affected rows from your data. On other columns, e.g. **postcode**
+missings will be reported for information purposes. However they do not
+require action from user side.
 
 ``` r
 # missings on a non-crucial column
@@ -158,10 +159,10 @@ missing_crucial %>%
 
 ### Preprocessing
 
-In a first step, the company_names are preprocessed to reduce noise and
-increase consistency. To this end use a function called to_alias(). We
+In a first step, the company\_names are preprocessed to reduce noise and
+increase consistency. To this end use a function called to\_alias(). We
 assign the result of the preprocessing to a new column
-**company_alias**.
+**company\_alias**.
 
 ``` r
 loanbook <- demo_loanbook %>%
@@ -170,31 +171,30 @@ loanbook <- demo_loanbook %>%
 knitr::kable(head(loanbook))
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias   |
-|----:|:-----------------------|:---------|:--------|:----------|:----------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter    |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter    |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter    |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul     |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |
+|  id | company\_name          | postcode | country | misc\_info | company\_alias  |
+|----:|:-----------------------|:---------|:--------|:-----------|:----------------|
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter    |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter    |
+|   3 | Peasant Peter          | 11234    | germany | Z          | peasantpeter    |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul     |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          | breadbakers ltd |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co  |
 
 ``` r
-
 tilt <- demo_tilt %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
 knitr::kable(head(tilt))
 ```
 
-|  id | company_name                 | postcode | country | misc_info | company_alias         |
-|----:|:-----------------------------|:---------|:--------|:----------|:----------------------|
-|   1 | Peasant Peter                | 01234    | germany | A         | peasantpeter          |
-|   2 | Peasant Peter                | 01234    | germany | Z         | peasantpeter          |
-|   3 | Peasant Peter                | 11234    | germany | Z         | peasantpeter          |
-|   4 | Peasant Paul                 | 01234    | germany | B         | peasantpaul           |
-|   5 | The Bread Bakers Ltd         | 23456    | germany | C         | thebreadbakers ltd    |
-|   6 | Flower Power Friends and Co. | 34567    | germany | D         | flowerpowerfriends co |
+|  id | company\_name                | postcode | country | misc\_info | company\_alias        |
+|----:|:-----------------------------|:---------|:--------|:-----------|:----------------------|
+|   1 | Peasant Peter                | 01234    | germany | A          | peasantpeter          |
+|   2 | Peasant Peter                | 01234    | germany | Z          | peasantpeter          |
+|   3 | Peasant Peter                | 11234    | germany | Z          | peasantpeter          |
+|   4 | Peasant Paul                 | 01234    | germany | B          | peasantpaul           |
+|   5 | The Bread Bakers Ltd         | 23456    | germany | C          | thebreadbakers ltd    |
+|   6 | Flower Power Friends and Co. | 34567    | germany | D          | flowerpowerfriends co |
 
 ### Deriving Candidates
 
@@ -206,22 +206,18 @@ are correct and stable.
 ``` r
 loanbook_with_candidates <- loanbook %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
-#> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
-#> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-#>   warning.
 
 knitr::kable(head(loanbook_with_candidates))
 ```
 
-|  id | company_name  | postcode | country | misc_info | company_alias | id_tilt | company_name_tilt | misc_info_tilt | company_alias_tilt |
-|----:|:--------------|:---------|:--------|:----------|:--------------|--------:|:------------------|:---------------|:-------------------|
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        |
+|  id | company\_name | postcode | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt |
+|----:|:--------------|:---------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |
 
 One can see that e.g. the company with the loanbook id 1 has 3 potential
 matches in the tilt db that have the same postcode (tilt id 1, 2, 4).
@@ -245,26 +241,64 @@ loanbook_with_candidates_and_dist <- loanbook_with_candidates %>%
 knitr::kable(loanbook_with_candidates_and_dist)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | string_sim |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|-----------:|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    |         NA |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  |  0.8478947 |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA |
+|  id | company\_name          | postcode | country | misc\_info | company\_alias      | id\_tilt | company\_name\_tilt          | misc\_info\_tilt | company\_alias\_tilt  | string\_sim |
+|----:|:-----------------------|:---------|:--------|:-----------|:--------------------|---------:|:-----------------------------|:-----------------|:----------------------|------------:|
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 |
+|   3 | Peasant Peter          | 11234    | germany | Z          | peasantpeter        |        3 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        4 | Peasant Paul                 | B                | peasantpaul           |   1.0000000 |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        1 | Peasant Peter                | A                | peasantpeter          |   0.8787879 |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        2 | Peasant Peter                | Z                | peasantpeter          |   0.8787879 |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          | breadbakers ltd     |        5 | The Bread Bakers Ltd         | C                | thebreadbakers ltd    |   0.8444444 |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        7 | Flower Power and Co.         | F                | flowerpower co        |   1.0000000 |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        6 | Flower Power Friends and Co. | D                | flowerpowerfriends co |   0.9333333 |
+|   7 | Screwdriver Experts    | 45678    | germany | D          | screwdriverexperts  |       NA | NA                           | NA               | NA                    |          NA |
+|   8 | Screwdriver Expert     | 45678    | germany | Z          | screwdriverexpert   |       NA | NA                           | NA               | NA                    |          NA |
+|   9 | John Meier’s Groceries | 56789    | germany | E          | johnmeiersgroceries |        8 | John and Jacques Groceries   | E                | johnjacquesgroceries  |   0.8478947 |
+|  10 | John Meier’s Groceries | 55555    | germany | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA |
+|  12 | Best Bakers            | 65656    | france  | F          | bestbakers          |       11 | Cranes and Friends           | F                | cranesfriends         |   0.5482906 |
+
+Based an empiric research we decided to remove match candidates with a
+similarity under a certain threshold. This helps drastically reduce the
+number of candidates, making the data easier to process for a human.
+
+``` r
+min_threshold <- 0.75
+
+loanbook_with_candidates_and_dist_filtered <- loanbook_with_candidates_and_dist %>% 
+  dplyr::filter(is.na(string_sim) | string_sim > min_threshold)
+```
+
+Note that, in very rare cases, we might loose matches this way, since
+candidates that are removed here due to the lower threshold are no
+longer included in the matching. We concluded that the improved ease of
+use justifies those edgecases. Companies that have no more candidates
+after filtering with the lower threshold are reported.
+
+``` r
+before_filter_id_and_company <- loanbook_with_candidates_and_dist %>% 
+  dplyr::select(id, company_name) %>% 
+  dplyr::distinct_all()
+
+after_filter_id_and_company <- loanbook_with_candidates_and_dist_filtered %>% 
+  dplyr::select(id, company_name) %>% 
+  dplyr::distinct_all()
+
+lost_companies <- before_filter_id_and_company %>% 
+  dplyr::anti_join(after_filter_id_and_company)
+#> Joining, by = c("id", "company_name")
+
+knitr::kable(lost_companies)
+```
+
+|  id | company\_name |
+|----:|:--------------|
+|  12 | Best Bakers   |
 
 ## Selecting matches
 
@@ -277,18 +311,18 @@ suggested.
 
 A human coder will have to inspect the data. It is advisable do to so in
 a spreadsheet application. A row is selected as match by setting column
-**accept_match** to TRUE. To support this the column **suggest_match**
+**accept\_match** to TRUE. To support this the column **suggest\_match**
 is provided.
 
-The **suggest_match** column is set to TRUE if:
+The **suggest\_match** column is set to TRUE if:
 
-- The match is above a determined threshold.
-- It is the highest match of all matches.
-- There is only 1 highest match per **company_name** x **id**
-  combination to avoid duplicates.
+-   The match is above a determined threshold.
+-   It is the highest match of all matches.
+-   There is only 1 highest match per **company\_name** x **id**
+    combination to avoid duplicates.
 
 ``` r
-highest_matches_per_company <- loanbook_with_candidates_and_dist %>%
+highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
   dplyr::group_by(id) %>%
   dplyr::filter(string_sim == max(string_sim))
 
@@ -303,33 +337,33 @@ highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_co
   dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
 
-loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist %>%
+loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and_dist_filtered %>%
   dplyr::left_join(highest_matches_per_company_above_thresh_wo_duplicates, by = c("id", "id_tilt")) %>%
   dplyr::mutate(accept_match = NA)
 
 knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | string_sim | suggest_match | accept_match |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|-----------:|:--------------|:-------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  |  0.8478947 | NA            | NA           |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
+|  id | company\_name          | postcode | country | misc\_info | company\_alias      | id\_tilt | company\_name\_tilt          | misc\_info\_tilt | company\_alias\_tilt  | string\_sim | suggest\_match | accept\_match |
+|----:|:-----------------------|:---------|:--------|:-----------|:--------------------|---------:|:-----------------------------|:-----------------|:----------------------|------------:|:---------------|:--------------|
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   3 | Peasant Peter          | 11234    | germany | Z          | peasantpeter        |        3 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | TRUE           | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        4 | Peasant Paul                 | B                | peasantpaul           |   1.0000000 | TRUE           | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        1 | Peasant Peter                | A                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        2 | Peasant Peter                | Z                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          | breadbakers ltd     |        5 | The Bread Bakers Ltd         | C                | thebreadbakers ltd    |   0.8444444 | NA             | NA            |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        7 | Flower Power and Co.         | F                | flowerpower co        |   1.0000000 | TRUE           | NA            |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        6 | Flower Power Friends and Co. | D                | flowerpowerfriends co |   0.9333333 | NA             | NA            |
+|   7 | Screwdriver Experts    | 45678    | germany | D          | screwdriverexperts  |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   8 | Screwdriver Expert     | 45678    | germany | Z          | screwdriverexpert   |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   9 | John Meier’s Groceries | 56789    | germany | E          | johnmeiersgroceries |        8 | John and Jacques Groceries   | E                | johnjacquesgroceries  |   0.8478947 | NA             | NA            |
+|  10 | John Meier’s Groceries | 55555    | germany | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
 
 **Note**: even a match of 1 in the same postcode can in rare cases be a
 False positive, compare e.g. company 4 (“Peasant Paul”) in the example
@@ -341,7 +375,7 @@ After having matched manually each companies, we can check for the
 companies that were not matched in the loanbook. This can be used as a
 ‘double-check’ to see if the two data sets were correctly manually
 matched. The demo-matched data set is an example of what the data set
-should look like after being manually checked: the **accept_match**
+should look like after being manually checked: the **accept\_match**
 column is now changed to TRUE or NA, depending on whether a company
 should be matched or not.
 
@@ -351,63 +385,64 @@ manually_matched <- demo_matched
 knitr::kable(manually_matched)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | string_sim | suggest_match | accept_match |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|-----------:|:--------------|:-------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | TRUE         |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | TRUE         |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | TRUE          | TRUE         |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | TRUE         |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  |  0.8478947 | NA            | NA           |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
+|  id | company\_name          | postcode | country | misc\_info | company\_alias      | id\_tilt | company\_name\_tilt          | misc\_info\_tilt | company\_alias\_tilt  | string\_sim | suggest\_match | accept\_match |
+|----:|:-----------------------|:---------|:--------|:-----------|:--------------------|---------:|:-----------------------------|:-----------------|:----------------------|------------:|:---------------|:--------------|
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | TRUE          |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | TRUE          |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   3 | Peasant Peter          | 11234    | germany | Z          | peasantpeter        |        3 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | TRUE           | TRUE          |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        4 | Peasant Paul                 | B                | peasantpaul           |   1.0000000 | TRUE           | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        1 | Peasant Peter                | A                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        2 | Peasant Peter                | Z                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          | breadbakers ltd     |        5 | The Bread Bakers Ltd         | C                | thebreadbakers ltd    |   0.8444444 | NA             | NA            |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        7 | Flower Power and Co.         | F                | flowerpower co        |   1.0000000 | TRUE           | TRUE          |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        6 | Flower Power Friends and Co. | D                | flowerpowerfriends co |   0.9333333 | NA             | NA            |
+|   7 | Screwdriver Experts    | 45678    | germany | D          | screwdriverexperts  |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   8 | Screwdriver Expert     | 45678    | germany | Z          | screwdriverexpert   |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   9 | John Meier’s Groceries | 56789    | germany | E          | johnmeiersgroceries |        8 | John and Jacques Groceries   | E                | johnjacquesgroceries  |   0.8478947 | NA             | NA            |
+|  10 | John Meier’s Groceries | 55555    | germany | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
 
 ### Report companies with no matches
 
-We can then use the **report_no_matches** function and determine
+We can then use the **report\_no\_matches** function and determine
 companies in the loanbook for which no match was selected or found.
 
 ``` r
 not_matched <- report_no_matches(loanbook, manually_matched)
-#> Joining with `by = join_by(id, company_name, postcode, country, misc_info,
-#> company_alias)`
+#> Joining, by = c("id", "company_name", "postcode", "country", "misc_info",
+#> "company_alias")
 #> Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread
 #> Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries
-#> John Meier's Groceries John Meier's Groceries ℹ Did you match these companies
-#> manually correctly ?
+#> John Meier's Groceries John Meier's Groceries Best Bakers ℹ Did you match these
+#> companies manually correctly ?
 
 knitr::kable(not_matched)
 ```
 
-| company_name           |  id |
-|:-----------------------|----:|
-| Peasant Paul           |   4 |
-| Bread Bakers Limited   |   5 |
-| Screwdriver Experts    |   7 |
-| Screwdriver Expert     |   8 |
-| John Meier’s Groceries |   9 |
-| John Meier’s Groceries |  10 |
-| John Meier’s Groceries |  11 |
+|  id | company\_name          |
+|----:|:-----------------------|
+|   4 | Peasant Paul           |
+|   5 | Bread Bakers Limited   |
+|   7 | Screwdriver Experts    |
+|   8 | Screwdriver Expert     |
+|   9 | John Meier’s Groceries |
+|  10 | John Meier’s Groceries |
+|  11 | John Meier’s Groceries |
+|  12 | Best Bakers            |
 
 ### Report duplicate matches
 
 To check some manual errors during the manual matching process, we can
-use the **check_duplicated_relation** function. It checks if a company
-from loanbook has been matched to \> 1 company from the tilt dataset or
-reverse.
+use the **check\_duplicated\_relation** function. It checks if a company
+from loanbook has been matched to &gt; 1 company from the tilt dataset
+or reverse.
 
-Here, the demo_matched data set is hand-matched correctly: the column
-**accept_match** has been manually changed and verified.
+Here, the demo\_matched data set is hand-matched correctly: the column
+**accept\_match** has been manually changed and verified.
 
 ``` r
 manually_matched <- demo_matched
@@ -415,26 +450,26 @@ manually_matched <- demo_matched
 knitr::kable(manually_matched)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | string_sim | suggest_match | accept_match |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|-----------:|:--------------|:-------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | TRUE         |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | NA            | TRUE         |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           |  0.8787879 | NA            | NA           |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          |  1.0000000 | TRUE          | TRUE         |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    |  0.8444444 | NA            | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        |  1.0000000 | TRUE          | TRUE         |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co |  0.9333333 | NA            | NA           |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  |  0.8478947 | NA            | NA           |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
+|  id | company\_name          | postcode | country | misc\_info | company\_alias      | id\_tilt | company\_name\_tilt          | misc\_info\_tilt | company\_alias\_tilt  | string\_sim | suggest\_match | accept\_match |
+|----:|:-----------------------|:---------|:--------|:-----------|:--------------------|---------:|:-----------------------------|:-----------------|:----------------------|------------:|:---------------|:--------------|
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | TRUE          |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   1 | Peasant Peter          | 01234    | germany | A          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        1 | Peasant Peter                | A                | peasantpeter          |   1.0000000 | NA             | NA            |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        2 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | NA             | TRUE          |
+|   2 | Peasant Peter          | 01234    | germany | Z          | peasantpeter        |        4 | Peasant Paul                 | B                | peasantpaul           |   0.8787879 | NA             | NA            |
+|   3 | Peasant Peter          | 11234    | germany | Z          | peasantpeter        |        3 | Peasant Peter                | Z                | peasantpeter          |   1.0000000 | TRUE           | TRUE          |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        4 | Peasant Paul                 | B                | peasantpaul           |   1.0000000 | TRUE           | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        1 | Peasant Peter                | A                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   4 | Peasant Paul           | 01234    | germany | Z          | peasantpaul         |        2 | Peasant Peter                | Z                | peasantpeter          |   0.8787879 | NA             | NA            |
+|   5 | Bread Bakers Limited   | 23456    | germany | C          | breadbakers ltd     |        5 | The Bread Bakers Ltd         | C                | thebreadbakers ltd    |   0.8444444 | NA             | NA            |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        7 | Flower Power and Co.         | F                | flowerpower co        |   1.0000000 | TRUE           | TRUE          |
+|   6 | Flower Power & Company | 34567    | germany | Z          | flowerpower co      |        6 | Flower Power Friends and Co. | D                | flowerpowerfriends co |   0.9333333 | NA             | NA            |
+|   7 | Screwdriver Experts    | 45678    | germany | D          | screwdriverexperts  |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   8 | Screwdriver Expert     | 45678    | germany | Z          | screwdriverexpert   |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|   9 | John Meier’s Groceries | 56789    | germany | E          | johnmeiersgroceries |        8 | John and Jacques Groceries   | E                | johnjacquesgroceries  |   0.8478947 | NA             | NA            |
+|  10 | John Meier’s Groceries | 55555    | germany | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y          | johnmeiersgroceries |       NA | NA                           | NA               | NA                    |          NA | NA             | NA            |
 
 The function does not throw an error and inform that no duplicates were
 found.
@@ -454,14 +489,14 @@ duplicate_in_loanbook <- manually_matched %>%
 knitr::kable(duplicate_in_loanbook %>% dplyr::filter(id %in% c(1, 2)))
 ```
 
-|  id | company_name  | postcode | country | misc_info | company_alias | id_tilt | company_name_tilt | misc_info_tilt | company_alias_tilt | string_sim | suggest_match | accept_match |
-|----:|:--------------|:---------|:--------|:----------|:--------------|--------:|:------------------|:---------------|:-------------------|-----------:|:--------------|:-------------|
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       |  1.0000000 | NA            | TRUE         |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       |  1.0000000 | NA            | TRUE         |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        |  0.8787879 | NA            | TRUE         |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       |  1.0000000 | NA            | TRUE         |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       |  1.0000000 | NA            | TRUE         |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        |  0.8787879 | NA            | TRUE         |
+|  id | company\_name | postcode | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt | string\_sim | suggest\_match | accept\_match |
+|----:|:--------------|:---------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|------------:|:---------------|:--------------|
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |   1.0000000 | NA             | TRUE          |
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |   1.0000000 | NA             | TRUE          |
+|   1 | Peasant Peter | 01234    | germany | A          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | TRUE          |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        1 | Peasant Peter       | A                | peasantpeter         |   1.0000000 | NA             | TRUE          |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        2 | Peasant Peter       | Z                | peasantpeter         |   1.0000000 | NA             | TRUE          |
+|   2 | Peasant Peter | 01234    | germany | Z          | peasantpeter   |        4 | Peasant Paul        | B                | peasantpaul          |   0.8787879 | NA             | TRUE          |
 
 The function then abort and throws an error with the lines of the
 duplicated rows.
@@ -483,10 +518,10 @@ duplicate_tilt_id <- dplyr::bind_rows(demo_matched, duplicate_tilt_id_row)
 knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt == 3))
 ```
 
-|  id | company_name  | postcode | country | misc_info | company_alias | id_tilt | company_name_tilt | misc_info_tilt | company_alias_tilt | string_sim | suggest_match | accept_match |
-|----:|:--------------|:---------|:--------|:----------|:--------------|--------:|:------------------|:---------------|:-------------------|-----------:|:--------------|:-------------|
-|   3 | Peasant Peter | 11234    | germany | Z         | peasantpeter  |       3 | Peasant Peter     | Z              | peasantpeter       |          1 | TRUE          | TRUE         |
-|  12 | Peasant Peter | 11234    | germany | Z         | peasantpeter  |       3 | Peasant Peter     | Z              | peasantpeter       |          1 | TRUE          | TRUE         |
+|  id | company\_name | postcode | country | misc\_info | company\_alias | id\_tilt | company\_name\_tilt | misc\_info\_tilt | company\_alias\_tilt | string\_sim | suggest\_match | accept\_match |
+|----:|:--------------|:---------|:--------|:-----------|:---------------|---------:|:--------------------|:-----------------|:---------------------|------------:|:---------------|:--------------|
+|   3 | Peasant Peter | 11234    | germany | Z          | peasantpeter   |        3 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
+|  12 | Peasant Peter | 11234    | germany | Z          | peasantpeter   |        3 | Peasant Peter       | Z                | peasantpeter         |           1 | TRUE           | TRUE          |
 
 ``` r
 # un-comment this line to have the error

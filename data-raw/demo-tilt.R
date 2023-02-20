@@ -9,7 +9,8 @@ demo_tilt <- tibble::tribble(
   7, "Flower Power and Co.", "34567", "germany", "F", # similar name and same postcode but different company to other entry
   8, "John and Jacques Groceries", "56789", "germany", "E",
   9, "John and Jacques Groceries", "98765", "germany", "E", # same name but different postcode and different company to other entry
-  10, "John and Jacques Groceries", "98765", "france", "E"
+  10, "John and Jacques Groceries", "98765", "france", "E",
+  11, "Cranes and Friends", "65656", "france", "F"
 )
 
 usethis::use_data(demo_tilt, overwrite = TRUE)
