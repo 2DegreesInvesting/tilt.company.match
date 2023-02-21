@@ -126,10 +126,41 @@ loanbook instead</p>
 <span><span class="co"># TODO: Use your real loanbook with something like:</span></span>
 <span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
 <span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
+<span><span class="va">loanbook</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 5</span></span></span>
+<span><span class="co">#&gt;       id company_name           postcode country misc_info</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter          01234    germany A        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 Peasant Peter          01234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Peasant Peter          11234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 Peasant Paul           01234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 Bread Bakers Limited   23456    germany C        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Flower Power &amp; Company 34567    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Screwdriver Experts    45678    germany D        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Screwdriver Expert     45678    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John Meier's Groceries 56789    germany E        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John Meier's Groceries 55555    germany Y        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 John Meier's Groceries 55555    norway  Y        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F</span></span>
 <span></span>
 <span><span class="co"># TODO: Use your real tilt dataset with something like:</span></span>
 <span><span class="co"># tilt &lt;- readr::read_csv("path/to/your/real/tilt.csv")</span></span>
-<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span></span></code></pre></div>
+<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span></span>
+<span><span class="va">tilt</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 5</span></span></span>
+<span><span class="co">#&gt;       id company_name                 postcode country misc_info</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter                01234    germany A        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 Peasant Peter                01234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Peasant Peter                11234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 Peasant Paul                 01234    germany B        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 The Bread Bakers Ltd         23456    germany C        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Flower Power Friends and Co. 34567    germany D        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Flower Power and Co.         34567    germany F        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 John and Jacques Groceries   56789    germany E        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John and Jacques Groceries   98765    germany E        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John and Jacques Groceries   98765    france  E        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 Cranes and Friends           65656    france  F</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-data-quality">Check data quality<a class="anchor" aria-label="anchor" href="#check-data-quality"></a>
@@ -192,9 +223,9 @@ columns?</p>
 have to remove them. Missing values in other columns are fine.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">non_nullable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">non_nullable</span><span class="op">)</span></span></code></pre></div>
-<p>For example, here a non-nullable columns has <code>NA</code>’s:</p>
+<p>For example, here the non-nullable <code>id</code> column has one
+missing value:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bad_loanbook</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">id</span>,             <span class="op">~</span><span class="va">company_name</span>, <span class="op">~</span><span class="va">postcode</span>,  <span class="op">~</span><span class="va">country</span>, <span class="op">~</span><span class="va">misc_info</span>,</span>
@@ -221,11 +252,10 @@ have to remove them. Missing values in other columns are fine.</p>
 <h3 id="create-a-standard-alias-of-company_name-in-both-datasets">Create a standard alias of <code>company_name</code> in both
 datasets<a class="anchor" aria-label="anchor" href="#create-a-standard-alias-of-company_name-in-both-datasets"></a>
 </h3>
-<p>Use <code><a href="../reference/to_alias.html">to_alias()</a></code> to reduce the change you’ll miss a match
+<p>Use <code><a href="../reference/to_alias.html">to_alias()</a></code> to reduce the chance you’ll miss a match
 because of spurious differences in the company name between the loanbook
-and tilt dataset. It helps you get a less noisy, more consistent version
-of <code>company_name</code> in each of the two datasets before matching
-them.</p>
+and tilt dataset. This helps you get a less noisy, more consistent
+version of <code>company_name</code> in each of the two datasets.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loanbook_alias</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">loanbook_alias</span></span>
@@ -270,16 +300,12 @@ one company in the loanbook to match <code>"all"</code> the potentially
 <code>multiple</code> companies with the same <code>country</code> and
 <code>postcode</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">reliable_shared_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span></span>
-<span><span class="co"># WARNING: If you lack `postcode` use this instead:</span></span>
-<span><span class="co"># reliable_shared_columns &lt;- "country"</span></span>
-<span></span>
-<span><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>    <span class="va">loanbook_alias</span>, <span class="va">tilt_alias</span>, </span>
-<span>    by <span class="op">=</span> <span class="va">reliable_shared_columns</span>,</span>
+<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Add the suffix "_tilt" to each column from the tilt dataset</span></span>
 <span>    suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># Allow matching one to many</span></span>
+<span>    <span class="co"># Allow matching each company in loanbook to many companies in tilt</span></span>
 <span>    multiple <span class="op">=</span> <span class="st">"all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For example, here one company in the loanbook matches three
@@ -287,13 +313,13 @@ candidates in the tilt dataset:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">postcode</span>, <span class="va">id</span>, <span class="va">company_alias</span>, <span class="va">id_tilt</span>, <span class="va">company_alias_tilt</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
-<span><span class="co">#&gt;   country postcode    id company_alias id_tilt company_alias_tilt</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> germany 01234        1 peasantpeter        1 peasantpeter      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> germany 01234        1 peasantpeter        2 peasantpeter      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> germany 01234        1 peasantpeter        4 peasantpaul</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">company_alias</span>, <span class="va">id_tilt</span>, <span class="va">company_alias_tilt</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
+<span><span class="co">#&gt;   company_alias id_tilt company_alias_tilt</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> peasantpeter        1 peasantpeter      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> peasantpeter        2 peasantpeter      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> peasantpeter        4 peasantpaul</span></span></code></pre></div>
 <p>Next, calculate the string similarity between the aliased
 <code>company_name</code> from the loanbook and tilt datasets. Complete
 similarity corresponds to <code>1</code>, and complete dissimilarity
