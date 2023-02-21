@@ -12,8 +12,8 @@ demo_loanbook <- tibble::tribble(
   10, "John Meier's Groceries", "55555", "germany", "Y", # same name but different postcode and different company to other entry,
   11, "John Meier's Groceries", "55555", "norway", "Y", # not in tilt data
   12, "Best Bakers", "65656", "france", "F", # only company in same zip, different name
-  13, "Concrete Incorporated", "12345", "france", "G",
-  14, "Ur web consultants", "12345", "france", "H"
+  13, "Concrete Incorporated", NA_character_, "france", "G",
+  14, "Ur web consultants", NA_character_, NA_character_, "H"
 )
 
 usethis::use_data(demo_loanbook, overwrite = TRUE)

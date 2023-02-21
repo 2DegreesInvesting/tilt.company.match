@@ -121,14 +121,14 @@ companies so we do not need to fix this in our loanbook.
 
 #### Report missing values
 
-Missing values or NAs should ideally not in the loanbook. The function
+Missing values or NAs should ideally exist not in the loanbook. The function
 **abort_if_incomplete()** checks how many NAs there are in each columns of the data
 set and report them to the user.
 
 Here, the loanbook data set does not have any NAs.
 
 ```{r}
-abort_if_incomplete(demo_loanbook)
+abort_if_incomplete(demo_loanbook, non_nullable_cols = c("id", "company_name"))
 ```
 
 There are some columns (currently **id** and **company_name**) on which we do 
@@ -141,14 +141,11 @@ However they do not require action from user side.
 # missings on a non-crucial column
 missing_non_crucial <- demo_loanbook %>% 
   dplyr::mutate(postcode = dplyr::if_else(id == 1, NA_character_, .data$postcode))
-
 missing_non_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
-
 # missings on a crucial column
 missing_crucial <- demo_loanbook %>% 
   dplyr::mutate(company_name = dplyr::if_else(id == 1, NA_character_, .data$postcode))
-
 missing_crucial %>% 
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
 ```
@@ -179,12 +176,47 @@ loanbook, we identify in a first step all companies with a matching
 country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
+For cases for which no postcode, but country is available we match only on 
+country. For companies for which neither postcode nor country are around we 
+consider all companies potential candidates. We treat cases that have postcode but
+not country the same way, it would possible induce false positive to match via 
+postcode over different countries.
+
 ```{r}
-loanbook_with_candidates <- loanbook %>%
+loanbook_no_nas <- loanbook %>% 
+  dplyr::filter(!is.na(postcode) & !is.na(country))
+
+loanbook_na_postcode <- loanbook %>% 
+  dplyr::filter(is.na(postcode) & !is.na(country))
+
+loanbook_nas_country_postcode <- loanbook %>% 
+  dplyr::filter(is.na(country))
+```
+
+
+```{r} 
+loanbook_no_nas_with_candidates <- loanbook_no_nas %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
+
+loanbook_na_postcode_with_candidates <- loanbook_na_postcode %>%
+  dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
+
+loanbook_nas_country_postcode_with_candidates <- loanbook_nas_country_postcode %>%
+  dplyr::mutate(postcode = "join_helper") %>% 
+  dplyr::inner_join(tilt %>%
+                      dplyr::mutate(postcode = "join_helper"), 
+                    by = c("postcode"), suffix = c("", "_tilt")) %>% 
+  dplyr::mutate(postcode = NA_character_)
+
+loanbook_with_candidates <- dplyr::bind_rows(
+  loanbook_no_nas_with_candidates, 
+  loanbook_na_postcode_with_candidates,
+  loanbook_nas_country_postcode_with_candidates)
+
 
 knitr::kable(head(loanbook_with_candidates))
 ```
+
 
 One can see that e.g. the company with the loanbook id 1 has 3 potential
 matches in the tilt db that have the same postcode (tilt id 1, 2, 4).
