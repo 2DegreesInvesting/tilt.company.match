@@ -285,9 +285,7 @@ to_edit %>% relocate(similarity, suggest_match)
 ```
 
 Note that even a `similarity` of `1` in the same `postcode` can be a false
-positive.
-
-For example, this is false positive:
+positive. For example, this is false positive:
 
 ```{r}
 to_edit %>% 
@@ -311,10 +309,10 @@ writexl::write_xlsx(to_edit, "to_edit.xlsx")
 
 ### Accept or reject matches
 
-- Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
-- For each row decide if you want to reject or accept the suggested match. By default
+* Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
+* For each row decide if you want to reject or accept the suggested match. By default
 each row is rejected. To accept it type TRUE in the column `accept_match`.
-- Save the edited file to later use it again in R, for example e.g. as "edited.csv".
+* Save the edited file to later use it again in R, for example e.g. as "edited.csv".
 
 ## 3. In R (session 2)
 
