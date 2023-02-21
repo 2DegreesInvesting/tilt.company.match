@@ -10,7 +10,9 @@ demo_tilt <- tibble::tribble(
   8, "John and Jacques Groceries", "56789", "germany", "E",
   9, "John and Jacques Groceries", "98765", "germany", "E", # same name but different postcode and different company to other entry
   10, "John and Jacques Groceries", "98765", "france", "E",
-  11, "Cranes and Friends", "65656", "france", "F"
+  11, "Cranes and Friends", "65656", "france", "F",
+  12, "Concrete Inc", NA_character_ , "france", "G", # company with high name match in loanbook
+  13, "Your web consultants", NA_character_ , NA_character_, "H" # company with high name match in loanbook
 )
 
 usethis::use_data(demo_tilt, overwrite = TRUE)
