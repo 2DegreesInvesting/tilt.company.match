@@ -178,9 +178,7 @@ dataset, we compare the values in the columns `postcode` and `country`:
 
 ```{r}
 loanbook_lacks_none <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & !is.na(country))
-
-loanbook_lacks_none_with_candidates <- loanbook_lacks_none %>%
+  dplyr::filter(!is.na(postcode) & !is.na(country)) %>% 
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 ```
 
