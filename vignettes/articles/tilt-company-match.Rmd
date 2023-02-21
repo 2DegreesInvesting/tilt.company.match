@@ -261,7 +261,7 @@ candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
-  # - It's above a given threshold.
+  # - It's above the threshold.
   filter(similarity > suggestion_threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `postcode` -- to avoid duplicates.
