@@ -176,11 +176,22 @@ loanbook, we identify in a first step all companies with a matching
 country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
-For cases for which no postcode, but country is available we match only on
-country. For companies for which neither postcode nor country are around we
-consider all companies potential candidates. We treat cases that have postcode
-but not country the same way, it would possible induce false positive to match
-via postcode over different countries.
+It's best of you have both the `postcode` and `country` for every company in
+your `loanbook`. That information affects how many companies you'll need to
+later validate manually:
+
+* If you lack lack `postcode` but have `country`, we match companies in that specific `country` but across every `postcode`.
+regardless the `postcode`. You will possibly match companies that are not really
+the same (false positives) but happen to have a similar name and are located in
+the same `country`. This will cost you additional manual-validation work ahead.
+
+* If you have `postcode` but lack `country`, we match companies with the same `postcode` but  across every `country`. You will possibly match companies that are not really
+the same (false positives) but happen to have a similar name and the same
+postcode. This will cost you additional manual-validation work ahead.
+
+* If you lack `postcode` and also lack `country`, we match companies across the entire dataset.  You will most likely match companies that are not really
+the same (false positives). This will cost you the greatest amount of additional
+manual-validation work ahead.
 
 ```{r}
 loanbook_no_nas <- loanbook %>% 
