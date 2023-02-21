@@ -368,7 +368,7 @@ matching candidates by descending similarity.</p>
 <h3 id="pick-best-candidates">Pick best candidates<a class="anchor" aria-label="anchor" href="#pick-best-candidates"></a>
 </h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">best_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">eligibility_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span></code></pre></div>
 <p>Empirically we found that candidates under a <code>similarity</code>
 threshold of 0.75 are false positives. Pick <code>similarity</code>
 values above that threshold to drastically reduce the number of
@@ -376,7 +376,7 @@ candidates you’ll need to validate manually. We believe this benefit
 outweighs the potential loss of a few true positives.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best_candidates</span> <span class="op">&lt;-</span> <span class="va">okay_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">best_threshold</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">eligibility_threshold</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>After picking the best candidates, some companies in your
 <code>loanbook</code> might no longer have any candidate in the
 <code>tilt</code> dataset.</p>
@@ -396,38 +396,42 @@ outweighs the potential loss of a few true positives.</p>
 <div class="section level3">
 <h3 id="suggest-matches">Suggest matches<a class="anchor" aria-label="anchor" href="#suggest-matches"></a>
 </h3>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Decided upon extensive experience</span></span>
+<span><span class="va">suggestion_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.9</span></span></code></pre></div>
 <p>Later you’ll need to manually decide which of all candidates if any
 is a true match. To make that job easier, we can automatically make some
 suggestions in a new column <code>suggest_match</code>.</p>
-<p>The values of <code>suggest_match</code> are fist set to missing
-(<code>NA</code>) then set to <code>TRUE</code> where the value of
-<code>similarity</code> meets all of these conditions:</p>
+<p>The values of <code>suggest_match</code> are set to <code>TRUE</code>
+where the value of <code>similarity</code> meets all of these
+conditions:</p>
 <ul>
 <li>It’s the highest among all other candidates.</li>
-<li>It’s above a given threshold.</li>
+<li>It’s above a threshold of 0.9.</li>
 <li>It’s the only such highest value in the group defined by a
 combination of <code>company_name</code> x <code>postcode</code> – to
 avoid duplicates.</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Decided upon extensive experience with r2dii.match function and processes</span></span>
-<span><span class="va">threshold</span> <span class="op">&lt;-</span> <span class="fl">0.9</span></span>
-<span></span>
-<span><span class="va">candidates_suggest_match</span> <span class="op">&lt;-</span> <span class="va">best_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">candidates_suggest_match</span> <span class="op">&lt;-</span> <span class="va">best_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># - It's the highest among all other candidates.</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co"># - It's above a given threshold.</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">threshold</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="co"># - It's above the threshold.</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">suggestion_threshold</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># - It's the only such highest value in the group defined by a combination of</span></span>
 <span>  <span class="co"># `company_name` x `postcode` -- to avoid duplicates.</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duplicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">company_name</span>, <span class="va">postcode</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">duplicates</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id_tilt</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">to_edit</span> <span class="op">&lt;-</span> <span class="va">best_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>In all other rows the value of <code>suggest_match</code> is
+automatically set to <code>NA</code>. Also now create a new column
+<code>accept_match</code> and fill it with <code>NA</code>. Later you’ll
+edit this colum.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">to_edit</span> <span class="op">&lt;-</span> <span class="va">best_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">candidates_suggest_match</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"id_tilt"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span></span>
@@ -458,9 +462,9 @@ avoid duplicates.</li>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​suggest_match, ³​company_name, ⁴​postcode, ⁵​misc_info, ⁶​company_alias,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_name_tilt</span></span></span></code></pre></div>
 <p>Note that even a <code>similarity</code> of <code>1</code> in the
-same <code>postcode</code> can be a false positive.</p>
-<p>For example, this is false positive:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+same <code>postcode</code> can be a false positive. For example, this is
+false positive:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">to_edit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">4</span>, <span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">suggest_match</span>, <span class="va">similarity</span>, <span class="va">postcode</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">matches</a></span><span class="op">(</span><span class="st">"misc_info"</span><span class="op">)</span><span class="op">)</span></span>
@@ -471,7 +475,7 @@ same <code>postcode</code> can be a false positive.</p>
 <p>Now write the dataset <code>to_edit</code> so that you can explore it
 in a spreadsheet editor. For example, you may write it as a .csv or
 .xlsx then open it in Excel or GoogleSheets.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.csv"</span><span class="op">)</span></span>
 <span></span>
@@ -505,11 +509,11 @@ column <code>accept_match</code>.</li>
 <p>Restart R to ensure nothing from the previous R session affects this
 one.</p>
 <p>Use the required packages for this section.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
 <p>Read the “edited.csv” file, and again your lookbook.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># TODO: Use your real edited dataset with something like:</span></span>
 <span><span class="co"># edited &lt;- readr::read_csv("path/to/the/file/you/really/edited.csv")</span></span>
 <span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
@@ -527,7 +531,7 @@ it’s correct:</p>
 <li>Use <code><a href="../reference/report_no_matches.html">report_no_matches()</a></code> to explore companies in the
 loanbook that didn’t match any company in the tilt dataset.</li>
 </ul>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info)`</span></span>
 <span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
@@ -551,12 +555,12 @@ loanbook that didn’t match any company in the tilt dataset.</li>
 from loanbook has been matched to more than one company from the tilt
 dataset or reverse.</li>
 </ul>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Good</span></span>
 <span><span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No duplicated matches found in the data.</span></span></code></pre></div>
 <p>With bad data you get informative errors.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bad: A single loanbook-company can't match multiple tilt-companies</span></span>
 <span><span class="va">bad_edited</span> <span class="op">&lt;-</span> <span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="cn">TRUE</span>, <span class="va">accept_match</span><span class="op">)</span><span class="op">)</span></span>
@@ -613,9 +617,10 @@ dataset or reverse.</li>
 <h3 id="pick-the-matching-companies">Pick the matching companies<a class="anchor" aria-label="anchor" href="#pick-the-matching-companies"></a>
 </h3>
 <p>Once your edited dataset is correct, pick the matching companies and
-you’re done. Your final dataset will have as many rows as the number
-<code>TRUE</code> values in your edited dataset.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+you’re done. Your final dataset will have as many rows as the number of
+<code>TRUE</code> values in the <code>accept_match</code> columns of
+your edited dataset.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">accept_match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
 <span><span class="co">#&gt;   accept_match     n</span></span>
@@ -638,7 +643,7 @@ you’re done. Your final dataset will have as many rows as the number
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span></code></pre></div>
 <p>If you need to use your final dataset elsewhere, you may write it to
 a .csv file like before with:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="va">final</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="st">"final.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
