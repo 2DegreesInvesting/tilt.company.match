@@ -190,9 +190,7 @@ the same `country`. This will cost you additional manual-validation work ahead.
 
 ```{r}
 loanbook_lacks_postcode <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & !is.na(country))
-
-loanbook_lacks_postcode_with_candidates <- loanbook_lacks_postcode %>%
+  dplyr::filter(is.na(postcode) & !is.na(country)) %>% 
   dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
 ```
 
@@ -202,10 +200,7 @@ postcode. This will cost you additional manual-validation work ahead.
 
 ```{r}
 loanbook_lacks_country <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & is.na(country))
-
-# FIXME: This case is missing
-loanbook_lacks_country_with_candidates <- loanbook_lacks_country %>%
+  dplyr::filter(!is.na(postcode) & is.na(country)) %>% 
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
@@ -215,9 +210,7 @@ manual-validation work ahead.
 
 ```{r}
 loanbook_lacks_both <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & is.na(country))
-
-loanbook_lacks_both_with_candidates <- loanbook_lacks_both %>%
+  dplyr::filter(is.na(postcode) & is.na(country)) %>% 
   dplyr::mutate(postcode = "join_helper") %>% 
   dplyr::inner_join(
     dplyr::mutate(tilt, postcode = "join_helper"), 
@@ -230,10 +223,10 @@ Having considered all cases, you can now combine them all in a single dataset:
 
 ```{r}
 loanbook_with_candidates <- dplyr::bind_rows(
-  loanbook_lacks_none_with_candidates,
-  loanbook_lacks_postcode_with_candidates,
-  loanbook_lacks_country_with_candidates,
-  loanbook_lacks_both_with_candidates
+  loanbook_lacks_none,
+  loanbook_lacks_postcode,
+  loanbook_lacks_country,
+  loanbook_lacks_both
 )
 
 knitr::kable(head(loanbook_with_candidates))

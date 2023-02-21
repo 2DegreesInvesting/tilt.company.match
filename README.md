@@ -227,9 +227,7 @@ loanbook_lacks_none_with_candidates <- loanbook_lacks_none %>%
 
 ``` r
 loanbook_lacks_postcode <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & !is.na(country))
-
-loanbook_lacks_postcode_with_candidates <- loanbook_lacks_postcode %>%
+  dplyr::filter(is.na(postcode) & !is.na(country)) %>% 
   dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country"), suffix = c("", "_tilt")): Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
@@ -245,10 +243,7 @@ loanbook_lacks_postcode_with_candidates <- loanbook_lacks_postcode %>%
 
 ``` r
 loanbook_lacks_country <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & is.na(country))
-
-# FIXME: This case is missing
-loanbook_lacks_country_with_candidates <- loanbook_lacks_country %>%
+  dplyr::filter(!is.na(postcode) & is.na(country)) %>% 
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
@@ -260,9 +255,7 @@ loanbook_lacks_country_with_candidates <- loanbook_lacks_country %>%
 
 ``` r
 loanbook_lacks_both <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & is.na(country))
-
-loanbook_lacks_both_with_candidates <- loanbook_lacks_both %>%
+  dplyr::filter(is.na(postcode) & is.na(country)) %>% 
   dplyr::mutate(postcode = "join_helper") %>% 
   dplyr::inner_join(
     dplyr::mutate(tilt, postcode = "join_helper"), 
@@ -280,23 +273,23 @@ dataset:
 
 ``` r
 loanbook_with_candidates <- dplyr::bind_rows(
-  loanbook_lacks_none_with_candidates,
-  loanbook_lacks_postcode_with_candidates,
-  loanbook_lacks_country_with_candidates,
-  loanbook_lacks_both_with_candidates
+  loanbook_lacks_none,
+  loanbook_lacks_postcode,
+  loanbook_lacks_country,
+  loanbook_lacks_both
 )
 
 knitr::kable(head(loanbook_with_candidates))
 ```
 
-|  id | company_name  | postcode | country | misc_info | company_alias | id_tilt | company_name_tilt | misc_info_tilt | company_alias_tilt | postcode_tilt | country_tilt |
-|----:|:--------------|:---------|:--------|:----------|:--------------|--------:|:------------------|:---------------|:-------------------|:--------------|:-------------|
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       | NA            | NA           |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       | NA            | NA           |
-|   1 | Peasant Peter | 01234    | germany | A         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        | NA            | NA           |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       1 | Peasant Peter     | A              | peasantpeter       | NA            | NA           |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       2 | Peasant Peter     | Z              | peasantpeter       | NA            | NA           |
-|   2 | Peasant Peter | 01234    | germany | Z         | peasantpeter  |       4 | Peasant Paul      | B              | peasantpaul        | NA            | NA           |
+|  id | company_name           | postcode | country | misc_info | company_alias   | id_tilt | company_name_tilt | postcode_tilt | misc_info_tilt | company_alias_tilt | country_tilt |
+|----:|:-----------------------|:---------|:--------|:----------|:----------------|--------:|:------------------|:--------------|:---------------|:-------------------|:-------------|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter    |      NA | NA                | NA            | NA             | NA                 | NA           |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter    |      NA | NA                | NA            | NA             | NA                 | NA           |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter    |      NA | NA                | NA            | NA             | NA                 | NA           |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul     |      NA | NA                | NA            | NA             | NA                 | NA           |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd |      NA | NA                | NA            | NA             | NA                 | NA           |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |      NA | NA                | NA            | NA             | NA                 | NA           |
 
 One can see that e.g. the company with the loanbook id 1 has 3 potential
 matches in the tilt db that have the same postcode (tilt id 1, 2, 4).
@@ -320,44 +313,37 @@ loanbook_with_candidates_and_dist <- loanbook_with_candidates %>%
 knitr::kable(loanbook_with_candidates_and_dist)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | postcode_tilt | country_tilt | string_sim |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|:--------------|:-------------|-----------:|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  1.0000000 |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  0.8787879 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  1.0000000 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  0.8787879 |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  1.0000000 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  0.8787879 |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  0.8787879 |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    | NA            | NA           |  0.8444444 |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        | NA            | NA           |  1.0000000 |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co | NA            | NA           |  0.9333333 |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | NA           |  0.8478947 |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
-|  12 | Best Bakers            | 65656    | france  | F         | bestbakers          |      11 | Cranes and Friends           | F              | cranesfriends         | NA            | NA           |  0.5482906 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc                 | G              | concrete inc          | 12345         | NA           |  1.0000000 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      11 | Cranes and Friends           | F              | cranesfriends         | 65656         | NA           |  0.6508242 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      13 | Your web consultants         | H              | yourwebconsultants    | 12345         | NA           |  0.5383598 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      10 | John and Jacques Groceries   | E              | johnjacquesgroceries  | 98765         | NA           |  0.5222222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants         | H              | yourwebconsultants    | NA            | france       |  0.8900463 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      11 | Cranes and Friends           | F              | cranesfriends         | NA            | france       |  0.5634158 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      12 | Concrete Inc                 | G              | concrete inc          | NA            | france       |  0.5545635 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | germany      |  0.5484307 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       1 | Peasant Peter                | A              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       3 | Peasant Peter                | Z              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | germany      |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       9 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | germany      |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      10 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | france       |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       7 | Flower Power and Co.         | F              | flowerpower co        | NA            | germany      |  0.4565476 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    | NA            | germany      |  0.4421296 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co | NA            | germany      |  0.4236111 |
+|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | postcode_tilt | misc_info_tilt | company_alias_tilt    | country_tilt | string_sim |
+|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:--------------|:---------------|:----------------------|:-------------|-----------:|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|  12 | Best Bakers            | 65656    | france  | F         | bestbakers          |      NA | NA                           | NA            | NA             | NA                    | NA           |         NA |
+|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc                 | 12345         | G              | concrete inc          | NA           |  1.0000000 |
+|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      11 | Cranes and Friends           | 65656         | F              | cranesfriends         | NA           |  0.6508242 |
+|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      13 | Your web consultants         | 12345         | H              | yourwebconsultants    | NA           |  0.5383598 |
+|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      10 | John and Jacques Groceries   | 98765         | E              | johnjacquesgroceries  | NA           |  0.5222222 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants         | NA            | H              | yourwebconsultants    | france       |  0.8900463 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      11 | Cranes and Friends           | NA            | F              | cranesfriends         | france       |  0.5634158 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      12 | Concrete Inc                 | NA            | G              | concrete inc          | france       |  0.5545635 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       4 | Peasant Paul                 | NA            | B              | peasantpaul           | germany      |  0.5484307 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       1 | Peasant Peter                | NA            | A              | peasantpeter          | germany      |  0.5097222 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       2 | Peasant Peter                | NA            | Z              | peasantpeter          | germany      |  0.5097222 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       3 | Peasant Peter                | NA            | Z              | peasantpeter          | germany      |  0.5097222 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       8 | John and Jacques Groceries   | NA            | E              | johnjacquesgroceries  | germany      |  0.4875000 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       9 | John and Jacques Groceries   | NA            | E              | johnjacquesgroceries  | germany      |  0.4875000 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      10 | John and Jacques Groceries   | NA            | E              | johnjacquesgroceries  | france       |  0.4875000 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       7 | Flower Power and Co.         | NA            | F              | flowerpower co        | germany      |  0.4565476 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       5 | The Bread Bakers Ltd         | NA            | C              | thebreadbakers ltd    | germany      |  0.4421296 |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       6 | Flower Power Friends and Co. | NA            | D              | flowerpowerfriends co | germany      |  0.4236111 |
 
 Based an empiric research we decided to remove match candidates with a
 similarity under a certain threshold. This helps drastically reduce the
@@ -394,7 +380,6 @@ knitr::kable(lost_companies)
 
 |  id | company_name |
 |----:|:-------------|
-|  12 | Best Bakers  |
 
 ## Selecting matches
 
@@ -442,28 +427,22 @@ loanbook_with_candidates_and_dist_and_suggestion <- loanbook_with_candidates_and
 knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 ```
 
-|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt            | misc_info_tilt | company_alias_tilt    | postcode_tilt | country_tilt | string_sim | suggest_match | accept_match |
-|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:-----------------------------|:---------------|:----------------------|:--------------|:-------------|-----------:|:--------------|:-------------|
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 | NA            | NA           |
-|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  0.8787879 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 | NA            | NA           |
-|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  0.8787879 | NA            | NA           |
-|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |       3 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | NA           |  1.0000000 | TRUE          | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       1 | Peasant Peter                | A              | peasantpeter          | NA            | NA           |  0.8787879 | NA            | NA           |
-|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | NA           |  0.8787879 | NA            | NA           |
-|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    | NA            | NA           |  0.8444444 | NA            | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       7 | Flower Power and Co.         | F              | flowerpower co        | NA            | NA           |  1.0000000 | TRUE          | NA           |
-|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co | NA            | NA           |  0.9333333 | NA            | NA           |
-|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
-|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
-|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | NA           |  0.8478947 | NA            | NA           |
-|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
-|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc                 | G              | concrete inc          | 12345         | NA           |  1.0000000 | NA            | NA           |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants         | H              | yourwebconsultants    | NA            | france       |  0.8900463 | NA            | NA           |
+|  id | company_name           | postcode | country | misc_info | company_alias       | id_tilt | company_name_tilt    | postcode_tilt | misc_info_tilt | company_alias_tilt | country_tilt | string_sim | suggest_match | accept_match |
+|----:|:-----------------------|:---------|:--------|:----------|:--------------------|--------:|:---------------------|:--------------|:---------------|:-------------------|:-------------|-----------:|:--------------|:-------------|
+|   1 | Peasant Peter          | 01234    | germany | A         | peasantpeter        |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   2 | Peasant Peter          | 01234    | germany | Z         | peasantpeter        |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   3 | Peasant Peter          | 11234    | germany | Z         | peasantpeter        |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   4 | Peasant Paul           | 01234    | germany | Z         | peasantpaul         |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   5 | Bread Bakers Limited   | 23456    | germany | C         | breadbakers ltd     |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co      |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   7 | Screwdriver Experts    | 45678    | germany | D         | screwdriverexperts  |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   8 | Screwdriver Expert     | 45678    | germany | Z         | screwdriverexpert   |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|  12 | Best Bakers            | 65656    | france  | F         | bestbakers          |      NA | NA                   | NA            | NA             | NA                 | NA           |         NA | NA            | NA           |
+|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc         | 12345         | G              | concrete inc       | NA           |  1.0000000 | NA            | NA           |
+|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants | NA            | H              | yourwebconsultants | france       |  0.8900463 | NA            | NA           |
 
 **Notes**:
 
