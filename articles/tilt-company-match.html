@@ -127,7 +127,7 @@ loanbook instead</p>
 <span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
 <span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
 <span><span class="va">loanbook</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 14 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 5</span></span></span>
 <span><span class="co">#&gt;       id company_name           postcode country misc_info</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter          01234    germany A        </span></span>
@@ -141,15 +141,13 @@ loanbook instead</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John Meier's Groceries 56789    germany E        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John Meier's Groceries 55555    germany Y        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 John Meier's Groceries 55555    norway  Y        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    13 Concrete Incorporated  <span style="color: #BB0000;">NA</span>       france  G        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>    14 Ur web consultants     <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      H</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F</span></span>
 <span></span>
 <span><span class="co"># TODO: Use your real tilt dataset with something like:</span></span>
 <span><span class="co"># tilt &lt;- readr::read_csv("path/to/your/real/tilt.csv")</span></span>
 <span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span></span>
 <span><span class="va">tilt</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 5</span></span></span>
 <span><span class="co">#&gt;       id company_name                 postcode country misc_info</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter                01234    germany A        </span></span>
@@ -162,9 +160,7 @@ loanbook instead</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 John and Jacques Groceries   56789    germany E        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John and Jacques Groceries   98765    germany E        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John and Jacques Groceries   98765    france  E        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 Cranes and Friends           65656    france  F        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Concrete Inc                 12345    france  G        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    13 Your web consultants         12345    france  H</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 Cranes and Friends           65656    france  F</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-data-quality">Check data quality<a class="anchor" aria-label="anchor" href="#check-data-quality"></a>
@@ -263,7 +259,7 @@ version of <code>company_name</code> in each of the two datasets.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loanbook_alias</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">loanbook_alias</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 14 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 6</span></span></span>
 <span><span class="co">#&gt;       id company_name           postcode country misc_info company_alias      </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter          01234    germany A         peasantpeter       </span></span>
@@ -277,13 +273,11 @@ version of <code>company_name</code> in each of the two datasets.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John Meier's Groceries 56789    germany E         johnmeiersgroceries</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John Meier's Groceries 55555    germany Y         johnmeiersgroceries</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 John Meier's Groceries 55555    norway  Y         johnmeiersgroceries</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F         bestbakers         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    13 Concrete Incorporated  <span style="color: #BB0000;">NA</span>       france  G         concrete inc       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>    14 Ur web consultants     <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      H         urwebconsultants</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F         bestbakers</span></span>
 <span></span>
 <span><span class="va">tilt_alias</span> <span class="op">&lt;-</span> <span class="va">tilt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tilt_alias</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 6</span></span></span>
 <span><span class="co">#&gt;       id company_name                 postcode country misc_info company_alias  </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter                01234    germany A         peasantpeter   </span></span>
@@ -296,9 +290,7 @@ version of <code>company_name</code> in each of the two datasets.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 John and Jacques Groceries   56789    germany E         johnjacquesgro…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John and Jacques Groceries   98765    germany E         johnjacquesgro…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John and Jacques Groceries   98765    france  E         johnjacquesgro…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 Cranes and Friends           65656    france  F         cranesfriends  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Concrete Inc                 12345    france  G         concrete inc   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    13 Your web consultants         12345    france  H         yourwebconsult…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 Cranes and Friends           65656    france  F         cranesfriends</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="match-candidates">Match candidates<a class="anchor" aria-label="anchor" href="#match-candidates"></a>
@@ -346,7 +338,7 @@ matching candidates by descending similarity.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">id</span>, <span class="op">-</span><span class="va">similarity</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">okay_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 11</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 19 × 11</span></span></span>
 <span><span class="co">#&gt;    simil…¹    id compa…² postc…³ country misc_…⁴ compa…⁵ id_tilt compa…⁶ misc_…⁷</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   1         1 Peasan… 01234   germany A       peasan…       1 Peasan… A      </span></span>
@@ -359,9 +351,18 @@ matching candidates by descending similarity.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>   1         4 Peasan… 01234   germany Z       peasan…       4 Peasan… B      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   0.879     4 Peasan… 01234   germany Z       peasan…       1 Peasan… A      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   0.879     4 Peasan… 01234   germany Z       peasan…       2 Peasan… Z      </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 11 more rows, 1 more variable: company_alias_tilt &lt;chr&gt;, and</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   abbreviated variable names ¹​similarity, ²​company_name, ³​postcode,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​misc_info, ⁵​company_alias, ⁶​company_name_tilt, ⁷​misc_info_tilt</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>   0.844     5 Bread … 23456   germany C       breadb…       5 The Br… C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>   1         6 Flower… 34567   germany Z       flower…       7 Flower… F      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>   0.933     6 Flower… 34567   germany Z       flower…       6 Flower… D      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>  <span style="color: #BB0000;">NA</span>         7 Screwd… 45678   germany D       screwd…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>  <span style="color: #BB0000;">NA</span>         8 Screwd… 45678   germany Z       screwd…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>   0.848     9 John M… 56789   germany E       johnme…       8 John a… E      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>  <span style="color: #BB0000;">NA</span>        10 John M… 55555   germany Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span>  <span style="color: #BB0000;">NA</span>        11 John M… 55555   norway  Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span>   0.548    12 Best B… 65656   france  F       bestba…      11 Cranes… F      </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: company_alias_tilt &lt;chr&gt;, and abbreviated variable</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​similarity, ²​company_name, ³​postcode, ⁴​misc_info, ⁵​company_alias,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ⁶​company_name_tilt, ⁷​misc_info_tilt</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pick-best-candidates">Pick best candidates<a class="anchor" aria-label="anchor" href="#pick-best-candidates"></a>
@@ -435,7 +436,7 @@ edit this colum.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">to_edit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="va">similarity</span>, <span class="va">suggest_match</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18 × 13</span></span></span>
 <span><span class="co">#&gt;    simil…¹ sugge…²    id compa…³ postc…⁴ country misc_…⁵ compa…⁶ id_tilt compa…⁷</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   1     <span style="color: #BB0000;">NA</span>          1 Peasan… 01234   germany A       peasan…       1 Peasan…</span></span>
@@ -456,8 +457,6 @@ edit this colum.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>   0.848 <span style="color: #BB0000;">NA</span>          9 John M… 56789   germany E       johnme…       8 John a…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>  <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         10 John M… 55555   germany Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span>  <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         11 John M… 55555   norway  Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span>  <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         13 Concre… <span style="color: #BB0000;">NA</span>      france  G       concre…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span>  <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         14 Ur web… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      H       urwebc…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 3 more variables: misc_info_tilt &lt;chr&gt;, company_alias_tilt &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   accept_match &lt;lgl&gt;, and abbreviated variable names ¹​similarity,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​suggest_match, ³​company_name, ⁴​postcode, ⁵​misc_info, ⁶​company_alias,</span></span></span>
@@ -537,22 +536,20 @@ loanbook that didn’t match any company in the tilt dataset.</li>
 <span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info)`</span></span>
 <span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
 <span><span class="co">#&gt; Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries</span></span>
-<span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries Best Bakers Concrete Incorporated</span></span>
-<span><span class="co">#&gt; Ur web consultants <span style="color: #0000BB;">ℹ</span> Did you match these companies manually correctly ?</span></span>
+<span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries Best Bakers <span style="color: #0000BB;">ℹ</span> Did you match these</span></span>
+<span><span class="co">#&gt; companies manually correctly ?</span></span>
 <span><span class="va">not_matched</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 2</span></span></span>
-<span><span class="co">#&gt;    company_name              id</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Peasant Paul               4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Bread Bakers Limited       5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Screwdriver Experts        7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Screwdriver Expert         8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> John Meier's Groceries     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> John Meier's Groceries    10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> John Meier's Groceries    11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Best Bakers               12</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Concrete Incorporated     13</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Ur web consultants        14</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
+<span><span class="co">#&gt;   company_name              id</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Peasant Paul               4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Bread Bakers Limited       5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Screwdriver Experts        7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Screwdriver Expert         8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> John Meier's Groceries     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> John Meier's Groceries    10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> John Meier's Groceries    11</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Best Bakers               12</span></span></code></pre></div>
 <ul>
 <li>Use <code><a href="../reference/check_duplicated_relation.html">check_duplicated_relation()</a></code> to check if a company
 from loanbook has been matched to more than one company from the tilt
