@@ -176,12 +176,47 @@ loanbook, we identify in a first step all companies with a matching
 country and postcode. This is based on the assumptions that postcodes
 are correct and stable.
 
+For cases for which no postcode, but country is available we match only on
+country. For companies for which neither postcode nor country are around we
+consider all companies potential candidates. We treat cases that have postcode
+but not country the same way, it would possible induce false positive to match
+via postcode over different countries.
+
 ```{r}
-loanbook_with_candidates <- loanbook %>%
+loanbook_no_nas <- loanbook %>% 
+  dplyr::filter(!is.na(postcode) & !is.na(country))
+
+loanbook_na_postcode <- loanbook %>% 
+  dplyr::filter(is.na(postcode) & !is.na(country))
+
+loanbook_nas_country_postcode <- loanbook %>% 
+  dplyr::filter(is.na(country))
+```
+
+
+```{r} 
+loanbook_no_nas_with_candidates <- loanbook_no_nas %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
+
+loanbook_na_postcode_with_candidates <- loanbook_na_postcode %>%
+  dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
+
+loanbook_nas_country_postcode_with_candidates <- loanbook_nas_country_postcode %>%
+  dplyr::mutate(postcode = "join_helper") %>% 
+  dplyr::inner_join(tilt %>%
+                      dplyr::mutate(postcode = "join_helper"), 
+                    by = c("postcode"), suffix = c("", "_tilt")) %>% 
+  dplyr::mutate(postcode = NA_character_)
+
+loanbook_with_candidates <- dplyr::bind_rows(
+  loanbook_no_nas_with_candidates, 
+  loanbook_na_postcode_with_candidates,
+  loanbook_nas_country_postcode_with_candidates)
+
 
 knitr::kable(head(loanbook_with_candidates))
 ```
+
 
 One can see that e.g. the company with the loanbook id 1 has 3 potential
 matches in the tilt db that have the same postcode (tilt id 1, 2, 4).
@@ -270,7 +305,8 @@ highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
 threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold)
+  dplyr::filter(string_sim > threshold) %>% 
+  dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
   dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
