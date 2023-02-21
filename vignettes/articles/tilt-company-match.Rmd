@@ -212,18 +212,18 @@ okay_candidates %>% relocate(similarity)
 ### Pick best candidates
 
 ```{r}
-best_threshold <- 0.75
+eligibility_threshold <- 0.75
 ```
 
 Empirically we found that candidates under a `similarity` threshold of 
-`r best_threshold` are false positives. Pick `similarity` values above that
+`r eligibility_threshold` are false positives. Pick `similarity` values above that
 threshold to drastically reduce the number of candidates you'll need to validate
 manually. We believe this benefit outweighs the potential loss of a few true
 positives.
 
 ```{r}
 best_candidates <- okay_candidates %>% 
-  filter(similarity > best_threshold | is.na(similarity))
+  filter(similarity > eligibility_threshold | is.na(similarity))
 ```
 
 After picking the best candidates, some companies in your `loanbook` might no
@@ -240,27 +240,29 @@ unmatched
 
 ### Suggest matches
 
+```{r}
+# Decided upon extensive experience
+suggestion_threshold <- 0.9
+```
+
 Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
 new column `suggest_match`.
 
-The values of `suggest_match` are fist set to missing (`NA`) then set to `TRUE`
-where the value of `similarity` meets all of these conditions:
+The values of `suggest_match` are set to `TRUE` where the value of `similarity`
+meets all of these conditions:
 
 - It's the highest among all other candidates.
-- It's above a given threshold.
+- It's above a threshold of `r suggestion_threshold`.
 - It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
 
 ```{r}
-# Decided upon extensive experience with r2dii.match function and processes
-threshold <- 0.9
-
 candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
-  # - It's above a given threshold.
-  filter(similarity > threshold) %>% 
+  # - It's above the threshold.
+  filter(similarity > suggestion_threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `postcode` -- to avoid duplicates.
   mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
@@ -268,7 +270,13 @@ candidates_suggest_match <- best_candidates %>%
   select(id, id_tilt) %>%
   mutate(suggest_match = TRUE) %>% 
   ungroup()
+```
 
+In all other rows the value of `suggest_match` is automatically set to `NA`.
+Also now create a new column `accept_match` and fill it with `NA`. Later you'll
+edit this colum.
+
+```{r}
 to_edit <- best_candidates %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
   mutate(accept_match = NA)
@@ -277,9 +285,7 @@ to_edit %>% relocate(similarity, suggest_match)
 ```
 
 Note that even a `similarity` of `1` in the same `postcode` can be a false
-positive.
-
-For example, this is false positive:
+positive. For example, this is false positive:
 
 ```{r}
 to_edit %>% 
@@ -303,10 +309,10 @@ writexl::write_xlsx(to_edit, "to_edit.xlsx")
 
 ### Accept or reject matches
 
-- Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
-- For each row decide if you want to reject or accept the suggested match. By default
+* Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
+* For each row decide if you want to reject or accept the suggested match. By default
 each row is rejected. To accept it type TRUE in the column `accept_match`.
-- Save the edited file to later use it again in R, for example e.g. as "edited.csv".
+* Save the edited file to later use it again in R, for example e.g. as "edited.csv".
 
 ## 3. In R (session 2)
 
@@ -380,8 +386,8 @@ If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat
 ### Pick the matching companies
 
 Once your edited dataset is correct, pick the matching companies and you're
-done. Your final dataset will have as many rows as the number `TRUE` values in
-your edited dataset.
+done. Your final dataset will have as many rows as the number of `TRUE` values
+in the `accept_match` columns of your edited dataset.
 
 ```{r}
 edited %>% count(accept_match)
