@@ -386,8 +386,8 @@ If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat
 ### Pick the matching companies
 
 Once your edited dataset is correct, pick the matching companies and you're
-done. Your final dataset will have as many rows as the number `TRUE` values in
-your edited dataset.
+done. Your final dataset will have as many rows as the number of `TRUE` values
+in the `accept_match` columns of your edited dataset.
 
 ```{r}
 edited %>% count(accept_match)
