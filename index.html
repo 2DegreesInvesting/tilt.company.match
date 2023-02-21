@@ -1121,7 +1121,11 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Note</strong>: even a match of 1 in the same postcode can in rare cases be a False positive, compare e.g. company 4 (“Peasant Paul”) in the example data.</p>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li>Even a match of 1 in the same postcode can in rare cases be a False positive, compare e.g. company 4 (“Peasant Paul”) in the example data.</li>
+<li>We do not want to automatically approve unique matches because there may be few cases where multiple companies in the same ZIP code have the same name. In these cases, additional information (for example, the sector, street name, or main activity etc.) can help to make a final decision.</li>
+</ul>
 <div class="section level3">
 <h3 id="check-matching-process">Check matching process<a class="anchor" aria-label="anchor" href="#check-matching-process"></a>
 </h3>
