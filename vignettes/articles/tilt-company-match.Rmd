@@ -212,18 +212,18 @@ okay_candidates %>% relocate(similarity)
 ### Pick best candidates
 
 ```{r}
-best_threshold <- 0.75
+eligibility_threshold <- 0.75
 ```
 
 Empirically we found that candidates under a `similarity` threshold of 
-`r best_threshold` are false positives. Pick `similarity` values above that
+`r eligibility_threshold` are false positives. Pick `similarity` values above that
 threshold to drastically reduce the number of candidates you'll need to validate
 manually. We believe this benefit outweighs the potential loss of a few true
 positives.
 
 ```{r}
 best_candidates <- okay_candidates %>% 
-  filter(similarity > best_threshold | is.na(similarity))
+  filter(similarity > eligibility_threshold | is.na(similarity))
 ```
 
 After picking the best candidates, some companies in your `loanbook` might no
@@ -240,6 +240,11 @@ unmatched
 
 ### Suggest matches
 
+```{r}
+# Decided upon extensive experience
+suggestion_threshold <- 0.9
+```
+
 Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
 new column `suggest_match`.
@@ -248,19 +253,16 @@ The values of `suggest_match` are set to `TRUE` where the value of `similarity`
 meets all of these conditions:
 
 - It's the highest among all other candidates.
-- It's above a given threshold.
+- It's above a threshold of `r suggestion_threshold`.
 - It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
 
 ```{r}
-# Decided upon extensive experience with r2dii.match function and processes
-threshold <- 0.9
-
 candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
   # - It's above a given threshold.
-  filter(similarity > threshold) %>% 
+  filter(similarity > suggestion_threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `postcode` -- to avoid duplicates.
   mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
