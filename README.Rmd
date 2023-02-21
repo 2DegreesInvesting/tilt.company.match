@@ -295,6 +295,7 @@ The **suggest_match** column is set to TRUE if:
 -   It is the highest match of all matches.
 -   There is only 1 highest match per **company_name** x **id**
     combination to avoid duplicates.
+-   country and postcode are available for the company in the loanbook    
 
 ```{r}
 highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
@@ -304,7 +305,8 @@ highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
 threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold)
+  dplyr::filter(string_sim > threshold) %>% 
+  dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
   dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
