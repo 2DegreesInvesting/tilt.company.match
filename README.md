@@ -195,13 +195,13 @@ knitr::kable(head(tilt))
 
 ### Deriving Candidates
 
-To inform the decision about which companies in your loanbook match
-companies in the tilt database, we compare the values in the columns
+To inform the decision about which companies in your `loanbook` match
+companies in the `tilt` dataset, we compare the values in the columns
 `postcode` and `country`:
 
-- If the loanbook has both `postcode` and `country`, we match companies
-  in that specific `postcode` and that specific `country`. You will
-  likely match companies that are really the same (true positives)
+- If the `loanbook` has both `postcode` and `country`, we match
+  companies in that specific `postcode` and that specific `country`. You
+  will likely match companies that are really the same (true positives)
   because it’s unlikely that two companies with similar name will be
   located close to each other. This will cost you the minimum amount of
   manual-validation work ahead.
@@ -218,9 +218,9 @@ loanbook_lacks_none_with_candidates <- loanbook_has_both %>%
 #>   warning.
 ```
 
-- If the loanbook lacks `postcode` but has `country`, we match companies
-  in that specific `country` but across every `postcode`. You will
-  possibly match companies that are not really the same (false
+- If the `loanbook` lacks `postcode` but has `country`, we match
+  companies in that specific `country` but across every `postcode`. You
+  will possibly match companies that are not really the same (false
   positives) but happen to have a similar name and are located in the
   same `country`. This will cost you additional manual-validation work
   ahead.
@@ -237,11 +237,11 @@ loanbook_lacks_postcode_with_candidates <- loanbook_lacks_postcode %>%
 #>   warning.
 ```
 
-- If the loanbook has `postcode` but lacks `country`, we match companies
-  with the same `postcode` but across every `country`. You will possibly
-  match companies that are not really the same (false positives) but
-  happen to have a similar name and the same postcode. This will cost
-  you additional manual-validation work ahead.
+- If the `loanbook` has `postcode` but lacks `country`, we match
+  companies with the same `postcode` but across every `country`. You
+  will possibly match companies that are not really the same (false
+  positives) but happen to have a similar name and the same postcode.
+  This will cost you additional manual-validation work ahead.
 
 ``` r
 loanbook_lacks_country <- loanbook %>% 
@@ -252,7 +252,7 @@ loanbook_lacks_country_with_candidates <- loanbook_lacks_country %>%
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
-- If the loanbook lacks both `postcode` and `country`, we match
+- If the `loanbook` lacks both `postcode` and `country`, we match
   companies across the entire dataset. You will most likely match
   companies that are not really the same (false positives). This will
   cost you the greatest amount of additional manual-validation work
