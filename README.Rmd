@@ -263,6 +263,7 @@ The **suggest_match** column is set to TRUE if:
 -   It is the highest match of all matches.
 -   There is only 1 highest match per **company_name** x **id**
     combination to avoid duplicates.
+-   country and postcode are available for the company in the loanbook    
 
 ```{r}
 highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
