@@ -248,6 +248,8 @@ loanbook_lacks_country <- loanbook %>%
   dplyr::filter(!is.na(postcode) & is.na(country))
 
 # FIXME: This case is missing
+loanbook_lacks_country_with_candidates <- loanbook_lacks_country %>%
+  dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
 - If the loanbook lacks both `postcode` and `country`, we match
@@ -280,6 +282,7 @@ dataset:
 loanbook_with_candidates <- dplyr::bind_rows(
   loanbook_has_both_with_candidates,
   loanbook_lacks_postcode_with_candidates,
+  loanbook_lacks_country_with_candidates,
   loanbook_lacks_both_with_candidates
 )
 
