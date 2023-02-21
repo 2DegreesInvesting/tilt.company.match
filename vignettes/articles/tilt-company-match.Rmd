@@ -215,8 +215,8 @@ Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
 new column `suggest_match`.
 
-The values of `suggest_match` are fist set to missing (`NA`) then set to `TRUE`
-where the value of `similarity` meets all of these conditions:
+The values of `suggest_match` are set to `TRUE` where the value of `similarity`
+meets all of these conditions:
 
 - It's the highest among all other candidates.
 - It's above a given threshold.
@@ -239,7 +239,13 @@ candidates_suggest_match <- candidates_similarity %>%
   select(id, id_tilt) %>%
   mutate(suggest_match = TRUE) %>% 
   ungroup()
+```
 
+In all other rows the value of `suggest_match` is automatically set to `NA`.
+Also now create a new column `accept_match` and fill it with `NA`. Later you'll
+edit this colum.
+
+```{r}
 to_edit <- candidates_similarity %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
   mutate(accept_match = NA)
