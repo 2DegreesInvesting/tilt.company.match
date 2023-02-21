@@ -195,73 +195,93 @@ knitr::kable(head(tilt))
 
 ### Deriving Candidates
 
-To identify which entries from the tilt db match to the companies in the
-loanbook, we identify in a first step all companies with a matching
-country and postcode. This is based on the assumptions that postcodes
-are correct and stable.
+To inform the decision about which companies in your loanbook match
+companies in the tilt database, we compare the values in the columns
+`postcode` and `country`:
 
-It’s best of you have both the `postcode` and `country` for every
-company in your `loanbook`. That information affects how many companies
-you’ll need to later validate manually:
-
-- If you lack lack `postcode` but have `country`, we match companies in
-  that specific `country` but across every `postcode`. regardless the
-  `postcode`. You will possibly match companies that are not really the
-  same (false positives) but happen to have a similar name and are
-  located in the same `country`. This will cost you additional
+- If the loanbook has both `postcode` and `country`, we match companies
+  in that specific `postcode` and that specific `country`. You will
+  likely match companies that are really the same (true positives)
+  because it’s unlikely that two companies with similar name will be
+  located close to each other. This will cost you the minimum amount of
   manual-validation work ahead.
-- If you have `postcode` but lack `country`, we match companies with the
-  same `postcode` but across every `country`. You will possibly match
-  companies that are not really the same (false positives) but happen to
-  have a similar name and the same postcode. This will cost you
-  additional manual-validation work ahead.
-- If you lack `postcode` and also lack `country`, we match companies
-  across the entire dataset. You will most likely match companies that
-  are not really the same (false positives). This will cost you the
-  greatest amount of additional manual-validation work ahead.
 
 ``` r
-loanbook_no_nas <- loanbook %>% 
+loanbook_has_both <- loanbook %>% 
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
-loanbook_na_postcode <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & !is.na(country))
-
-loanbook_nas_country_postcode <- loanbook %>% 
-  dplyr::filter(is.na(country))
-```
-
-``` r
-loanbook_no_nas_with_candidates <- loanbook_no_nas %>%
+loanbook_has_both_with_candidates <- loanbook_has_both %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
 #> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
 #>   warning.
+```
 
-loanbook_na_postcode_with_candidates <- loanbook_na_postcode %>%
+- If the loanbook lacks `postcode` but has `country`, we match companies
+  in that specific `country` but across every `postcode`. You will
+  possibly match companies that are not really the same (false
+  positives) but happen to have a similar name and are located in the
+  same `country`. This will cost you additional manual-validation work
+  ahead.
+
+``` r
+loanbook_lacks_postcode <- loanbook %>% 
+  dplyr::filter(is.na(postcode) & !is.na(country))
+
+loanbook_lacks_postcode_with_candidates <- loanbook_lacks_postcode %>%
   dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country"), suffix = c("", "_tilt")): Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
 #> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
 #>   warning.
+```
 
-loanbook_nas_country_postcode_with_candidates <- loanbook_nas_country_postcode %>%
+- If the loanbook has `postcode` but lacks `country`, we match companies
+  with the same `postcode` but across every `country`. You will possibly
+  match companies that are not really the same (false positives) but
+  happen to have a similar name and the same postcode. This will cost
+  you additional manual-validation work ahead.
+
+``` r
+loanbook_lacks_country <- loanbook %>% 
+  dplyr::filter(!is.na(postcode) & is.na(country))
+
+# FIXME: This case is missing
+```
+
+- If the loanbook lacks both `postcode` and `country`, we match
+  companies across the entire dataset. You will most likely match
+  companies that are not really the same (false positives). This will
+  cost you the greatest amount of additional manual-validation work
+  ahead.
+
+``` r
+loanbook_lacks_both <- loanbook %>% 
+  dplyr::filter(is.na(postcode) & is.na(country))
+
+loanbook_lacks_both_with_candidates <- loanbook_lacks_both %>%
   dplyr::mutate(postcode = "join_helper") %>% 
-  dplyr::inner_join(tilt %>%
-                      dplyr::mutate(postcode = "join_helper"), 
-                    by = c("postcode"), suffix = c("", "_tilt")) %>% 
+  dplyr::inner_join(
+    dplyr::mutate(tilt, postcode = "join_helper"), 
+    by = c("postcode"), suffix = c("", "_tilt")
+  ) %>% 
   dplyr::mutate(postcode = NA_character_)
-#> Warning in dplyr::inner_join(., tilt %>% dplyr::mutate(postcode = "join_helper"), : Each row in `x` is expected to match at most 1 row in `y`.
+#> Warning in dplyr::inner_join(., dplyr::mutate(tilt, postcode = "join_helper"), : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
 #> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
 #>   warning.
+```
 
+Having considered all cases, you can now combine them all in a single
+dataset:
+
+``` r
 loanbook_with_candidates <- dplyr::bind_rows(
-  loanbook_no_nas_with_candidates, 
-  loanbook_na_postcode_with_candidates,
-  loanbook_nas_country_postcode_with_candidates)
-
+  loanbook_has_both_with_candidates,
+  loanbook_lacks_postcode_with_candidates,
+  loanbook_lacks_both_with_candidates
+)
 
 knitr::kable(head(loanbook_with_candidates))
 ```
