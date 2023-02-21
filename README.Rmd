@@ -184,11 +184,9 @@ later validate manually:
 regardless the `postcode`. You will possibly match companies that are not really
 the same (false positives) but happen to have a similar name and are located in
 the same `country`. This will cost you additional manual-validation work ahead.
-
 * If you have `postcode` but lack `country`, we match companies with the same `postcode` but  across every `country`. You will possibly match companies that are not really
 the same (false positives) but happen to have a similar name and the same
 postcode. This will cost you additional manual-validation work ahead.
-
 * If you lack `postcode` and also lack `country`, we match companies across the entire dataset.  You will most likely match companies that are not really
 the same (false positives). This will cost you the greatest amount of additional
 manual-validation work ahead.
