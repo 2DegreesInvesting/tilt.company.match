@@ -199,9 +199,9 @@ To inform the decision about which companies in your `loanbook` match
 companies in the `tilt` dataset, we compare the values in the columns
 `postcode` and `country`:
 
-- If the `loanbook` has both `postcode` and `country`, we match
-  companies in that specific `postcode` and that specific `country`. You
-  will likely match companies that are really the same (true positives)
+- If the `loanbook` has both `postcode` and `country` we match companies
+  in that specific `postcode` and that specific `country`. You will
+  likely match companies that are really the same (true positives)
   because it’s unlikely that two companies with similar name will be
   located close to each other. This will cost you the minimum amount of
   manual-validation work ahead.
@@ -209,14 +209,15 @@ companies in the `tilt` dataset, we compare the values in the columns
 ``` r
 loanbook_lacks_none <- loanbook %>% 
   dplyr::filter(!is.na(postcode) & !is.na(country)) %>% 
-  dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
-#> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
-#> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-#>   warning.
+  dplyr::left_join(
+    tilt, 
+    by = c("country", "postcode"), 
+    suffix = c("", "_tilt"),
+    multiple = "all"
+  )
 ```
 
-- If the `loanbook` lacks `postcode` but has `country`, we match
+- If the `loanbook` lacks `postcode` but has `country` we match
   companies in that specific `country` but across every `postcode`. You
   will possibly match companies that are not really the same (false
   positives) but happen to have a similar name and are located in the
@@ -226,14 +227,15 @@ loanbook_lacks_none <- loanbook %>%
 ``` r
 loanbook_lacks_postcode <- loanbook %>% 
   dplyr::filter(is.na(postcode) & !is.na(country)) %>% 
-  dplyr::left_join(tilt, by = c("country"), suffix = c("", "_tilt"))
-#> Warning in dplyr::left_join(., tilt, by = c("country"), suffix = c("", "_tilt")): Each row in `x` is expected to match at most 1 row in `y`.
-#> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-#>   warning.
+  dplyr::left_join(
+    tilt, 
+    by = c("country"), 
+    suffix = c("", "_tilt"),
+    multiple = "all"
+  )
 ```
 
-- If the `loanbook` has `postcode` but lacks `country`, we match
+- If the `loanbook` has `postcode` but lacks `country` we match
   companies with the same `postcode` but across every `country`. You
   will possibly match companies that are not really the same (false
   positives) but happen to have a similar name and the same postcode.
@@ -245,7 +247,7 @@ loanbook_lacks_country <- loanbook %>%
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
-- If the `loanbook` lacks both `postcode` and `country`, we match
+- If the `loanbook` lacks both `postcode` and `country` we match
   companies across the entire dataset. You will most likely match
   companies that are not really the same (false positives). This will
   cost you the greatest amount of additional manual-validation work
@@ -257,13 +259,11 @@ loanbook_lacks_both <- loanbook %>%
   dplyr::mutate(postcode = "join_helper") %>% 
   dplyr::inner_join(
     dplyr::mutate(tilt, postcode = "join_helper"), 
-    by = c("postcode"), suffix = c("", "_tilt")
+    by = c("postcode"), 
+    suffix = c("", "_tilt"),
+    multiple = "all"
   ) %>% 
   dplyr::mutate(postcode = NA_character_)
-#> Warning in dplyr::inner_join(., dplyr::mutate(tilt, postcode = "join_helper"), : Each row in `x` is expected to match at most 1 row in `y`.
-#> ℹ Row 1 of `x` matches multiple rows.
-#> ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-#>   warning.
 ```
 
 Having considered all cases, you can now combine them all in a single
