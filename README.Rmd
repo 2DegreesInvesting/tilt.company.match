@@ -128,7 +128,7 @@ set and report them to the user.
 Here, the loanbook data set does not have any NAs.
 
 ```{r}
-abort_if_incomplete(demo_loanbook)
+abort_if_incomplete(demo_loanbook, non_nullable_cols = c("id", "company_name"))
 ```
 
 There are some columns (currently **id** and **company_name**) on which we do 
