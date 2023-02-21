@@ -210,7 +210,7 @@ companies in the tilt database, we compare the values in the columns
 loanbook_has_both <- loanbook %>% 
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
-loanbook_has_both_with_candidates <- loanbook_has_both %>%
+loanbook_lacks_none_with_candidates <- loanbook_has_both %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
@@ -280,7 +280,7 @@ dataset:
 
 ``` r
 loanbook_with_candidates <- dplyr::bind_rows(
-  loanbook_has_both_with_candidates,
+  loanbook_lacks_none_with_candidates,
   loanbook_lacks_postcode_with_candidates,
   loanbook_lacks_country_with_candidates,
   loanbook_lacks_both_with_candidates
