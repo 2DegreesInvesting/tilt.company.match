@@ -207,10 +207,10 @@ companies in the `tilt` dataset, we compare the values in the columns
   manual-validation work ahead.
 
 ``` r
-loanbook_has_both <- loanbook %>% 
+loanbook_lacks_none <- loanbook %>% 
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
-loanbook_lacks_none_with_candidates <- loanbook_has_both %>%
+loanbook_lacks_none_with_candidates <- loanbook_lacks_none %>%
   dplyr::left_join(tilt, by = c("country", "postcode"), suffix = c("", "_tilt"))
 #> Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.
 #> ℹ Row 1 of `x` matches multiple rows.
