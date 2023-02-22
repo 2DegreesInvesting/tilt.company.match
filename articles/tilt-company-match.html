@@ -370,10 +370,11 @@ matching candidates by descending similarity.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eligibility_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span></code></pre></div>
 <p>Empirically we found that candidates under a <code>similarity</code>
-threshold of 0.75 are false positives. Pick <code>similarity</code>
-values above that threshold to drastically reduce the number of
-candidates you’ll need to validate manually. We believe this benefit
-outweighs the potential loss of a few true positives.</p>
+threshold of 0.75 are most likely false positives. Pick
+<code>similarity</code> values above that threshold to drastically
+reduce the number of candidates you’ll need to validate manually. We
+believe this benefit outweighs the potential loss of a few true
+positives.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best_candidates</span> <span class="op">&lt;-</span> <span class="va">okay_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">eligibility_threshold</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -474,7 +475,7 @@ false positive:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> TRUE                   1 01234    Z         B</span></span></code></pre></div>
 <p>Now write the dataset <code>to_edit</code> so that you can explore it
 in a spreadsheet editor. For example, you may write it as a .csv or
-.xlsx then open it in Excel or GoogleSheets.</p>
+.xlsx file then open it in Excel or GoogleSheets.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.csv"</span><span class="op">)</span></span>
