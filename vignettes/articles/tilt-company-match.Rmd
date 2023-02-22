@@ -64,10 +64,12 @@ This example uses a "demo" loanbook. You should use your real loanbook instead
 # TODO: Use your real loanbook with something like:
 # loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
 loanbook <- demo_loanbook
+loanbook
 
 # TODO: Use your real tilt dataset with something like:
 # tilt <- readr::read_csv("path/to/your/real/tilt.csv")
 tilt <- demo_tilt
+tilt
 ```
 
 ### Check data quality
@@ -126,11 +128,10 @@ them. Missing values in other columns are fine.
 
 ```{r}
 non_nullable <- c("id", "company_name")
-
 loanbook %>% abort_if_incomplete(non_nullable)
 ```
 
-For example, here a non-nullable columns has `NA`'s:
+For example, here the non-nullable `id` column has one missing value:
 
 ```{r}
 bad_loanbook <- tribble(
@@ -149,10 +150,10 @@ fixed_loanbook %>% abort_if_incomplete(non_nullable)
 
 ### Create a standard alias of `company_name` in both datasets
 
-Use `to_alias()` to reduce the change you'll miss a match because of spurious
-differences in the company name between the loanbook and tilt dataset. It helps
-you get a less noisy, more consistent version of `company_name` in each of the
-two datasets before matching them.
+Use `to_alias()` to reduce the chance you'll miss a match because of spurious
+differences in the company name between the loanbook and tilt dataset. This
+helps you get a less noisy, more consistent version of `company_name` in each of
+the two datasets.
 
 ```{r}
 loanbook_alias <- loanbook %>% mutate(company_alias = to_alias(company_name))
@@ -169,16 +170,12 @@ in the loanbook to match `"all"` the potentially `multiple` companies with the
 same `country` and `postcode`.
 
 ```{r}
-reliable_shared_columns <- c("country", "postcode")
-# WARNING: If you lack `postcode` use this instead:
-# reliable_shared_columns <- "country"
-
 candidates <- left_join(
     loanbook_alias, tilt_alias, 
-    by = reliable_shared_columns,
+    by = c("country", "postcode"),
     # Add the suffix "_tilt" to each column from the tilt dataset
     suffix = c("", "_tilt"),
-    # Allow matching one to many
+    # Allow matching each company in loanbook to many companies in tilt
     multiple = "all"
 )
 ```
@@ -189,7 +186,7 @@ tilt dataset:
 ```{r}
 candidates %>% 
   filter(id == 1) %>%
-  select(country, postcode, id, company_alias, id_tilt, company_alias_tilt)
+  select(company_alias, id_tilt, company_alias_tilt)
 ```
 
 Next, calculate the string similarity between the aliased `company_name` from
@@ -198,7 +195,7 @@ complete dissimilarity corresponds to `0`. For each company in the loanbook,
 arrange matching candidates by descending similarity.
 
 ```{r}
-candidates_similarity <- candidates %>%
+okay_candidates <- candidates %>%
   # Other parameters may perform best. See `?stringdist::stringsim`
   mutate(similarity = stringsim(
     company_alias, company_alias_tilt, 
@@ -209,32 +206,63 @@ candidates_similarity <- candidates %>%
   # Arrange matching candidates from more to less similar
   arrange(id, -similarity)
 
-candidates_similarity %>% relocate(similarity)
+okay_candidates %>% relocate(similarity)
+```
+
+### Pick best candidates
+
+```{r}
+eligibility_threshold <- 0.75
+```
+
+Empirically we found that candidates under a `similarity` threshold of 
+`r eligibility_threshold` are false positives. Pick `similarity` values above that
+threshold to drastically reduce the number of candidates you'll need to validate
+manually. We believe this benefit outweighs the potential loss of a few true
+positives.
+
+```{r}
+best_candidates <- okay_candidates %>% 
+  filter(similarity > eligibility_threshold | is.na(similarity))
+```
+
+After picking the best candidates, some companies in your `loanbook` might no
+longer have any candidate in the `tilt` dataset.
+
+```{r}
+unmatched <- anti_join(
+  okay_candidates %>% distinct(id, company_name),
+  best_candidates %>% distinct(id, company_name)
+)
+
+unmatched
 ```
 
 ### Suggest matches
+
+```{r}
+# Decided upon extensive experience
+suggestion_threshold <- 0.9
+```
 
 Later you'll need to manually decide which of all candidates if any is a true
 match. To make that job easier, we can automatically make some suggestions in a
 new column `suggest_match`.
 
-The values of `suggest_match` are fist set to missing (`NA`) then set to `TRUE`
-where the value of `similarity` meets all of these conditions:
+The values of `suggest_match` are set to `TRUE` where the value of `similarity`
+meets all of these conditions:
 
 - It's the highest among all other candidates.
-- It's above a given threshold.
+- It's above a threshold of `r suggestion_threshold`.
 - It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
 
 ```{r}
-# Decided upon extensive experience with r2dii.match function and processes
-threshold <- 0.9
-
-candidates_suggest_match <- candidates_similarity %>%
+candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
   filter(similarity == max(similarity)) %>% 
-  # - It's above a given threshold.
-  filter(similarity > threshold) %>% 
+  # - It's above the threshold.
+  filter(similarity > suggestion_threshold) %>% 
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `postcode` -- to avoid duplicates.
   mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
@@ -242,8 +270,14 @@ candidates_suggest_match <- candidates_similarity %>%
   select(id, id_tilt) %>%
   mutate(suggest_match = TRUE) %>% 
   ungroup()
+```
 
-to_edit <- candidates_similarity %>%
+In all other rows the value of `suggest_match` is automatically set to `NA`.
+Also now create a new column `accept_match` and fill it with `NA`. Later you'll
+edit this colum.
+
+```{r}
+to_edit <- best_candidates %>%
   left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
   mutate(accept_match = NA)
 
@@ -251,9 +285,7 @@ to_edit %>% relocate(similarity, suggest_match)
 ```
 
 Note that even a `similarity` of `1` in the same `postcode` can be a false
-positive.
-
-For example, this is false positive:
+positive. For example, this is false positive:
 
 ```{r}
 to_edit %>% 
@@ -277,10 +309,10 @@ writexl::write_xlsx(to_edit, "to_edit.xlsx")
 
 ### Accept or reject matches
 
-- Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
-- For each row decide if you want to reject or accept the suggested match. By default
+* Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
+* For each row decide if you want to reject or accept the suggested match. By default
 each row is rejected. To accept it type TRUE in the column `accept_match`.
-- Save the edited file to later use it again in R, for example e.g. as "edited.csv".
+* Save the edited file to later use it again in R, for example e.g. as "edited.csv".
 
 ## 3. In R (session 2)
 
@@ -354,8 +386,8 @@ If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat
 ### Pick the matching companies
 
 Once your edited dataset is correct, pick the matching companies and you're
-done. Your final dataset will have as many rows as the number `TRUE` values in
-your edited dataset.
+done. Your final dataset will have as many rows as the number of `TRUE` values
+in the `accept_match` columns of your edited dataset.
 
 ```{r}
 edited %>% count(accept_match)

@@ -368,9 +368,15 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
 |  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    |         NA | NA            | NA           |
 
-**Note**: even a match of 1 in the same postcode can in rare cases be a
-False positive, compare e.g. company 4 (“Peasant Paul”) in the example
-data.
+**Notes**:
+
+- Even a match of 1 in the same postcode can in rare cases be a False
+  positive, compare e.g. company 4 (“Peasant Paul”) in the example data.
+- We do not want to automatically approve unique matches because there
+  may be few cases where multiple companies in the same ZIP code have
+  the same name. In these cases, additional information (for example,
+  the sector, street name, or main activity etc.) can help to make a
+  final decision.
 
 ### Check matching process
 
