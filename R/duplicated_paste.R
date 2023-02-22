@@ -1,11 +1,13 @@
-#' Duplicated paste
+#' Detect duplicated strings
 #'
-#' `duplicated_paste` check for duplicates on multiple rows / columns.
-#'
-#' @param ... Typically columns of a data set, e.g. company_name and postcode.
-#' @return A vector of booleans: TRUE if the value is a duplicate, FALSE if not.
+#' @inheritParams base::paste
 #' @export
-
+#' @examples
+#' duplicated_paste(c("a", "a"), 1:2)
+#' paste(c("a", "a"), 1:2)
+#'
+#' duplicated_paste(c("a", "a"), c(1, 1))
+#' paste(c("a", "a"), c(1, 1))
 duplicated_paste <- function(...) {
   duplicated(paste(...))
 }

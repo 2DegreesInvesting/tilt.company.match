@@ -2,16 +2,20 @@
 % Please edit documentation in R/duplicated_paste.R
 \name{duplicated_paste}
 \alias{duplicated_paste}
-\title{Duplicated paste}
+\title{Detect duplicated strings}
 \usage{
 duplicated_paste(...)
 }
 \arguments{
-\item{...}{Typically columns of a data set, e.g. company_name and postcode.}
-}
-\value{
-A vector of booleans: TRUE if the value is a duplicate, FALSE if not.
+\item{...}{one or more \R objects, to be converted to character vectors.}
 }
 \description{
-\code{duplicated_paste} check for duplicates on multiple rows / columns.
+Detect duplicated strings
+}
+\examples{
+duplicated_paste(c("a", "a"), 1:2)
+paste(c("a", "a"), 1:2)
+
+duplicated_paste(c("a", "a"), c(1, 1))
+paste(c("a", "a"), c(1, 1))
 }
