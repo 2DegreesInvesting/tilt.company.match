@@ -252,9 +252,9 @@ new column `suggest_match`.
 The values of `suggest_match` are set to `TRUE` where the value of `similarity`
 meets all of these conditions:
 
-- It's the highest among all other candidates.
-- It's above a threshold of `r suggestion_threshold`.
-- It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
+* It's the highest among all other candidates.
+* It's above a threshold of `r suggestion_threshold`.
+* It's the only such highest value in the group defined by a combination of `company_name` x `postcode` -- to avoid duplicates.
 
 ```{r}
 candidates_suggest_match <- best_candidates %>%
@@ -294,8 +294,8 @@ to_edit %>%
 ```
 
 Now write the dataset `to_edit` so that you can explore it in a spreadsheet
-editor. For example, you may write it as a .csv or .xlsx then open it in Excel
-or GoogleSheets.
+editor. For example, you may write it as a .csv or .xlsx file then open it in
+Excel or GoogleSheets.
 
 ```r
 # You can install the readr package with: `install.packages("readr")`
