@@ -1,6 +1,8 @@
 #' Detect duplicated strings
 #'
-#' @inheritParams base::paste
+#' @inheritDotParams base::paste
+#' @return  A logical vector of the same length as the longest vector passed to
+#'   `...`.
 #' @export
 #' @examples
 #' duplicated_paste(c("a", "a"), 1:2)

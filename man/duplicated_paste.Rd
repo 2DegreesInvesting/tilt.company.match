@@ -7,7 +7,23 @@
 duplicated_paste(...)
 }
 \arguments{
-\item{...}{one or more \R objects, to be converted to character vectors.}
+\item{...}{
+  Arguments passed on to \code{\link[base:paste]{base::paste}}
+  \describe{
+    \item{\code{sep}}{a character string to separate the terms.  Not
+    \code{\link[base]{NA_character_}}.}
+    \item{\code{collapse}}{an optional character string to separate the results.  Not
+    \code{\link[base]{NA_character_}}.}
+    \item{\code{recycle0}}{\code{\link[base]{logical}} indicating if zero-length
+    character arguments should lead to the zero-length
+    \code{\link[base]{character}(0)} after the \code{sep}-phase (which turns into
+    \code{""} in the \code{collapse}-phase, i.e., when \code{collapse} is
+    not \code{NULL}).}
+  }}
+}
+\value{
+A logical vector of the same length as the longest vector passed to
+\code{...}.
 }
 \description{
 Detect duplicated strings
