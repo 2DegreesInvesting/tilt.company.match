@@ -332,23 +332,6 @@ knitr::kable(loanbook_with_candidates_and_dist)
 |  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
 |  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA |
 |  12 | Best Bakers            | 65656    | france  | F         | bestbakers          |      11 | Cranes and Friends           | F              | cranesfriends         | NA            | NA           |  0.5482906 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc                 | G              | concrete inc          | 12345         | NA           |  1.0000000 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      11 | Cranes and Friends           | F              | cranesfriends         | 65656         | NA           |  0.6508242 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      13 | Your web consultants         | H              | yourwebconsultants    | 12345         | NA           |  0.5383598 |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      10 | John and Jacques Groceries   | E              | johnjacquesgroceries  | 98765         | NA           |  0.5222222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants         | H              | yourwebconsultants    | NA            | france       |  0.8900463 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      11 | Cranes and Friends           | F              | cranesfriends         | NA            | france       |  0.5634158 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      12 | Concrete Inc                 | G              | concrete inc          | NA            | france       |  0.5545635 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       4 | Peasant Paul                 | B              | peasantpaul           | NA            | germany      |  0.5484307 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       1 | Peasant Peter                | A              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       2 | Peasant Peter                | Z              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       3 | Peasant Peter                | Z              | peasantpeter          | NA            | germany      |  0.5097222 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | germany      |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       9 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | germany      |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      10 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | france       |  0.4875000 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       7 | Flower Power and Co.         | F              | flowerpower co        | NA            | germany      |  0.4565476 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       5 | The Bread Bakers Ltd         | C              | thebreadbakers ltd    | NA            | germany      |  0.4421296 |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |       6 | Flower Power Friends and Co. | D              | flowerpowerfriends co | NA            | germany      |  0.4236111 |
 
 Based an empiric research we decided to remove match candidates with a
 similarity under a certain threshold. This helps drastically reduce the
@@ -421,7 +404,7 @@ highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
-  dplyr::mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
+  dplyr::mutate(duplicates = any(duplicated_paste(company_name, postcode))) %>%
   dplyr::filter(duplicates == FALSE) %>%
   dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
@@ -453,8 +436,6 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 |   9 | John Meier’s Groceries | 56789    | germany | E         | johnmeiersgroceries |       8 | John and Jacques Groceries   | E              | johnjacquesgroceries  | NA            | NA           |  0.8478947 | NA            | NA           |
 |  10 | John Meier’s Groceries | 55555    | germany | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
 |  11 | John Meier’s Groceries | 55555    | norway  | Y         | johnmeiersgroceries |      NA | NA                           | NA             | NA                    | NA            | NA           |         NA | NA            | NA           |
-|  13 | Concrete Incorporated  | NA       | france  | G         | concrete inc        |      12 | Concrete Inc                 | G              | concrete inc          | 12345         | NA           |  1.0000000 | NA            | NA           |
-|  14 | Ur web consultants     | NA       | NA      | H         | urwebconsultants    |      13 | Your web consultants         | H              | yourwebconsultants    | NA            | france       |  0.8900463 | NA            | NA           |
 
 **Notes**:
 
@@ -514,8 +495,8 @@ not_matched <- report_no_matches(loanbook, manually_matched)
 #> company_alias)`
 #> Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread
 #> Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries
-#> John Meier's Groceries John Meier's Groceries Best Bakers Concrete Incorporated
-#> Ur web consultants ℹ Did you match these companies manually correctly ?
+#> John Meier's Groceries John Meier's Groceries Best Bakers ℹ Did you match these
+#> companies manually correctly ?
 
 knitr::kable(not_matched)
 ```
@@ -530,8 +511,6 @@ knitr::kable(not_matched)
 | John Meier’s Groceries |  10 |
 | John Meier’s Groceries |  11 |
 | Best Bakers            |  12 |
-| Concrete Incorporated  |  13 |
-| Ur web consultants     |  14 |
 
 ### Report duplicate matches
 
