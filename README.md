@@ -335,7 +335,7 @@ highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
   dplyr::filter(string_sim > threshold)
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
-  dplyr::mutate(duplicates = any(duplicated_paste(company_name, postcode))) %>%
+  dplyr::mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
   dplyr::filter(duplicates == FALSE) %>%
   dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
@@ -370,13 +370,14 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 
 **Notes**:
 
-- Even a match of 1 in the same postcode can in rare cases be a False
-  positive, compare e.g. company 4 (“Peasant Paul”) in the example data.
-- We do not want to automatically approve unique matches because there
-  may be few cases where multiple companies in the same ZIP code have
-  the same name. In these cases, additional information (for example,
-  the sector, street name, or main activity etc.) can help to make a
-  final decision.
+-   Even a match of 1 in the same postcode can in rare cases be a False
+    positive, compare e.g. company 4 (“Peasant Paul”) in the example
+    data.
+-   We do not want to automatically approve unique matches because there
+    may be few cases where multiple companies in the same ZIP code have
+    the same name. In these cases, additional information (for example,
+    the sector, street name, or main activity etc.) can help to make a
+    final decision.
 
 ### Check matching process
 
