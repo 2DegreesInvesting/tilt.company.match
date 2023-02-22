@@ -215,11 +215,11 @@ okay_candidates %>% relocate(similarity)
 eligibility_threshold <- 0.75
 ```
 
-Empirically we found that candidates under a `similarity` threshold of 
-`r eligibility_threshold` are false positives. Pick `similarity` values above that
-threshold to drastically reduce the number of candidates you'll need to validate
-manually. We believe this benefit outweighs the potential loss of a few true
-positives.
+Empirically we found that candidates under a `similarity` threshold of `r
+eligibility_threshold` are most likely false positives. Pick `similarity` values
+above that threshold to drastically reduce the number of candidates you'll need
+to validate manually. We believe this benefit outweighs the potential loss of a
+few true positives.
 
 ```{r}
 best_candidates <- okay_candidates %>% 
