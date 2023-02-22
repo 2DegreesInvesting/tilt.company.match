@@ -220,9 +220,9 @@
 <colgroup>
 <col width="6%">
 <col width="31%">
-<col width="12%">
+<col width="13%">
 <col width="11%">
-<col width="15%">
+<col width="14%">
 <col width="22%">
 </colgroup>
 <thead><tr class="header">
@@ -292,11 +292,11 @@
 <table class="table">
 <colgroup>
 <col width="5%">
-<col width="33%">
+<col width="34%">
 <col width="11%">
 <col width="10%">
-<col width="13%">
-<col width="25%">
+<col width="12%">
+<col width="26%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">id</th>
@@ -365,19 +365,23 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loanbook_with_candidates</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">tilt</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in dplyr::left_join(., tilt, by = c("country", "postcode"), suffix = c("", : Each row in `x` is expected to match at most 1 row in `y`.</span></span>
+<span><span class="co">#&gt; ℹ Row 1 of `x` matches multiple rows.</span></span>
+<span><span class="co">#&gt; ℹ If multiple matches are expected, set `multiple = "all"` to silence this</span></span>
+<span><span class="co">#&gt;   warning.</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">loanbook_with_candidates</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="3%">
-<col width="10%">
+<col width="11%">
 <col width="7%">
 <col width="6%">
 <col width="8%">
 <col width="11%">
-<col width="7%">
-<col width="15%">
-<col width="13%">
+<col width="6%">
+<col width="14%">
+<col width="12%">
 <col width="15%">
 </colgroup>
 <thead><tr class="header">
@@ -478,14 +482,14 @@
 <table class="table">
 <colgroup>
 <col width="2%">
-<col width="13%">
+<col width="14%">
 <col width="5%">
 <col width="5%">
 <col width="6%">
 <col width="12%">
 <col width="5%">
 <col width="17%">
-<col width="10%">
+<col width="9%">
 <col width="13%">
 <col width="7%">
 </colgroup>
@@ -770,7 +774,7 @@
 <span></span>
 <span><span class="va">lost_companies</span> <span class="op">&lt;-</span> <span class="va">before_filter_id_and_company</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">after_filter_id_and_company</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Joining, by = c("id", "company_name")</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(id, company_name)`</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">lost_companies</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -807,7 +811,7 @@
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">string_sim</span> <span class="op">&gt;</span> <span class="va">threshold</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">highest_matches_per_company_above_thresh_wo_duplicates</span> <span class="op">&lt;-</span> <span class="va">highest_matches_per_company_above_thresh</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duplicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">company_name</span>, <span class="va">postcode</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duplicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="reference/duplicated_paste.html">duplicated_paste</a></span><span class="op">(</span><span class="va">company_name</span>, <span class="va">postcode</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">duplicates</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id_tilt</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -820,13 +824,13 @@
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="11%">
-<col width="4%">
+<col width="12%">
+<col width="5%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="14%">
+<col width="15%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1137,13 +1141,13 @@
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="11%">
-<col width="4%">
+<col width="12%">
+<col width="5%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="14%">
+<col width="15%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1445,8 +1449,8 @@
 <p>We can then use the <strong>report_no_matches</strong> function and determine companies in the loanbook for which no match was selected or found.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">manually_matched</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Joining, by = c("id", "company_name", "postcode", "country", "misc_info",</span></span>
-<span><span class="co">#&gt; "company_alias")</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info,</span></span>
+<span><span class="co">#&gt; company_alias)`</span></span>
 <span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
 <span><span class="co">#&gt; Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries</span></span>
 <span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries Best Bakers ℹ Did you match these</span></span>
@@ -1455,41 +1459,41 @@
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">not_matched</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
 <th align="left">company_name</th>
+<th align="right">id</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">4</td>
 <td align="left">Peasant Paul</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
-<td align="right">5</td>
 <td align="left">Bread Bakers Limited</td>
+<td align="right">5</td>
 </tr>
 <tr class="odd">
-<td align="right">7</td>
 <td align="left">Screwdriver Experts</td>
+<td align="right">7</td>
 </tr>
 <tr class="even">
-<td align="right">8</td>
 <td align="left">Screwdriver Expert</td>
+<td align="right">8</td>
 </tr>
 <tr class="odd">
+<td align="left">John Meier’s Groceries</td>
 <td align="right">9</td>
-<td align="left">John Meier’s Groceries</td>
 </tr>
 <tr class="even">
-<td align="right">10</td>
 <td align="left">John Meier’s Groceries</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
-<td align="right">11</td>
 <td align="left">John Meier’s Groceries</td>
+<td align="right">11</td>
 </tr>
 <tr class="even">
-<td align="right">12</td>
 <td align="left">Best Bakers</td>
+<td align="right">12</td>
 </tr>
 </tbody>
 </table>
@@ -1506,13 +1510,13 @@
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
-<col width="11%">
-<col width="4%">
+<col width="12%">
+<col width="5%">
 <col width="4%">
 <col width="5%">
 <col width="10%">
 <col width="4%">
-<col width="14%">
+<col width="15%">
 <col width="8%">
 <col width="11%">
 <col width="6%">
@@ -1822,13 +1826,13 @@
 <col width="2%">
 <col width="8%">
 <col width="5%">
-<col width="4%">
+<col width="5%">
 <col width="6%">
 <col width="8%">
 <col width="5%">
 <col width="11%">
 <col width="9%">
-<col width="12%">
+<col width="11%">
 <col width="7%">
 <col width="8%">
 <col width="8%">
@@ -1958,13 +1962,13 @@
 <col width="2%">
 <col width="8%">
 <col width="5%">
-<col width="4%">
+<col width="5%">
 <col width="6%">
 <col width="8%">
 <col width="5%">
 <col width="11%">
 <col width="9%">
-<col width="12%">
+<col width="11%">
 <col width="7%">
 <col width="8%">
 <col width="8%">
