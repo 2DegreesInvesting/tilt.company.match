@@ -421,7 +421,7 @@ highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
-  dplyr::mutate(duplicates = any(duplicated(company_name, postcode))) %>%
+  dplyr::mutate(duplicates = any(duplicated(paste(company_name, postcode)))) %>%
   dplyr::filter(duplicates == FALSE) %>%
   dplyr::select(id, id_tilt) %>%
   dplyr::mutate(suggest_match = TRUE)
