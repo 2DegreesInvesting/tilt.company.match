@@ -49,6 +49,7 @@ with tilt.company.match. You can use them all with:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
+library(readr, warn.conflicts = FALSE)
 library(stringdist)
 library(tilt.company.match)
 ```
@@ -61,14 +62,20 @@ This example uses a "demo" loanbook. You should use your real loanbook instead
 # If you don't have the readr package you can install it with
 # install.packages("readr")
 
-# TODO: Use your real loanbook with something like:
-# loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
-loanbook <- demo_loanbook
+# TODO: Replace with the path/to/your/real/loanbook.csv
+loanbook_csv <- example_file("demo_loanbook.csv")
+loanbook_csv
+
+loanbook <- readr::read_csv(loanbook_csv)
+
 loanbook
 
-# TODO: Use your real tilt dataset with something like:
-# tilt <- readr::read_csv("path/to/your/real/tilt.csv")
-tilt <- demo_tilt
+# TODO: Replace with the path/to/your/real/tilt.csv
+tilt_csv <- example_file("demo_tilt.csv")
+tilt_csv
+
+tilt <- readr::read_csv(tilt_csv)
+
 tilt
 ```
 
@@ -86,7 +93,9 @@ loanbook %>% check_crucial_names(expected)
 
 # Anything different throws an error
 bad <- rename(loanbook, ids = id)
-bad %>% check_crucial_names(expected) %>% try()
+bad %>%
+  check_crucial_names(expected) %>%
+  try()
 ```
 
 #### Duplicates
@@ -94,7 +103,7 @@ bad %>% check_crucial_names(expected) %>% try()
 Do you have any duplicates in the column `id`?
 
 ```{r}
-has_no_duplicates <- identical(anyDuplicated(demo_loanbook$id), 0L)
+has_no_duplicates <- identical(anyDuplicated(loanbook$id), 0L)
 # If you get an error, remove the duplicates and try again
 stopifnot(has_no_duplicates)
 ```
@@ -113,9 +122,8 @@ For example, here the column `misc_info` suggests the duplicates belong to
 different companies, so it's OK:
 
 ```{r}
-
-loanbook %>% 
-  filter(company_name == "Peasant Peter") %>% 
+loanbook %>%
+  filter(company_name == "Peasant Peter") %>%
   filter(postcode == "01234")
 ```
 
@@ -138,8 +146,10 @@ bad_loanbook <- tribble(
   ~id,             ~company_name, ~postcode,  ~country, ~misc_info,
    NA,  "John Meier's Groceries",   "55555", "germany",        "Y",
    11,  "John Meier's Groceries",   "55555",  "norway",        "Y"
-  )
-bad_loanbook %>% abort_if_incomplete(non_nullable) %>% try()
+)
+bad_loanbook %>%
+  abort_if_incomplete(non_nullable) %>%
+  try()
 
 fixed_loanbook <- filter(bad_loanbook, !is.na(id))
 # NA's are OK in columns other than non-nullable ones
@@ -171,12 +181,12 @@ same `country` and `postcode`.
 
 ```{r}
 candidates <- left_join(
-    loanbook_alias, tilt_alias, 
-    by = c("country", "postcode"),
-    # Add the suffix "_tilt" to each column from the tilt dataset
-    suffix = c("", "_tilt"),
-    # Allow matching each company in loanbook to many companies in tilt
-    multiple = "all"
+  loanbook_alias, tilt_alias,
+  by = c("country", "postcode"),
+  # Add the suffix "_tilt" to each column from the tilt dataset
+  suffix = c("", "_tilt"),
+  # Allow matching each company in loanbook to many companies in tilt
+  multiple = "all"
 )
 ```
 
@@ -184,7 +194,7 @@ For example, here one company in the loanbook matches three candidates in the
 tilt dataset:
 
 ```{r}
-candidates %>% 
+candidates %>%
   filter(id == 1) %>%
   select(company_alias, id_tilt, company_alias_tilt)
 ```
@@ -198,11 +208,11 @@ arrange matching candidates by descending similarity.
 okay_candidates <- candidates %>%
   # Other parameters may perform best. See `?stringdist::stringsim`
   mutate(similarity = stringsim(
-    company_alias, company_alias_tilt, 
+    company_alias, company_alias_tilt,
     # Good to compare human typed text that might have typos.
-    method = "jw", 
+    method = "jw",
     p = 0.1
-  )) %>% 
+  )) %>%
   # Arrange matching candidates from more to less similar
   arrange(id, -similarity)
 
@@ -222,7 +232,7 @@ you'll need to validate manually. We believe this benefit outweighs the
 potential loss of a few true positives.
 
 ```{r}
-best_candidates <- okay_candidates %>% 
+best_candidates <- okay_candidates %>%
   filter(similarity > eligibility_threshold | is.na(similarity))
 ```
 
@@ -260,15 +270,15 @@ meets all of these conditions:
 candidates_suggest_match <- best_candidates %>%
   # - It's the highest among all other candidates.
   group_by(id) %>%
-  filter(similarity == max(similarity)) %>% 
+  filter(similarity == max(similarity)) %>%
   # - It's above the threshold.
-  filter(similarity > suggestion_threshold) %>% 
+  filter(similarity > suggestion_threshold) %>%
   # - It's the only such highest value in the group defined by a combination of
   # `company_name` x `postcode` -- to avoid duplicates.
   mutate(duplicates = any(duplicated_paste(company_name, postcode))) %>%
   filter(!duplicates) %>%
   select(id, id_tilt) %>%
-  mutate(suggest_match = TRUE) %>% 
+  mutate(suggest_match = TRUE) %>%
   ungroup()
 ```
 
@@ -288,7 +298,7 @@ Note that even a `similarity` of `1` in the same `postcode` can be a false
 positive. For example, this is false positive:
 
 ```{r}
-to_edit %>% 
+to_edit %>%
   filter(id == 4, id_tilt == 4) %>%
   select(suggest_match, similarity, postcode, matches("misc_info"))
 ```
@@ -327,16 +337,22 @@ library(dplyr, warn.conflicts = FALSE)
 library(tilt.company.match)
 ```
 
-Read the "edited.csv" file, and again your lookbook.
+Read the "edited.csv" file, and again your loanbook.
 
 ```{r}
-# TODO: Use your real edited dataset with something like:
-# edited <- readr::read_csv("path/to/the/file/you/really/edited.csv")
-edited <- demo_matched
+# TODO: Replace with the path/to/your/real/edited.csv
+edited_csv <- example_file("demo_matched.csv")
+edited_csv
 
-# TODO: Use your real loanbook with something like:
-# loanbook <- readr::read_csv("path/to/your/real/loanbook.csv")
-loanbook <- demo_loanbook
+edited <- readr::read_csv(edited_csv)
+edited
+
+# TODO: Replace with the path/to/your/real/loanbook.csv
+loanbook_csv <- example_file("demo_loanbook.csv")
+loanbook_csv
+
+loanbook <- readr::read_csv(loanbook_csv)
+loanbook
 ```
 
 ### Check the edited dataset
@@ -368,17 +384,21 @@ bad_edited <- edited %>%
   mutate(accept_match = if_else(id %in% c(1, 2), TRUE, accept_match))
 bad_edited %>% filter(id %in% c(1, 2))
 
-bad_edited %>% check_duplicated_relation() %>% try()
+bad_edited %>%
+  check_duplicated_relation() %>%
+  try()
 
 # Bad: Multiple loanbook-companies can't match a single tilt-company
 bad_edited2 <- demo_matched %>%
   filter(id_tilt == 3) %>%
-  mutate(id = 12) %>% 
+  mutate(id = 12) %>%
   bind_rows(demo_matched)
-bad_edited2 %>% 
+bad_edited2 %>%
   filter(accept_match == TRUE & id_tilt == 3)
 
-bad_edited2 %>% check_duplicated_relation() %>% try()
+bad_edited2 %>%
+  check_duplicated_relation() %>%
+  try()
 ```
 
 If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
