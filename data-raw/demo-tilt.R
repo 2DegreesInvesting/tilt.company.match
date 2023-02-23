@@ -13,4 +13,7 @@ demo_tilt <- tibble::tribble(
   11, "Cranes and Friends", "65656", "france", "F"
 )
 
+file <- here::here("inst", "extdata", "demo_tilt.csv")
+readr::write_csv(demo_tilt, file)
+
 usethis::use_data(demo_tilt, overwrite = TRUE)
