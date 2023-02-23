@@ -20,4 +20,7 @@ demo_matched <- tibble::tribble(
   11, "John Meier's Groceries", "55555", "norway", "Y", "johnmeiersgroceries", NA, NA, NA, NA, NA, NA, NA
 )
 
+file <- here::here("inst", "extdata", "demo_matched.csv")
+readr::write_csv(demo_matched, file)
+
 usethis::use_data(demo_matched, overwrite = TRUE)

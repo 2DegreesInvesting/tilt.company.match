@@ -14,4 +14,7 @@ demo_loanbook <- tibble::tribble(
   12, "Best Bakers", "65656", "france", "F" # only company in same zip, different name
 )
 
+file <- here::here("inst", "extdata", "demo_loanbook.csv")
+readr::write_csv(demo_loanbook, file)
+
 usethis::use_data(demo_loanbook, overwrite = TRUE)
