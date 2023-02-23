@@ -111,6 +111,7 @@ with:</p>
 automatically with tilt.company.match. You can use them all with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/markvanderloo/stringdist" class="external-link">stringdist</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -123,9 +124,21 @@ loanbook instead</p>
 <code class="sourceCode R"><span><span class="co"># If you don't have the readr package you can install it with</span></span>
 <span><span class="co"># install.packages("readr")</span></span>
 <span></span>
-<span><span class="co"># TODO: Use your real loanbook with something like:</span></span>
-<span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
-<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
+<span><span class="co"># TODO: Replace with the path/to/your/real/loanbook.csv</span></span>
+<span><span class="va">loanbook_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_loanbook.csv"</span><span class="op">)</span></span>
+<span><span class="va">loanbook_csv</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/work/_temp/Library/tilt.company.match/extdata/demo_loanbook.csv"</span></span>
+<span></span>
+<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">loanbook_csv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">12</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (4): company_name, postcode, country, misc_info</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (1): id</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
 <span><span class="va">loanbook</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 5</span></span></span>
 <span><span class="co">#&gt;       id company_name           postcode country misc_info</span></span>
@@ -143,9 +156,21 @@ loanbook instead</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 John Meier's Groceries 55555    norway  Y        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F</span></span>
 <span></span>
-<span><span class="co"># TODO: Use your real tilt dataset with something like:</span></span>
-<span><span class="co"># tilt &lt;- readr::read_csv("path/to/your/real/tilt.csv")</span></span>
-<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span></span>
+<span><span class="co"># TODO: Replace with the path/to/your/real/tilt.csv</span></span>
+<span><span class="va">tilt_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_tilt.csv"</span><span class="op">)</span></span>
+<span><span class="va">tilt_csv</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/work/_temp/Library/tilt.company.match/extdata/demo_tilt.csv"</span></span>
+<span></span>
+<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">tilt_csv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">11</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (4): company_name, postcode, country, misc_info</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (1): id</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
 <span><span class="va">tilt</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 5</span></span></span>
 <span><span class="co">#&gt;       id company_name                 postcode country misc_info</span></span>
@@ -178,7 +203,9 @@ loanbook instead</p>
 <span></span>
 <span><span class="co"># Anything different throws an error</span></span>
 <span><span class="va">bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="va">loanbook</span>, ids <span class="op">=</span> <span class="va">id</span><span class="op">)</span></span>
-<span><span class="va">bad</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/check_crucial_names.html">check_crucial_names</a></span><span class="op">(</span><span class="va">expected</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">bad</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/check_crucial_names.html">check_crucial_names</a></span><span class="op">(</span><span class="va">expected</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in abort_missing_names(sort(setdiff(expected_names, names(x)))) : </span></span>
 <span><span class="co">#&gt;   Must have missing names:</span></span>
 <span><span class="co">#&gt; `id`</span></span></code></pre></div>
@@ -188,7 +215,7 @@ loanbook instead</p>
 </h4>
 <p>Do you have any duplicates in the column <code>id</code>?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">has_no_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">anyDuplicated</a></span><span class="op">(</span><span class="va">demo_loanbook</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>, <span class="fl">0L</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">has_no_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">anyDuplicated</a></span><span class="op">(</span><span class="va">loanbook</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>, <span class="fl">0L</span><span class="op">)</span></span>
 <span><span class="co"># If you get an error, remove the duplicates and try again</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">has_no_duplicates</span><span class="op">)</span></span></code></pre></div>
 <p>Do you have duplicates in <code>company_name</code>,
@@ -204,9 +231,8 @@ belong to different companies, then you don’t have to fix them.</p>
 <p>For example, here the column <code>misc_info</code> suggests the
 duplicates belong to different companies, so it’s OK:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">company_name</span> <span class="op">==</span> <span class="st">"Peasant Peter"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">company_name</span> <span class="op">==</span> <span class="st">"Peasant Peter"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">postcode</span> <span class="op">==</span> <span class="st">"01234"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
 <span><span class="co">#&gt;      id company_name  postcode country misc_info</span></span>
@@ -231,8 +257,10 @@ missing value:</p>
 <span>  <span class="op">~</span><span class="va">id</span>,             <span class="op">~</span><span class="va">company_name</span>, <span class="op">~</span><span class="va">postcode</span>,  <span class="op">~</span><span class="va">country</span>, <span class="op">~</span><span class="va">misc_info</span>,</span>
 <span>   <span class="cn">NA</span>,  <span class="st">"John Meier's Groceries"</span>,   <span class="st">"55555"</span>, <span class="st">"germany"</span>,        <span class="st">"Y"</span>,</span>
 <span>   <span class="fl">11</span>,  <span class="st">"John Meier's Groceries"</span>,   <span class="st">"55555"</span>,  <span class="st">"norway"</span>,        <span class="st">"Y"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="va">bad_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">non_nullable</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">bad_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">non_nullable</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in abort_if_incomplete(., non_nullable) : </span></span>
 <span><span class="co">#&gt;   Non-nullable columns must not have `NA`s.</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Columns to review: id</span></span>
@@ -301,17 +329,17 @@ one company in the loanbook to match <code>"all"</code> the potentially
 <code>postcode</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">candidates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">loanbook_alias</span>, <span class="va">tilt_alias</span>, </span>
-<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># Add the suffix "_tilt" to each column from the tilt dataset</span></span>
-<span>    suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># Allow matching each company in loanbook to many companies in tilt</span></span>
-<span>    multiple <span class="op">=</span> <span class="st">"all"</span></span>
+<span>  <span class="va">loanbook_alias</span>, <span class="va">tilt_alias</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Add the suffix "_tilt" to each column from the tilt dataset</span></span>
+<span>  suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Allow matching each company in loanbook to many companies in tilt</span></span>
+<span>  multiple <span class="op">=</span> <span class="st">"all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For example, here one company in the loanbook matches three
 candidates in the tilt dataset:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">company_alias</span>, <span class="va">id_tilt</span>, <span class="va">company_alias_tilt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
@@ -329,11 +357,11 @@ matching candidates by descending similarity.</p>
 <code class="sourceCode R"><span><span class="va">okay_candidates</span> <span class="op">&lt;-</span> <span class="va">candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Other parameters may perform best. See `?stringdist::stringsim`</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>similarity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stringdist/man/stringsim.html" class="external-link">stringsim</a></span><span class="op">(</span></span>
-<span>    <span class="va">company_alias</span>, <span class="va">company_alias_tilt</span>, </span>
+<span>    <span class="va">company_alias</span>, <span class="va">company_alias_tilt</span>,</span>
 <span>    <span class="co"># Good to compare human typed text that might have typos.</span></span>
-<span>    method <span class="op">=</span> <span class="st">"jw"</span>, </span>
+<span>    method <span class="op">=</span> <span class="st">"jw"</span>,</span>
 <span>    p <span class="op">=</span> <span class="fl">0.1</span></span>
-<span>  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Arrange matching candidates from more to less similar</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">id</span>, <span class="op">-</span><span class="va">similarity</span><span class="op">)</span></span>
 <span></span>
@@ -376,7 +404,7 @@ reduce the number of candidates you’ll need to validate manually. We
 believe this benefit outweighs the potential loss of a few true
 positives.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">best_candidates</span> <span class="op">&lt;-</span> <span class="va">okay_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">best_candidates</span> <span class="op">&lt;-</span> <span class="va">okay_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">eligibility_threshold</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>After picking the best candidates, some companies in your
 <code>loanbook</code> might no longer have any candidate in the
@@ -417,15 +445,15 @@ avoid duplicates.</li>
 <code class="sourceCode R"><span><span class="va">candidates_suggest_match</span> <span class="op">&lt;-</span> <span class="va">best_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># - It's the highest among all other candidates.</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">similarity</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># - It's above the threshold.</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">suggestion_threshold</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">similarity</span> <span class="op">&gt;</span> <span class="va">suggestion_threshold</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># - It's the only such highest value in the group defined by a combination of</span></span>
 <span>  <span class="co"># `company_name` x `postcode` -- to avoid duplicates.</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duplicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="../reference/duplicated_paste.html">duplicated_paste</a></span><span class="op">(</span><span class="va">company_name</span>, <span class="va">postcode</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">duplicates</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id_tilt</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>In all other rows the value of <code>suggest_match</code> is
 automatically set to <code>NA</code>. Also now create a new column
@@ -466,7 +494,7 @@ edit this colum.</p>
 same <code>postcode</code> can be a false positive. For example, this is
 false positive:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">to_edit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">to_edit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">4</span>, <span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">suggest_match</span>, <span class="va">similarity</span>, <span class="va">postcode</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">matches</a></span><span class="op">(</span><span class="st">"misc_info"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
@@ -478,7 +506,7 @@ in a spreadsheet editor. For example, you may write it as a .csv or
 .xlsx file then open it in Excel or GoogleSheets.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.csv"</span><span class="op">)</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.csv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Or, you can install the writexl package with: `install.packages("writexl")`</span></span>
 <span><span class="fu">writexl</span><span class="fu">::</span><span class="fu">write_xlsx</span><span class="op">(</span><span class="va">to_edit</span>, <span class="st">"to_edit.xlsx"</span><span class="op">)</span></span></code></pre></div>
@@ -513,15 +541,80 @@ one.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span></code></pre></div>
-<p>Read the “edited.csv” file, and again your lookbook.</p>
+<p>Read the “edited.csv” file, and again your loanbook.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># TODO: Use your real edited dataset with something like:</span></span>
-<span><span class="co"># edited &lt;- readr::read_csv("path/to/the/file/you/really/edited.csv")</span></span>
-<span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
+<code class="sourceCode R"><span><span class="co"># TODO: Replace with the path/to/your/real/edited.csv</span></span>
+<span><span class="va">edited_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_matched.csv"</span><span class="op">)</span></span>
+<span><span class="va">edited_csv</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/work/_temp/Library/tilt.company.match/extdata/demo_matched.csv"</span></span>
 <span></span>
-<span><span class="co"># TODO: Use your real loanbook with something like:</span></span>
-<span><span class="co"># loanbook &lt;- readr::read_csv("path/to/your/real/loanbook.csv")</span></span>
-<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span></code></pre></div>
+<span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">edited_csv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">18</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (8): company_name, postcode, country, misc_info, company_alias, company_...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (3): id, id_tilt, string_sim</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span> (2): suggest_match, accept_match</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">edited</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18 × 13</span></span></span>
+<span><span class="co">#&gt;       id compa…¹ postc…² country misc_…³ compa…⁴ id_tilt compa…⁵ misc_…⁶ compa…⁷</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasan… 01234   germany A       peasan…       1 Peasan… A       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1 Peasan… 01234   germany A       peasan…       2 Peasan… Z       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1 Peasan… 01234   germany A       peasan…       4 Peasan… B       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     2 Peasan… 01234   germany Z       peasan…       1 Peasan… A       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     2 Peasan… 01234   germany Z       peasan…       2 Peasan… Z       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     2 Peasan… 01234   germany Z       peasan…       4 Peasan… B       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     3 Peasan… 11234   germany Z       peasan…       3 Peasan… Z       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     4 Peasan… 01234   germany Z       peasan…       4 Peasan… B       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     4 Peasan… 01234   germany Z       peasan…       1 Peasan… A       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     4 Peasan… 01234   germany Z       peasan…       2 Peasan… Z       peasan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>     5 Bread … 23456   germany C       breadb…       5 The Br… C       thebre…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>     6 Flower… 34567   germany Z       flower…       7 Flower… F       flower…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>     6 Flower… 34567   germany Z       flower…       6 Flower… D       flower…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>     7 Screwd… 45678   germany D       screwd…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>     8 Screwd… 45678   germany Z       screwd…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>     9 John M… 56789   germany E       johnme…       8 John a… E       johnja…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>    10 John M… 55555   germany Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span>    11 John M… 55555   norway  Y       johnme…      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 3 more variables: string_sim &lt;dbl&gt;, suggest_match &lt;lgl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   accept_match &lt;lgl&gt;, and abbreviated variable names ¹​company_name,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​postcode, ³​misc_info, ⁴​company_alias, ⁵​company_name_tilt, ⁶​misc_info_tilt,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span>
+<span></span>
+<span><span class="co"># TODO: Replace with the path/to/your/real/loanbook.csv</span></span>
+<span><span class="va">loanbook_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_loanbook.csv"</span><span class="op">)</span></span>
+<span><span class="va">loanbook_csv</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/work/_temp/Library/tilt.company.match/extdata/demo_loanbook.csv"</span></span>
+<span></span>
+<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">loanbook_csv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">12</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (4): company_name, postcode, country, misc_info</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (1): id</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">loanbook</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 5</span></span></span>
+<span><span class="co">#&gt;       id company_name           postcode country misc_info</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 Peasant Peter          01234    germany A        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 Peasant Peter          01234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Peasant Peter          11234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 Peasant Paul           01234    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 Bread Bakers Limited   23456    germany C        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Flower Power &amp; Company 34567    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Screwdriver Experts    45678    germany D        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Screwdriver Expert     45678    germany Z        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 John Meier's Groceries 56789    germany E        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 John Meier's Groceries 55555    germany Y        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    11 John Meier's Groceries 55555    norway  Y        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    12 Best Bakers            65656    france  F</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-the-edited-dataset">Check the edited dataset<a class="anchor" aria-label="anchor" href="#check-the-edited-dataset"></a>
@@ -580,7 +673,9 @@ dataset or reverse.</li>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​postcode, ³​misc_info, ⁴​company_alias, ⁵​company_name_tilt, ⁶​misc_info_tilt,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span>
 <span></span>
-<span><span class="va">bad_edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">bad_edited</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in check_duplicated_relation(.) : </span></span>
 <span><span class="co">#&gt;   Duplicated match of company in loanbook detected.</span></span>
 <span><span class="co">#&gt; Duplicated company name: Peasant Peter, id: 1.</span></span>
@@ -591,9 +686,9 @@ dataset or reverse.</li>
 <span><span class="co"># Bad: Multiple loanbook-companies can't match a single tilt-company</span></span>
 <span><span class="va">bad_edited2</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">demo_matched</span><span class="op">)</span></span>
-<span><span class="va">bad_edited2</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">bad_edited2</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">accept_match</span> <span class="op">==</span> <span class="cn">TRUE</span> <span class="op">&amp;</span> <span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 13</span></span></span>
 <span><span class="co">#&gt;      id compan…¹ postc…² country misc_…³ compa…⁴ id_tilt compa…⁵ misc_…⁶ compa…⁷</span></span>
@@ -605,7 +700,9 @@ dataset or reverse.</li>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​postcode, ³​misc_info, ⁴​company_alias, ⁵​company_name_tilt, ⁶​misc_info_tilt,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁷​company_alias_tilt</span></span></span>
 <span></span>
-<span><span class="va">bad_edited2</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">bad_edited2</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in check_duplicated_relation(.) : </span></span>
 <span><span class="co">#&gt;   Duplicated match of company from tilt db detected.</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Duplicated tilt company name: Peasant Peter, tilt id: 3.</span></span>
@@ -646,7 +743,7 @@ your edited dataset.</p>
 a .csv file like before with:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can install the readr package with: `install.packages("readr")`</span></span>
-<span><span class="va">final</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">write_csv</span><span class="op">(</span><span class="st">"final.csv"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">final</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="st">"final.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
