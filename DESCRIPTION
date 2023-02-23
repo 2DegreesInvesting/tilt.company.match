@@ -1,6 +1,6 @@
 Package: tilt.company.match
 Title: Helpers for Company Name Matching in the tilt-Project
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Mirja", "Hollmann", , "mirja@2degrees-investing.org", role = c("aut", "cre")),
     person("Linda", "Delacombaz", , "linda@2degrees-investing.org", role = "aut")
