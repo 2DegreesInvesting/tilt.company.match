@@ -142,14 +142,11 @@ loanbook %>% abort_if_incomplete(non_nullable)
 For example, here the non-nullable `id` column has one missing value:
 
 ```{r}
-# style: off
 bad_loanbook <- tribble(
   ~id,             ~company_name, ~postcode,  ~country, ~misc_info,
    NA,  "John Meier's Groceries",   "55555", "germany",        "Y",
    11,  "John Meier's Groceries",   "55555",  "norway",        "Y"
 )
-# style: on
-
 bad_loanbook %>%
   abort_if_incomplete(non_nullable) %>%
   try()
