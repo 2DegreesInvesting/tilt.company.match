@@ -421,3 +421,14 @@ like before with:
 # You can install the readr package with: `install.packages("readr")`
 final %>% write_csv("final.csv", show_col_types = FALSE)
 ```
+
+```{r echo=FALSE}
+extdata_path <- here::here("inst", "extdata")
+if (fs::dir_exists(extdata_path)) {
+  knitr::purl(
+    here::here("vignettes", "articles", "tilt-company-match.Rmd"),
+    output = file.path(extdata_path, "tilt-company-match_code.R"),
+    documentation = 2
+  )
+}
+```
