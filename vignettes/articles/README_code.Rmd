@@ -6,6 +6,7 @@ This article is identical to README.Rmd but the text is commented out so you can
 copy-paste and run it as a single .R script.
 
 ```{r echo=FALSE, comment = ""}
-example_file <- tilt.company.match::example_file
+library(tilt.company.match)
+example_file <- example_file
 writeLines(readLines(example_file("README.R")))
 ```
