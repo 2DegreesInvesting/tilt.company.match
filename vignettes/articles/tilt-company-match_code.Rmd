@@ -6,6 +6,6 @@ This article is identical to "Get started" but the text is commented out so you
 can copy-paste and run it as a single .R script.
 
 ```{r echo=FALSE, comment = ""}
-example_file <- tilt.company.match::example_file
-writeLines(readLines(example_file("tilt-company-match_code.R")))
+file <- tilt.company.match::example_file("tilt-company-match_code.R")
+writeLines(readLines(file))
 ```
