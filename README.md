@@ -4,7 +4,7 @@
 # tilt.company.match
 
 The goal of tilt.company.match is to provide helpers for company name
-matching in the tilt-project,
+matching in the tilt-project.
 
 ## Installation
 
@@ -20,14 +20,14 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 
 The matching problem is characterised as follows:
 
--   matching companies from banks\` loanbooks to tilt will face problems
-    of inconsistent company names (typos, conventions…)
+- matching companies from banks\` loanbooks to tilt will face problems
+  of inconsistent company names (typos, conventions…)
 
--   it is expected that postcode will be available as relatively
-    reliable additional information for most companies
+- it is expected that postcode will be available as relatively reliable
+  additional information for most companies
 
--   not all companies in loanbooks will be in tilt db (thus not have a
-    match)
+- not all companies in loanbooks will be in tilt db (thus not have a
+  match)
 
 To match the companies provided in a loanbook to companies in the tilt
 database we expect a loanbook dataframe and a tilt db dataframe that
@@ -180,6 +180,7 @@ knitr::kable(head(loanbook))
 |   6 | Flower Power & Company | 34567    | germany | Z         | flowerpower co  |
 
 ``` r
+
 tilt <- demo_tilt %>%
   dplyr::mutate(company_alias = to_alias(company_name))
 
@@ -319,10 +320,10 @@ is provided.
 
 The **suggest_match** column is set to TRUE if:
 
--   The match is above a determined threshold.
--   It is the highest match of all matches.
--   There is only 1 highest match per **company_name** x **id**
-    combination to avoid duplicates.
+- The match is above a determined threshold.
+- It is the highest match of all matches.
+- There is only 1 highest match per **company_name** x **id**
+  combination to avoid duplicates.
 
 ``` r
 highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
@@ -370,14 +371,13 @@ knitr::kable(loanbook_with_candidates_and_dist_and_suggestion)
 
 **Notes**:
 
--   Even a match of 1 in the same postcode can in rare cases be a False
-    positive, compare e.g. company 4 (“Peasant Paul”) in the example
-    data.
--   We do not want to automatically approve unique matches because there
-    may be few cases where multiple companies in the same ZIP code have
-    the same name. In these cases, additional information (for example,
-    the sector, street name, or main activity etc.) can help to make a
-    final decision.
+- Even a match of 1 in the same postcode can in rare cases be a False
+  positive, compare e.g. company 4 (“Peasant Paul”) in the example data.
+- We do not want to automatically approve unique matches because there
+  may be few cases where multiple companies in the same ZIP code have
+  the same name. In these cases, additional information (for example,
+  the sector, street name, or main activity etc.) can help to make a
+  final decision.
 
 ### Check matching process
 
@@ -537,3 +537,10 @@ knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt 
 # un-comment this line to have the error
 # check_duplicated_relation(duplicate_tilt_id)
 ```
+
+    #> 
+    #> 
+    #> processing file: README.Rmd
+    #>   |                                                           |                                                   |   0%  |                                                           |.                                                  |   2%                     |                                                           |..                                                 |   4% (unnamed-chunk-24)  |                                                           |...                                                |   6%                     |                                                           |....                                               |   9% (unnamed-chunk-25)  |                                                           |.....                                              |  11%                     |                                                           |.......                                            |  13% (unnamed-chunk-26)  |                                                           |........                                           |  15%                     |                                                           |.........                                          |  17% (unnamed-chunk-27)  |                                                           |..........                                         |  19%                     |                                                           |...........                                        |  21% (unnamed-chunk-28)  |                                                           |............                                       |  23%                     |                                                           |.............                                      |  26% (unnamed-chunk-29)  |                                                           |..............                                     |  28%                     |                                                           |...............                                    |  30% (unnamed-chunk-30)  |                                                           |................                                   |  32%                     |                                                           |.................                                  |  34% (unnamed-chunk-31)  |                                                           |..................                                 |  36%                     |                                                           |....................                               |  38% (unnamed-chunk-32)  |                                                           |.....................                              |  40%                     |                                                           |......................                             |  43% (unnamed-chunk-33)  |                                                           |.......................                            |  45%                     |                                                           |........................                           |  47% (unnamed-chunk-34)  |                                                           |.........................                          |  49%                     |                                                           |..........................                         |  51% (unnamed-chunk-35)  |                                                           |...........................                        |  53%                     |                                                           |............................                       |  55% (unnamed-chunk-36)  |                                                           |.............................                      |  57%                     |                                                           |..............................                     |  60% (unnamed-chunk-37)  |                                                           |...............................                    |  62%                     |                                                           |.................................                  |  64% (unnamed-chunk-38)  |                                                           |..................................                 |  66%                     |                                                           |...................................                |  68% (unnamed-chunk-39)  |                                                           |....................................               |  70%                     |                                                           |.....................................              |  72% (unnamed-chunk-40)  |                                                           |......................................             |  74%                     |                                                           |.......................................            |  77% (unnamed-chunk-41)  |                                                           |........................................           |  79%                     |                                                           |.........................................          |  81% (unnamed-chunk-42)  |                                                           |..........................................         |  83%                     |                                                           |...........................................        |  85% (unnamed-chunk-43)  |                                                           |............................................       |  87%                     |                                                           |..............................................     |  89% (unnamed-chunk-44)  |                                                           |...............................................    |  91%                     |                                                           |................................................   |  94% (unnamed-chunk-45)  |                                                           |.................................................  |  96%                     |                                                           |.................................................. |  98% (unnamed-chunk-46)  |                                                           |...................................................| 100%                   
+    #> output file: /home/rstudio/git/tilt.company.match/inst/extdata/README_code.R
+    #> [1] "/home/rstudio/git/tilt.company.match/inst/extdata/README_code.R"
