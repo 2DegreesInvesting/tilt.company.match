@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 # tilt.company.match
 
 The goal of tilt.company.match is to provide helpers for company name
-matching in the tilt-project,
+matching in the tilt-project.
 
 ## Installation
 
@@ -380,3 +380,15 @@ knitr::kable(duplicate_tilt_id %>% dplyr::filter(accept_match == TRUE & id_tilt 
 # un-comment this line to have the error
 # check_duplicated_relation(duplicate_tilt_id)
 ```
+
+```{r echo=FALSE}
+extdata_path <- here::here("inst", "extdata")
+if (fs::dir_exists(extdata_path)) {
+  knitr::purl(
+    "README.Rmd", 
+    output = file.path(extdata_path, "README_code.R"),
+    documentation = 2
+  )
+}
+```
+
