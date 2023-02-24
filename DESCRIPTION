@@ -21,6 +21,7 @@ Imports:
     stringi,
     tibble
 Suggests:
+    here,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
