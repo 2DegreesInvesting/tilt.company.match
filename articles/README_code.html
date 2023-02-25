@@ -221,17 +221,17 @@ so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' </span></span>
 <span><span class="co">## ----error=TRUE---------------------------------------------------------------</span></span>
 <span><span class="co"># missings on a non-crucial column</span></span>
-<span><span class="va">missing_non_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">missing_non_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>postcode <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span>, <span class="cn">NA_character_</span>, <span class="va">.data</span><span class="op">$</span><span class="va">postcode</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">missing_non_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">missing_non_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span>non_nullable_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># missings on a crucial column</span></span>
-<span><span class="va">missing_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">missing_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_name <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span>, <span class="cn">NA_character_</span>, <span class="va">.data</span><span class="op">$</span><span class="va">postcode</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">missing_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">missing_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span>non_nullable_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#' </span></span>
@@ -298,9 +298,8 @@ so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
 <span><span class="va">min_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span>
 <span></span>
-<span><span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">string_sim</span><span class="op">)</span> <span class="op">|</span> <span class="va">string_sim</span> <span class="op">&gt;</span> <span class="va">min_threshold</span><span class="op">)</span></span>
-<span></span>
 <span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' Note that, in very rare cases, we might loose matches this way, since candidates</span></span>
@@ -310,15 +309,15 @@ so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' are reported.</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">before_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">before_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">after_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">after_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lost_companies</span> <span class="op">&lt;-</span> <span class="va">before_filter_id_and_company</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">lost_companies</span> <span class="op">&lt;-</span> <span class="va">before_filter_id_and_company</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">after_filter_id_and_company</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">lost_companies</span><span class="op">)</span></span>

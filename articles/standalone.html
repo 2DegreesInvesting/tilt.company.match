@@ -119,10 +119,14 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' identical(out, data)</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' # With NA in one nullable column, alerts the column to review as an error</span></span>
-<span><span class="co">#' data %&gt;% abort_if_incomplete(non_nullable_cols = c("x", "y")) %&gt;% try()</span></span>
+<span><span class="co">#' data %&gt;%</span></span>
+<span><span class="co">#'   abort_if_incomplete(non_nullable_cols = c("x", "y")) %&gt;%</span></span>
+<span><span class="co">#'   try()</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' # By default, it takes all columns as non-nullable</span></span>
-<span><span class="co">#' data %&gt;% abort_if_incomplete() %&gt;% try()</span></span>
+<span><span class="co">#' data %&gt;%</span></span>
+<span><span class="co">#'   abort_if_incomplete() %&gt;%</span></span>
+<span><span class="co">#'   try()</span></span>
 <span><span class="va">abort_if_incomplete</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">non_nullable_cols</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">incomplete</span> <span class="op">&lt;-</span> <span class="fu">select_incomplete</span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="va">non_nullable_cols</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="va">incomplete</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
