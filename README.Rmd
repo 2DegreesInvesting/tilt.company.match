@@ -223,7 +223,7 @@ loanbook_with_candidates_and_dist_filtered <- loanbook_with_candidates_and_dist 
 
 Note that, in very rare cases, we might loose matches this way, since candidates
 that are removed here due to the lower threshold are no longer included in the 
-matching. We concluded that the improved ease of use justifies those edgecases. 
+matching. We concluded that the improved ease of use justifies those edge cases. 
 Companies that have no more candidates after filtering with the lower threshold 
 are reported.
 
