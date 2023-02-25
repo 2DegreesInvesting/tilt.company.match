@@ -514,17 +514,7 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' ```r</span></span>
 <span><span class="co">#' # You can install the readr package with: `install.packages("readr")`</span></span>
 <span><span class="co">#' final %&gt;% write_csv("final.csv", show_col_types = FALSE)</span></span>
-<span><span class="co">#' ```</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## ----echo=FALSE---------------------------------------------------------------</span></span>
-<span><span class="va">extdata_path</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"inst"</span>, <span class="st">"extdata"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/file_access.html" class="external-link">dir_exists</a></span><span class="op">(</span><span class="va">extdata_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">purl</a></span><span class="op">(</span></span>
-<span>    <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"vignettes"</span>, <span class="st">"articles"</span>, <span class="st">"tilt-company-match.Rmd"</span><span class="op">)</span>,</span>
-<span>    output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">extdata_path</span>, <span class="st">"tilt-company-match_code.R"</span><span class="op">)</span>,</span>
-<span>    documentation <span class="op">=</span> <span class="fl">2</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre>
+<span><span class="co">#' ```</span></span></code></pre>
   </main>
 </div>
 
