@@ -173,23 +173,76 @@ tilt_alias
 
 ### Match candidates
 
-To identify matching candidates, join the two datasets allowing any one company
-in the loanbook to match `"all"` the potentially `multiple` companies with the
-same `country` and `postcode`.
+To inform the decision about which companies in your `loanbook` match companies in the `tilt`
+dataset, we compare the values in the columns `postcode` and `country`:
+
+* If your `loanbook` has both `postcode` and `country` we match companies in that specific `postcode` and that specific `country`. You will likely match companies that are really the same (true positives) because it's unlikely that two companies with similar name will be located close to each other. This will cost you the minimum amount of manual-validation work ahead.
 
 ```{r}
-candidates <- left_join(
-  loanbook_alias, tilt_alias,
-  by = c("country", "postcode"),
-  # Add the suffix "_tilt" to each column from the tilt dataset
-  suffix = c("", "_tilt"),
-  # Allow matching each company in loanbook to many companies in tilt
-  multiple = "all"
-)
+lacks_none <- loanbook_alias %>%
+  filter(!is.na(postcode) & !is.na(country)) %>%
+  left_join(
+    tilt_alias,
+    by = c("country", "postcode"),
+    suffix = c("", "_tilt"),
+    multiple = "all"
+  )
 ```
 
-For example, here one company in the loanbook matches three candidates in the
-tilt dataset:
+* If your `loanbook` lacks `postcode` but has `country` we match companies in that specific `country` but across every `postcode`. You will possibly match companies that are not really
+the same (false positives) but happen to have a similar name and are located in
+the same `country`. This will cost you additional manual-validation work ahead.
+
+```{r}
+lacks_postcode <- loanbook_alias %>%
+  filter(is.na(postcode) & !is.na(country)) %>%
+  left_join(
+    tilt_alias,
+    by = c("country"),
+    suffix = c("", "_tilt"),
+    multiple = "all"
+  )
+```
+
+* If your `loanbook` has `postcode` but lacks `country` we match companies with the same `postcode` but  across every `country`. You will possibly match companies that are not really
+the same (false positives) but happen to have a similar name and the same
+postcode. This will cost you additional manual-validation work ahead.
+
+```{r}
+lacks_country <- loanbook_alias %>%
+  filter(!is.na(postcode) & is.na(country)) %>%
+  left_join(tilt_alias, by = c("postcode"), suffix = c("", "_tilt"))
+```
+
+* If your `loanbook` lacks both `postcode` and `country` we match companies across the entire dataset.  You will most likely match companies that are not really
+the same (false positives). This will cost you the greatest amount of additional
+manual-validation work ahead.
+
+```{r}
+lacks_both <- loanbook_alias %>%
+  filter(is.na(postcode) & is.na(country)) %>%
+  mutate(postcode = "join_helper") %>%
+  inner_join(
+    dplyr::mutate(tilt_alias, postcode = "join_helper"),
+    by = c("postcode"),
+    suffix = c("", "_tilt"),
+    multiple = "all"
+  ) %>%
+  mutate(postcode = NA_character_)
+```
+
+Having considered all cases, you can now combine them all in a single dataset:
+
+```{r}
+candidates <- bind_rows(lacks_none, lacks_postcode, lacks_country, lacks_both)
+
+candidates
+```
+
+Above each join allowed any one company in your `loanbook` to match `"all"` of
+the potentially `multiple` companies the `tilt` dataset. Here, for example, one
+company in our demo `loanbook` matches three candidates in our demo `tilt`
+dataset:
 
 ```{r}
 candidates %>%
