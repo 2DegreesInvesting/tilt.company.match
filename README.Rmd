@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 # tilt.company.match
 
 The goal of tilt.company.match is to provide helpers for company name
-matching in the tilt-project,
+matching in the tilt-project.
 
 ## Installation
 
