@@ -1,13 +1,15 @@
 Package: tilt.company.match
-Title: Helpers for Company Name Matching in the tilt-Project
+Title: Helpers for Company Name Matching in the 'TILT' Project
 Version: 0.0.0.9001
 Authors@R: c(
     person("Mirja", "Hollmann", , "mirja@2degrees-investing.org", role = c("aut", "cre")),
-    person("Linda", "Delacombaz", , "linda@2degrees-investing.org", role = "aut")
+    person("Linda", "Delacombaz", , "linda@2degrees-investing.org", role = "aut"),
+    person("2 Degrees Investing Initiative", , , "contact@2degrees-investing.org", role = c("cph", "fnd"))
   )
-Description: Package holds helpers for company matching in the
-    tilt-project.  For details please refer to README.
+Description: Hlpers for company matching in the 'TILT' project.  For
+    details please refer to README.
 License: MIT + file LICENSE
+URL: https://2degreesinvesting.github.io/tilt.company.match/
 Depends: 
     R (>= 2.10),
     stringdist
@@ -32,4 +34,3 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-URL: https://2degreesinvesting.github.io/tilt.company.match/

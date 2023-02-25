@@ -27,8 +27,12 @@ out <- data \%>\% abort_if_incomplete(non_nullable_cols = "y")
 identical(out, data)
 
 # With NA in one nullable column, alerts the column to review as an error
-data \%>\% abort_if_incomplete(non_nullable_cols = c("x", "y")) \%>\% try()
+data \%>\%
+  abort_if_incomplete(non_nullable_cols = c("x", "y")) \%>\%
+  try()
 
 # By default, it takes all columns as non-nullable
-data \%>\% abort_if_incomplete() \%>\% try()
+data \%>\%
+  abort_if_incomplete() \%>\%
+  try()
 }
