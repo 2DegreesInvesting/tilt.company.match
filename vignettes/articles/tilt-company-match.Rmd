@@ -12,21 +12,6 @@ knitr::opts_chunk$set(
 This document explains how to match companies in a loanbook from a bank to
 companies in a tilt dataset from 2 Degrees Investing Initiative.
 
-## tl;dr
-
-> I just want to download the source code of this file so I can run it locally.
-
-* [Find it on
-GitHub](https://github.com/search?q=repo%3A2degreesinvesting%2Ftilt.company.match+filename%3A*.Rmd&type=code)
-* Click the "Raw" tab.
-* Save it to your computer, typically with right-click or Control+S.
-
-> I just want to copy-paste and run all the code.
-
-Find the code-only version of this file
-[here](https://2degreesinvesting.github.io/tilt.company.match/articles/). The
-text is still there but it's commented out.
-
 ## Considerations
 
 * The company's name may be different in each dataset, for example because of typos.
