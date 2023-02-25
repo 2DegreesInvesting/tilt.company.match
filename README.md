@@ -208,11 +208,11 @@ companies in the `tilt` dataset, we compare the values in the columns
   manual-validation work ahead.
 
 ``` r
-loanbook_lacks_none <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & !is.na(country)) %>% 
+loanbook_lacks_none <- loanbook %>%
+  dplyr::filter(!is.na(postcode) & !is.na(country)) %>%
   dplyr::left_join(
-    tilt, 
-    by = c("country", "postcode"), 
+    tilt,
+    by = c("country", "postcode"),
     suffix = c("", "_tilt"),
     multiple = "all"
   )
@@ -226,11 +226,11 @@ loanbook_lacks_none <- loanbook %>%
   ahead.
 
 ``` r
-loanbook_lacks_postcode <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & !is.na(country)) %>% 
+loanbook_lacks_postcode <- loanbook %>%
+  dplyr::filter(is.na(postcode) & !is.na(country)) %>%
   dplyr::left_join(
-    tilt, 
-    by = c("country"), 
+    tilt,
+    by = c("country"),
     suffix = c("", "_tilt"),
     multiple = "all"
   )
@@ -243,8 +243,8 @@ loanbook_lacks_postcode <- loanbook %>%
   This will cost you additional manual-validation work ahead.
 
 ``` r
-loanbook_lacks_country <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & is.na(country)) %>% 
+loanbook_lacks_country <- loanbook %>%
+  dplyr::filter(!is.na(postcode) & is.na(country)) %>%
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
@@ -255,15 +255,15 @@ loanbook_lacks_country <- loanbook %>%
   ahead.
 
 ``` r
-loanbook_lacks_both <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & is.na(country)) %>% 
-  dplyr::mutate(postcode = "join_helper") %>% 
+loanbook_lacks_both <- loanbook %>%
+  dplyr::filter(is.na(postcode) & is.na(country)) %>%
+  dplyr::mutate(postcode = "join_helper") %>%
   dplyr::inner_join(
-    dplyr::mutate(tilt, postcode = "join_helper"), 
-    by = c("postcode"), 
+    dplyr::mutate(tilt, postcode = "join_helper"),
+    by = c("postcode"),
     suffix = c("", "_tilt"),
     multiple = "all"
-  ) %>% 
+  ) %>%
   dplyr::mutate(postcode = NA_character_)
 ```
 
@@ -401,7 +401,7 @@ highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
 threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold) %>% 
+  dplyr::filter(string_sim > threshold) %>%
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%

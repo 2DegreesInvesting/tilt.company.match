@@ -179,11 +179,11 @@ dataset, we compare the values in the columns `postcode` and `country`:
 * If your `loanbook` has both `postcode` and `country` we match companies in that specific `postcode` and that specific `country`. You will likely match companies that are really the same (true positives) because it's unlikely that two companies with similar name will be located close to each other. This will cost you the minimum amount of manual-validation work ahead.
 
 ```{r}
-loanbook_lacks_none <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & !is.na(country)) %>% 
+loanbook_lacks_none <- loanbook %>%
+  dplyr::filter(!is.na(postcode) & !is.na(country)) %>%
   dplyr::left_join(
-    tilt, 
-    by = c("country", "postcode"), 
+    tilt,
+    by = c("country", "postcode"),
     suffix = c("", "_tilt"),
     multiple = "all"
   )
@@ -194,11 +194,11 @@ the same (false positives) but happen to have a similar name and are located in
 the same `country`. This will cost you additional manual-validation work ahead.
 
 ```{r}
-loanbook_lacks_postcode <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & !is.na(country)) %>% 
+loanbook_lacks_postcode <- loanbook %>%
+  dplyr::filter(is.na(postcode) & !is.na(country)) %>%
   dplyr::left_join(
-    tilt, 
-    by = c("country"), 
+    tilt,
+    by = c("country"),
     suffix = c("", "_tilt"),
     multiple = "all"
   )
@@ -209,8 +209,8 @@ the same (false positives) but happen to have a similar name and the same
 postcode. This will cost you additional manual-validation work ahead.
 
 ```{r}
-loanbook_lacks_country <- loanbook %>% 
-  dplyr::filter(!is.na(postcode) & is.na(country)) %>% 
+loanbook_lacks_country <- loanbook %>%
+  dplyr::filter(!is.na(postcode) & is.na(country)) %>%
   dplyr::left_join(tilt, by = c("postcode"), suffix = c("", "_tilt"))
 ```
 
@@ -219,15 +219,15 @@ the same (false positives). This will cost you the greatest amount of additional
 manual-validation work ahead.
 
 ```{r}
-loanbook_lacks_both <- loanbook %>% 
-  dplyr::filter(is.na(postcode) & is.na(country)) %>% 
-  dplyr::mutate(postcode = "join_helper") %>% 
+loanbook_lacks_both <- loanbook %>%
+  dplyr::filter(is.na(postcode) & is.na(country)) %>%
+  dplyr::mutate(postcode = "join_helper") %>%
   dplyr::inner_join(
-    dplyr::mutate(tilt, postcode = "join_helper"), 
-    by = c("postcode"), 
+    dplyr::mutate(tilt, postcode = "join_helper"),
+    by = c("postcode"),
     suffix = c("", "_tilt"),
     multiple = "all"
-  ) %>% 
+  ) %>%
   dplyr::mutate(postcode = NA_character_)
 ```
 
@@ -329,7 +329,7 @@ highest_matches_per_company <- loanbook_with_candidates_and_dist_filtered %>%
 threshold <- 0.9 # Threshold decided upon extensive experience with r2dii.match function and processes
 
 highest_matches_per_company_above_thresh <- highest_matches_per_company %>%
-  dplyr::filter(string_sim > threshold) %>% 
+  dplyr::filter(string_sim > threshold) %>%
   dplyr::filter(!is.na(postcode) & !is.na(country))
 
 highest_matches_per_company_above_thresh_wo_duplicates <- highest_matches_per_company_above_thresh %>%
