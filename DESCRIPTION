@@ -11,8 +11,7 @@ Description: Hlpers for company matching in the 'TILT' project.  For
 License: MIT + file LICENSE
 URL: https://2degreesinvesting.github.io/tilt.company.match/
 Depends: 
-    R (>= 2.10),
-    stringdist
+    R (>= 2.10)
 Imports: 
     dplyr,
     glue,
@@ -20,6 +19,7 @@ Imports:
     purrr,
     readr,
     rlang,
+    stringdist,
     stringi,
     tibble
 Suggests:

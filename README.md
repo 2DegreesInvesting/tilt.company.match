@@ -38,7 +38,6 @@ For an example compare demo data below.
 
 ``` r
 library(tilt.company.match)
-#> Loading required package: stringdist
 knitr::kable(head(demo_loanbook))
 ```
 
@@ -139,17 +138,17 @@ from user side.
 
 ``` r
 # missings on a non-crucial column
-missing_non_crucial <- demo_loanbook %>% 
+missing_non_crucial <- demo_loanbook %>%
   dplyr::mutate(postcode = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-missing_non_crucial %>% 
+missing_non_crucial %>%
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
 
 # missings on a crucial column
-missing_crucial <- demo_loanbook %>% 
+missing_crucial <- demo_loanbook %>%
   dplyr::mutate(company_name = dplyr::if_else(id == 1, NA_character_, .data$postcode))
 
-missing_crucial %>% 
+missing_crucial %>%
   abort_if_incomplete(non_nullable_cols = c("id", "company_name"))
 #> Error in `abort_if_incomplete()`:
 #> ! Non-nullable columns must not have `NA`s.
@@ -274,7 +273,7 @@ number of candidates, making the data easier to process for a human.
 ``` r
 min_threshold <- 0.75
 
-loanbook_with_candidates_and_dist_filtered <- loanbook_with_candidates_and_dist %>% 
+loanbook_with_candidates_and_dist_filtered <- loanbook_with_candidates_and_dist %>%
   dplyr::filter(is.na(string_sim) | string_sim > min_threshold)
 ```
 
@@ -285,15 +284,15 @@ use justifies those edge cases. Companies that have no more candidates
 after filtering with the lower threshold are reported.
 
 ``` r
-before_filter_id_and_company <- loanbook_with_candidates_and_dist %>% 
-  dplyr::select(id, company_name) %>% 
+before_filter_id_and_company <- loanbook_with_candidates_and_dist %>%
+  dplyr::select(id, company_name) %>%
   dplyr::distinct_all()
 
-after_filter_id_and_company <- loanbook_with_candidates_and_dist_filtered %>% 
-  dplyr::select(id, company_name) %>% 
+after_filter_id_and_company <- loanbook_with_candidates_and_dist_filtered %>%
+  dplyr::select(id, company_name) %>%
   dplyr::distinct_all()
 
-lost_companies <- before_filter_id_and_company %>% 
+lost_companies <- before_filter_id_and_company %>%
   dplyr::anti_join(after_filter_id_and_company)
 #> Joining with `by = join_by(id, company_name)`
 

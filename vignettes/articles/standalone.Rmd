@@ -8,9 +8,7 @@ If you can't install the tilt.company.match package do this:
 
 ```{r echo=FALSE, comment=""}
 description <- utils::packageDescription("tilt.company.match")
-depends <- gsub("R.*,", "", description$Depends)
-imports <- description$Imports
-packages <- trimws(unlist(strsplit(c(depends, imports), ",")))
+packages <- trimws(unlist(strsplit(description$Imports, ",")))
 
 writeLines(sprintf(
   'install.packages("%s")', packages
