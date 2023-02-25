@@ -276,4 +276,3 @@ test_that("get_ownership_type() is equal to its legacy in pacta", {
 test_that("handles weird encoding", {
   expect_no_error(to_alias("\xfc"))
 })
-

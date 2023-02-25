@@ -4,9 +4,9 @@
 \name{tilt.company.match-package}
 \alias{tilt.company.match}
 \alias{tilt.company.match-package}
-\title{tilt.company.match: Helpers for Company Name Matching in the tilt-Project}
+\title{tilt.company.match: Helpers for Company Name Matching in the 'TILT' Project}
 \description{
-Package holds helpers for company matching in the tilt-project. For details please refer to README.
+Hlpers for company matching in the 'TILT' project. For details please refer to README.
 }
 \seealso{
 Useful links:
@@ -21,6 +21,11 @@ Useful links:
 Authors:
 \itemize{
   \item Linda Delacombaz \email{linda@2degrees-investing.org}
+}
+
+Other contributors:
+\itemize{
+  \item 2 Degrees Investing Initiative \email{contact@2degrees-investing.org} [copyright holder, funder]
 }
 
 }
