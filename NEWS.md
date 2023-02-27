@@ -1,5 +1,7 @@
 # tilt.company.match (development version)
 
+* Show installation instructions from r-universe (#78).
+
 * Replace readr with vroom to help users read data separated with a wider range
 of delimiters (#77).
 
