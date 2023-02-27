@@ -60,7 +60,7 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 Call this function if things seem weird and you're not sure what's wrong or how
 to fix it.
 
-```{r}
+```r
 devtools::dev_sitrep()
 ```
 
