@@ -2,8 +2,8 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom readr read_csv
 #' @importFrom stringdist stringsim
 #' @importFrom tibble tibble
+#' @importFrom vroom vroom
 ## usethis namespace: end
 NULL

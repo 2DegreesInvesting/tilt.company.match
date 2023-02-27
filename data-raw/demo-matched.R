@@ -21,6 +21,6 @@ demo_matched <- tibble::tribble(
 )
 
 file <- here::here("inst", "extdata", "demo_matched.csv")
-readr::write_csv(demo_matched, file)
+vroom::vroom_write(demo_matched, file, delim = ",")
 
 usethis::use_data(demo_matched, overwrite = TRUE)

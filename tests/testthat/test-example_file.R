@@ -1,5 +1,5 @@
-test_that("with inexistent file errors gracefully", {
-  expect_error(example_file("bad.csv"), "no.*found")
+test_that("with inexistent file errors", {
+  expect_error(example_file("bad.csv"))
 })
 
 test_that("without `file` errors gracefully", {

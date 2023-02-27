@@ -15,6 +15,6 @@ demo_loanbook <- tibble::tribble(
 )
 
 file <- here::here("inst", "extdata", "demo_loanbook.csv")
-readr::write_csv(demo_loanbook, file)
+vroom::vroom_write(demo_loanbook, file, delim = ",")
 
 usethis::use_data(demo_loanbook, overwrite = TRUE)

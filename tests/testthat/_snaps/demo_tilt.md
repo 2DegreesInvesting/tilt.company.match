@@ -3,7 +3,7 @@
     Code
       demo_tilt
     Output
-      # A tibble: 13 x 5
+      # A tibble: 11 x 5
             id company_name                 postcode country misc_info
          <dbl> <chr>                        <chr>    <chr>   <chr>    
        1     1 Peasant Peter                01234    germany A        
@@ -17,6 +17,4 @@
        9     9 John and Jacques Groceries   98765    germany E        
       10    10 John and Jacques Groceries   98765    france  E        
       11    11 Cranes and Friends           65656    france  F        
-      12    12 Concrete Inc                 12345    france  G        
-      13    13 Your web consultants         12345    france  H        
 

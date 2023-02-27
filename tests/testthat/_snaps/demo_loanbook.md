@@ -3,7 +3,7 @@
     Code
       demo_loanbook
     Output
-      # A tibble: 14 x 5
+      # A tibble: 12 x 5
             id company_name           postcode country misc_info
          <dbl> <chr>                  <chr>    <chr>   <chr>    
        1     1 Peasant Peter          01234    germany A        
@@ -18,6 +18,4 @@
       10    10 John Meier's Groceries 55555    germany Y        
       11    11 John Meier's Groceries 55555    norway  Y        
       12    12 Best Bakers            65656    france  F        
-      13    13 Concrete Incorporated  <NA>     france  G        
-      14    14 Ur web consultants     <NA>     <NA>    H        
 

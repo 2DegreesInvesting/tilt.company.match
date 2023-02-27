@@ -6,7 +6,7 @@
 \alias{tilt.company.match-package}
 \title{tilt.company.match: Helpers for Company Name Matching in the 'TILT' Project}
 \description{
-Hlpers for company matching in the 'TILT' project. For details please refer to README.
+Helpers for company matching in the 'TILT' project. For details please refer to README.
 }
 \seealso{
 Useful links:
