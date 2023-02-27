@@ -1,6 +1,6 @@
 # tilt.company.match (development version)
 
-* The Get started article gains the new section "System requirements" (#188).
+* The Get started article gains the new section "System requirements" (#83).
 
 * Show installation instructions from r-universe (#78).
 
