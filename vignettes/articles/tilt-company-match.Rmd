@@ -37,7 +37,6 @@ companies in your loanbook.
 
 You need the package
 [tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).
-
 You can install it from [r-universe](https://r-universe.dev/) with:
 
 ```r
