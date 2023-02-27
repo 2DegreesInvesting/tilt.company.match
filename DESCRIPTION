@@ -17,11 +17,11 @@ Imports:
     glue,
     magrittr,
     purrr,
-    readr,
     rlang,
     stringdist,
     stringi,
-    tibble
+    tibble,
+    vroom
 Suggests:
     fs,
     here,

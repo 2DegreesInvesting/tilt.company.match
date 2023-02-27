@@ -49,7 +49,7 @@ with tilt.company.match. You can use them all with:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
-library(readr, warn.conflicts = FALSE)
+library(vroom, warn.conflicts = FALSE)
 library(stringdist)
 library(tilt.company.match)
 ```
@@ -59,21 +59,18 @@ library(tilt.company.match)
 This example uses a "demo" loanbook. You should use your real loanbook instead
 
 ```{r}
-# If you don't have the readr package you can install it with
-# install.packages("readr")
-
 # TODO: Replace with the path/to/your/real/loanbook.csv
 loanbook_csv <- example_file("demo_loanbook.csv")
 loanbook_csv
 
-loanbook <- read_csv(loanbook_csv, show_col_types = FALSE)
+loanbook <-vroom(loanbook_csv, show_col_types = FALSE)
 loanbook
 
 # TODO: Replace with the path/to/your/real/tilt.csv
 tilt_csv <- example_file("demo_tilt.csv")
 tilt_csv
 
-tilt <- read_csv(tilt_csv, show_col_types = FALSE)
+tilt <-vroom(tilt_csv, show_col_types = FALSE)
 tilt
 ```
 
@@ -359,8 +356,7 @@ editor. For example, you may write it as a .csv or .xlsx file then open it in
 Excel or GoogleSheets.
 
 ```r
-# You can install the readr package with: `install.packages("readr")`
-write_csv(to_edit, "to_edit.csv", show_col_types = FALSE)
+vroom::vroom_write(to_edit, "to_edit.csv", delim = ",")
 
 # Or, you can install the writexl package with: `install.packages("writexl")`
 writexl::write_xlsx(to_edit, "to_edit.xlsx")
@@ -395,14 +391,14 @@ Read the "edited.csv" file, and again your loanbook.
 edited_csv <- example_file("demo_matched.csv")
 edited_csv
 
-edited <- read_csv(edited_csv, show_col_types = FALSE)
+edited <-vroom(edited_csv, show_col_types = FALSE)
 edited
 
 # TODO: Replace with the path/to/your/real/loanbook.csv
 loanbook_csv <- example_file("demo_loanbook.csv")
 loanbook_csv
 
-loanbook <- read_csv(loanbook_csv, show_col_types = FALSE)
+loanbook <-vroom(loanbook_csv, show_col_types = FALSE)
 loanbook
 ```
 
@@ -471,6 +467,5 @@ If you need to use your final dataset elsewhere, you may write it to a .csv file
 like before with:
 
 ```r
-# You can install the readr package with: `install.packages("readr")`
-final %>% write_csv("final.csv", show_col_types = FALSE)
+final %>% vroom::vroom_write("final.csv", delim = ",")
 ```

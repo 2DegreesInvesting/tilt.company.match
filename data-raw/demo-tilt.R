@@ -14,6 +14,6 @@ demo_tilt <- tibble::tribble(
 )
 
 file <- here::here("inst", "extdata", "demo_tilt.csv")
-readr::write_csv(demo_tilt, file)
+vroom::vroom_write(demo_tilt, file, delim = ",")
 
 usethis::use_data(demo_tilt, overwrite = TRUE)
