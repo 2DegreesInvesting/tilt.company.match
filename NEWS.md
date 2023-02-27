@@ -1,5 +1,7 @@
 # tilt.company.match (development version)
 
+* The Get started article gains the new section "System requirements" (#188).
+
 * Show installation instructions from r-universe (#78).
 
 * Replace readr with vroom to help users read data separated with a wider range
