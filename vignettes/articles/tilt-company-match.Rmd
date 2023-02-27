@@ -4,6 +4,7 @@ title: "tilt.company.match"
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  cache = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -56,11 +57,10 @@ Or you can install it from [GitHub](https://github.com/) with:
 devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
-If something fails it helps check some properties of your system:
+Call this function if things seem weird and you're not sure what's wrong or how
+to fix it.
 
 ```{r}
-devtools::has_devel()
-
 devtools::dev_sitrep()
 ```
 
