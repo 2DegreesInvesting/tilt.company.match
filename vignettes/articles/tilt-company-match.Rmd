@@ -38,7 +38,7 @@ Both your loanbook and tilt dataset must meet these requirements:
 In this first R session you'll create a dataset with candidate matches for the
 companies in your loanbook.
 
-### Install the R package tilt.company.match
+### Install tilt.company.match
 
 You can install
 [tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match)
@@ -58,7 +58,7 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 
 If something fails it helps check some properties of your system:
 
-```{r cache=TRUE}
+```{r}
 devtools::has_devel()
 
 devtools::dev_sitrep()
