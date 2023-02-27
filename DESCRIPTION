@@ -6,7 +6,7 @@ Authors@R: c(
     person("Linda", "Delacombaz", , "linda@2degrees-investing.org", role = "aut"),
     person("2 Degrees Investing Initiative", , , "contact@2degrees-investing.org", role = c("cph", "fnd"))
   )
-Description: Hlpers for company matching in the 'TILT' project.  For
+Description: Helpers for company matching in the 'TILT' project.  For
     details please refer to README.
 License: MIT + file LICENSE
 URL: https://2degreesinvesting.github.io/tilt.company.match/
