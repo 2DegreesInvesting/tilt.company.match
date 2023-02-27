@@ -86,6 +86,7 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' </span></span>
 <span><span class="co">## ---- include = FALSE---------------------------------------------------------</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span></span>
 <span><span class="op">)</span></span>
@@ -120,11 +121,11 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' In this first R session you'll create a dataset with candidate matches for the</span></span>
 <span><span class="co">#' companies in your loanbook.</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' ### Install and use R packages</span></span>
+<span><span class="co">#' ### Install tilt.company.match</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' You need the package</span></span>
-<span><span class="co">#' [tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).</span></span>
-<span><span class="co">#' You can install it from [r-universe](https://r-universe.dev/) with:</span></span>
+<span><span class="co">#' You can install</span></span>
+<span><span class="co">#' [tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match)</span></span>
+<span><span class="co">#' from [r-universe](https://r-universe.dev/) with:</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' ```r</span></span>
 <span><span class="co">#' options(repos = c("https://2degreesinvesting.r-universe.dev", getOption("repos")))</span></span>
@@ -138,8 +139,16 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' devtools::install_github("2DegreesInvesting/tilt.company.match")</span></span>
 <span><span class="co">#' ```</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' You'll also use the packages dplyr and stringdist but they install automatically</span></span>
-<span><span class="co">#' with tilt.company.match. You can use them all with:</span></span>
+<span><span class="co">#' Call this function if things seem weird and you're not sure what's wrong or how</span></span>
+<span><span class="co">#' to fix it.</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' ```r</span></span>
+<span><span class="co">#' devtools::dev_sitrep()</span></span>
+<span><span class="co">#' ```</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' ### Use R packages</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' Installing tilt.company.match should automatically install other useful packages. You can use them all with:</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -150,7 +159,7 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' ### Read the datasets</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' This example uses a "demo" loanbook. You should use your real loanbook instead</span></span>
+<span><span class="co">#' This example uses "demo" datasets. You should use your real `loanbook` and `tilt` datasets instead.</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
 <span><span class="co"># TODO: Replace with the path/to/your/real/loanbook.csv</span></span>
