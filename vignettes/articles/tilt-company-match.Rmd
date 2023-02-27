@@ -28,6 +28,11 @@ Both your loanbook and tilt dataset must meet these requirements:
 * It may or may not have other columns.
 * The column `id` holds unique row-identifiers.
 
+## System requirements
+
+* [Install R and RStudio](https://happygitwithr.com/install-r-rstudio.html).
+* [Setup an R build toolchain](https://r-pkgs.org/setup.html#setup-tools).
+
 ## 1. In R (session 1)
 
 In this first R session you'll create a dataset with candidate matches for the
