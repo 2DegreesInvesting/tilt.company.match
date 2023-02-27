@@ -63,14 +63,14 @@ This example uses a "demo" loanbook. You should use your real loanbook instead
 loanbook_csv <- example_file("demo_loanbook.csv")
 loanbook_csv
 
-loanbook <-vroom(loanbook_csv, show_col_types = FALSE)
+loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
 loanbook
 
 # TODO: Replace with the path/to/your/real/tilt.csv
 tilt_csv <- example_file("demo_tilt.csv")
 tilt_csv
 
-tilt <-vroom(tilt_csv, show_col_types = FALSE)
+tilt <- vroom(tilt_csv, show_col_types = FALSE)
 tilt
 ```
 
@@ -138,9 +138,9 @@ For example, here the non-nullable `id` column has one missing value:
 
 ```{r}
 bad_loanbook <- tribble(
-  ~id,             ~company_name, ~postcode,  ~country, ~misc_info,
-   NA,  "John Meier's Groceries",   "55555", "germany",        "Y",
-   11,  "John Meier's Groceries",   "55555",  "norway",        "Y"
+  ~id, ~company_name, ~postcode, ~country, ~misc_info,
+  NA, "John Meier's Groceries", "55555", "germany", "Y",
+  11, "John Meier's Groceries", "55555", "norway", "Y"
 )
 bad_loanbook %>%
   abort_if_incomplete(non_nullable) %>%
@@ -391,14 +391,14 @@ Read the "edited.csv" file, and again your loanbook.
 edited_csv <- example_file("demo_matched.csv")
 edited_csv
 
-edited <-vroom(edited_csv, show_col_types = FALSE)
+edited <- vroom(edited_csv, show_col_types = FALSE)
 edited
 
 # TODO: Replace with the path/to/your/real/loanbook.csv
 loanbook_csv <- example_file("demo_loanbook.csv")
 loanbook_csv
 
-loanbook <-vroom(loanbook_csv, show_col_types = FALSE)
+loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
 loanbook
 ```
 
