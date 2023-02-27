@@ -38,11 +38,11 @@ Both your loanbook and tilt dataset must meet these requirements:
 In this first R session you'll create a dataset with candidate matches for the
 companies in your loanbook.
 
-### Install and use R packages
+### Install the R package tilt.company.match
 
-You need the package
-[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match).
-You can install it from [r-universe](https://r-universe.dev/) with:
+You can install
+[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match)
+from [r-universe](https://r-universe.dev/) with:
 
 ```r
 options(repos = c("https://2degreesinvesting.r-universe.dev", getOption("repos")))
@@ -56,8 +56,17 @@ Or you can install it from [GitHub](https://github.com/) with:
 devtools::install_github("2DegreesInvesting/tilt.company.match")
 ```
 
-You'll also use the packages dplyr and stringdist but they install automatically
-with tilt.company.match. You can use them all with:
+If something fails it helps check some properties of your system:
+
+```{r cache=TRUE}
+devtools::has_devel()
+
+devtools::dev_sitrep()
+```
+
+### Use R packages
+
+Installing tilt.company.match should automatically install other useful packages. You can use them all with:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
@@ -68,7 +77,7 @@ library(tilt.company.match)
 
 ### Read the datasets
 
-This example uses a "demo" loanbook. You should use your real loanbook instead
+This example uses "demo" datasets. You should use your real `loanbook` and `tilt` datasets instead.
 
 ```{r}
 # TODO: Replace with the path/to/your/real/loanbook.csv
