@@ -40,8 +40,8 @@ You need the package
 You can install it from [r-universe](https://r-universe.dev/) with:
 
 ```r
-repos <- c("https://2degreesinvesting.r-universe.dev", getOption("repos"))
-install.packages("tilt.company.match", repos = repos)
+options(repos = c("https://2degreesinvesting.r-universe.dev", getOption("repos")))
+install.packages("tilt.company.match")
 ```
 
 Or you can install it from [GitHub](https://github.com/) with:
