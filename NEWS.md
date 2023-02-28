@@ -1,5 +1,8 @@
 # tilt.company.match (development version)
 
+* The Get started article supersedes README. README will get only major fixes
+but no enhancements.
+
 * The Get started article gains the new section "System requirements" (#83).
 
 * Show installation instructions from r-universe (#78).
