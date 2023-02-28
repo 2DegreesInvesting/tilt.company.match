@@ -7,7 +7,7 @@ can copy-paste and run it as a single .R script.
 
 ```{r include=FALSE}
 output <- tempfile()
-input <- here::here("inst", "templates", "monolith.Rmd")
+input <- here::here("inst", "templates", "get-started.Rmd")
 knitr::purl(input, output, documentation = 2)
 ```
 ```{r echo=FALSE, comment=""}
