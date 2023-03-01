@@ -1,10 +1,12 @@
-suggest_match <- function(.params = NULL) {
+suggest_match <- function(loanbook_csv, tilt_csv) {
   rmd <- fs::path_package("templates", "1.Rmd", package = "tilt.company.match")
   dir <- withr::local_tempdir()
   withr::local_dir(dir)
 
   tmp_rmd <- fs::path(dir, fs::path_file(rmd))
   fs::file_copy(rmd, tmp_rmd)
+
+  .params <- list(loanbook_csv = loanbook_csv, tilt_csv = tilt_csv)
   rmarkdown::render(tmp_rmd, params = .params, quiet = TRUE)
 
   out <- read("to_edit.csv")
