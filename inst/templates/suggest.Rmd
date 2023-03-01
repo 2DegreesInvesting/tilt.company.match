@@ -1,70 +1,19 @@
 ---
-title: "tilt.company.match"
+output: github_document
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  cache = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-This document explains how to match companies in a loanbook from a bank to
-companies in a tilt dataset from 2 Degrees Investing Initiative.
+### 1. Suggest
 
-## Considerations
+Here you'll suggest matching candidates in a first R session.
 
-* The company's name may be different in each dataset, for example because of typos.
-* The company's country and postcode are useful. A match by name, country, and postcode is more
-reliable than a match by name alone.
-* The company may not exist in the tilt dataset.
-
-## Data requirements
-
-Both your loanbook and tilt dataset must meet these requirements:
-
-* It's an R dataframe.
-* It has the columns `id`, `company_name`, `postcode`, and `country`.
-* It may or may not have other columns.
-* The column `id` holds unique row-identifiers.
-
-## System requirements
-
-* [Install R and RStudio](https://happygitwithr.com/install-r-rstudio.html).
-* [Setup an R build toolchain](https://r-pkgs.org/setup.html#setup-tools).
-
-## 1. In R (session 1)
-
-In this first R session you'll create a dataset with candidate matches for the
-companies in your loanbook.
-
-### Install tilt.company.match
-
-You can install
-[tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match)
-from [r-universe](https://r-universe.dev/) with:
-
-```r
-options(repos = c("https://2degreesinvesting.r-universe.dev", getOption("repos")))
-install.packages("tilt.company.match")
-```
-
-Or you can install it from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("2DegreesInvesting/tilt.company.match")
-```
-
-Call this function if things seem weird and you're not sure what's wrong or how
-to fix it.
-
-```r
-devtools::dev_sitrep()
-```
-
-### Use R packages
+#### Use R packages
 
 Installing tilt.company.match should automatically install other useful packages. You can use them all with:
 
@@ -75,7 +24,7 @@ library(stringdist)
 library(tilt.company.match)
 ```
 
-### Read the datasets
+#### Read the datasets
 
 This example uses "demo" datasets. You should use your real `loanbook` and `tilt` datasets instead.
 
@@ -95,11 +44,11 @@ tilt <- vroom(tilt_csv, show_col_types = FALSE)
 tilt
 ```
 
-### Check data quality
+#### Check data quality
 
 Let's first check you `loanbook` is as we expect.
 
-#### Expected columns
+##### Expected columns
 
 Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
 
@@ -114,7 +63,7 @@ bad %>%
   try()
 ```
 
-#### Duplicates
+##### Duplicates
 
 Do you have any duplicates in the column `id`?
 
@@ -143,7 +92,7 @@ loanbook %>%
   filter(postcode == "01234")
 ```
 
-#### Missing values
+##### Missing values
 
 Do you have missing values (`NA`s) in non-nullable columns?
 
@@ -174,7 +123,7 @@ fixed_loanbook
 fixed_loanbook %>% abort_if_incomplete(non_nullable)
 ```
 
-### Create a standard alias of `company_name` in both datasets
+#### Create a standard alias of `company_name` in both datasets
 
 Use `to_alias()` to reduce the chance you'll miss a match because of spurious
 differences in the company name between the loanbook and tilt dataset. This
@@ -189,7 +138,7 @@ tilt_alias <- tilt %>% mutate(company_alias = to_alias(company_name))
 tilt_alias
 ```
 
-### Match candidates
+#### Match candidates
 
 To inform the decision about which companies in your `loanbook` match companies in the `tilt`
 dataset, we compare the values in the columns `postcode` and `country`:
@@ -288,7 +237,7 @@ okay_candidates <- candidates %>%
 okay_candidates %>% relocate(similarity)
 ```
 
-### Pick best candidates
+#### Pick best candidates
 
 ```{r}
 eligibility_threshold <- 0.75
@@ -317,7 +266,7 @@ unmatched <- anti_join(
 unmatched
 ```
 
-### Suggest matches
+#### Suggest matches
 
 ```{r}
 # Decided upon extensive experience
@@ -381,112 +330,4 @@ vroom::vroom_write(to_edit, "to_edit.csv", delim = ",")
 
 # Or, you can install the writexl package with: `install.packages("writexl")`
 writexl::write_xlsx(to_edit, "to_edit.xlsx")
-```
-
-## 2. In a spreadsheet editor
-
-### Accept or reject matches
-
-* Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
-* For each row decide if you want to reject or accept the suggested match. By default
-each row is rejected. To accept it type TRUE in the column `accept_match`.
-* Save the edited file to later use it again in R, for example e.g. as "edited.csv".
-
-## 3. In R (session 2)
-
-### Use R packages and read data 
-
-Restart R to ensure nothing from the previous R session affects this one.
-
-Use the required packages for this section.
-
-```{r}
-library(dplyr, warn.conflicts = FALSE)
-library(tilt.company.match)
-```
-
-Read the "edited.csv" file, and again your loanbook.
-
-```{r}
-# TODO: Replace with the path/to/your/real/edited.csv
-edited_csv <- example_file("demo_matched.csv")
-edited_csv
-
-edited <- vroom(edited_csv, show_col_types = FALSE)
-edited
-
-# TODO: Replace with the path/to/your/real/loanbook.csv
-loanbook_csv <- example_file("demo_loanbook.csv")
-loanbook_csv
-
-loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
-loanbook
-```
-
-### Check the edited dataset
-
-Manual work is prone to errors. Check the edited dataset to ensure it's correct:
-
-- Use `report_no_matches()` to explore companies in the loanbook that didn't match
-any company in the tilt dataset.
-
-```{r}
-not_matched <- loanbook %>% report_no_matches(edited)
-not_matched
-```
-
-- Use `check_duplicated_relation()` to check if a company
-from loanbook has been matched to more than one company from the tilt dataset or
-reverse.
-
-```{r}
-# Good
-edited %>% check_duplicated_relation()
-```
-
-With bad data you get informative errors.
-
-```{r}
-# Bad: A single loanbook-company can't match multiple tilt-companies
-bad_edited <- edited %>%
-  mutate(accept_match = if_else(id %in% c(1, 2), TRUE, accept_match))
-bad_edited %>% filter(id %in% c(1, 2))
-
-bad_edited %>%
-  check_duplicated_relation() %>%
-  try()
-
-# Bad: Multiple loanbook-companies can't match a single tilt-company
-bad_edited2 <- demo_matched %>%
-  filter(id_tilt == 3) %>%
-  mutate(id = 12) %>%
-  bind_rows(demo_matched)
-bad_edited2 %>%
-  filter(accept_match == TRUE & id_tilt == 3)
-
-bad_edited2 %>%
-  check_duplicated_relation() %>%
-  try()
-```
-
-If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
-
-### Pick the matching companies
-
-Once your edited dataset is correct, pick the matching companies and you're
-done. Your final dataset will have as many rows as the number of `TRUE` values
-in the `accept_match` columns of your edited dataset.
-
-```{r}
-edited %>% count(accept_match)
-
-final <- edited %>% filter(accept_match)
-final
-```
-
-If you need to use your final dataset elsewhere, you may write it to a .csv file
-like before with:
-
-```r
-final %>% vroom::vroom_write("final.csv", delim = ",")
 ```

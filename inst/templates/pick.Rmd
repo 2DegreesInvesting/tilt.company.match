@@ -1,0 +1,112 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### 3. Pick
+
+3. Pick the matching companies in a second R session.
+
+#### Use R packages and read data 
+
+Restart R to ensure nothing from the previous R session affects this one.
+
+Use the required packages for this section.
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(vroom)
+library(tilt.company.match)
+```
+
+Read the "edited.csv" file, and again your loanbook.
+
+```{r}
+# TODO: Replace with the path/to/your/real/edited.csv
+edited_csv <- example_file("demo_matched.csv")
+edited_csv
+
+edited <- vroom(edited_csv, show_col_types = FALSE)
+edited
+
+# TODO: Replace with the path/to/your/real/loanbook.csv
+loanbook_csv <- example_file("demo_loanbook.csv")
+loanbook_csv
+
+loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
+loanbook
+```
+
+#### Check the edited dataset
+
+Manual work is prone to errors. Check the edited dataset to ensure it's correct:
+
+- Use `report_no_matches()` to explore companies in the loanbook that didn't match
+any company in the tilt dataset.
+
+```{r}
+not_matched <- loanbook %>% report_no_matches(edited)
+not_matched
+```
+
+- Use `check_duplicated_relation()` to check if a company
+from loanbook has been matched to more than one company from the tilt dataset or
+reverse.
+
+```{r}
+# Good
+edited %>% check_duplicated_relation()
+```
+
+With bad data you get informative errors.
+
+```{r}
+# Bad: A single loanbook-company can't match multiple tilt-companies
+bad_edited <- edited %>%
+  mutate(accept_match = if_else(id %in% c(1, 2), TRUE, accept_match))
+bad_edited %>% filter(id %in% c(1, 2))
+
+bad_edited %>%
+  check_duplicated_relation() %>%
+  try()
+
+# Bad: Multiple loanbook-companies can't match a single tilt-company
+bad_edited2 <- demo_matched %>%
+  filter(id_tilt == 3) %>%
+  mutate(id = 12) %>%
+  bind_rows(demo_matched)
+bad_edited2 %>%
+  filter(accept_match == TRUE & id_tilt == 3)
+
+bad_edited2 %>%
+  check_duplicated_relation() %>%
+  try()
+```
+
+If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
+
+#### Pick the matching companies
+
+Once your edited dataset is correct, pick the matching companies and you're
+done. Your final dataset will have as many rows as the number of `TRUE` values
+in the `accept_match` columns of your edited dataset.
+
+```{r}
+edited %>% count(accept_match)
+
+final <- edited %>% filter(accept_match)
+final
+```
+
+If you need to use your final dataset elsewhere, you may write it to a .csv file
+like before with:
+
+```r
+final %>% vroom::vroom_write("final.csv", delim = ",")
+```
