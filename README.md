@@ -3,6 +3,14 @@
 
 # tilt.company.match
 
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![tilt.company.match status
+badge](https://2degreesinvesting.r-universe.dev/badges/tilt.company.match)](https://2degreesinvesting.r-universe.dev)
+<!-- badges: end -->
+
 The goal of tilt.company.match is to provide helpers for company name
 matching in the tilt-project.
 
