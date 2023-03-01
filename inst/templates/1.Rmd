@@ -1,43 +1,22 @@
 ---
 output: github_document
+params:
+  loanbook_csv: NULL
+  tilt_csv: NULL
 ---
-
-Installing tilt.company.match should automatically install other useful packages. You can use them all with:
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
 library(vroom, warn.conflicts = FALSE)
 library(stringdist)
 library(tilt.company.match)
-```
 
-### Read the datasets
-
-This example uses "demo" datasets. You should use your real `loanbook` and `tilt` datasets instead.
-
-```{r}
-# TODO: Replace with the path/to/your/real/loanbook.csv
-loanbook_csv <- example_file("demo_loanbook.csv")
-loanbook_csv
-
+loanbook_csv <- params$loanbook_csv %||% example_file("demo_loanbook.csv")
 loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
-loanbook
 
-# TODO: Replace with the path/to/your/real/tilt.csv
-tilt_csv <- example_file("demo_tilt.csv")
-tilt_csv
-
+tilt_csv <- params$loanbook_csv %||% example_file("demo_tilt.csv")
 tilt <- vroom(tilt_csv, show_col_types = FALSE)
-tilt
 ```
-
-### Check data quality
-
-Let's first check you `loanbook` is as we expect.
-
-#### Expected columns
-
-Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
 
 ```{r}
 expected <- c("id", "company_name", "postcode", "country")
