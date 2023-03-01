@@ -1,5 +1,20 @@
 # tilt.company.match (development version)
 
+* The get-started.Rmd template now longer exists. It's now
+replaced by two templates for the step 1 and 3 of the process. You can use them respectively with:
+
+```r
+# Step 1: Suggest matching candidates
+usethis::use_template("suggest.Rmd", package = "tilt.company.match")
+
+# Step 2: Manual
+
+# Step 3: Pick matches
+usethis::use_template("suggest.Rmd", package = "tilt.company.match")
+```
+
+* The Get started article moves to README.
+
 # tilt.company.match 0.0.0.9002
 
 * You can now get the source code of the article Get started with:
