@@ -1,5 +1,11 @@
 # tilt.company.match (development version)
 
+* You can now get the source code of the article Get started with:
+
+```r
+usethis::use_template("get-started.Rmd", package = "tilt.company.match")
+```
+
 * The Get started article supersedes README. README will get only major fixes
 but no enhancements.
 
