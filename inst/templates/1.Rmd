@@ -6,6 +6,7 @@ params:
 ---
 
 ```{r}
+library(rlang)
 library(dplyr, warn.conflicts = FALSE)
 library(vroom, warn.conflicts = FALSE)
 library(stringdist)
@@ -14,7 +15,7 @@ library(tilt.company.match)
 loanbook_csv <- params$loanbook_csv %||% example_file("demo_loanbook.csv")
 loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
 
-tilt_csv <- params$loanbook_csv %||% example_file("demo_tilt.csv")
+tilt_csv <- params$tilt_csv %||% example_file("demo_tilt.csv")
 tilt <- vroom(tilt_csv, show_col_types = FALSE)
 ```
 
@@ -293,5 +294,6 @@ Excel or GoogleSheets.
 
 ```{r}
 vroom::vroom_write(to_edit, "to_edit.csv", delim = ",")
+to_edit
 ```
 
