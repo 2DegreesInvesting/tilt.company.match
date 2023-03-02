@@ -1,6 +1,6 @@
 # tilt.company.match (development version)
 
-* FIXME: `postcode_tilt` and `country_tilt` are fully `NA`? Is this expected?
+* New `suggest_match()` wraps the first step (#102).
 
 # tilt.company.match 0.0.0.9002
 
