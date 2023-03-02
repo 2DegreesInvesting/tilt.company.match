@@ -1,0 +1,84 @@
+---
+title: "Handling a large loanbook"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+If your `loanbook` is large or you lack `postcode` or `country` your computer
+may run out of memory and crash. This article shows how to do the first step
+"suggest matches" multiple times but in smaller chunks of your `loanbook` (like
+[here](https://rmi-pacta.github.io/r2dii.match/articles/chunk-your-data.html)).
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(vroom)
+library(fs)
+library(tilt.company.match)
+```
+
+```{r}
+# TODO: Replace with the /path/to/your/real/tilt.csv
+tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
+
+# TODO: Replace with the /path/to/your/real/loanbook.csv
+loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+```
+
+Check and fix your data first -- before engaging in expensive computations.
+
+```{r}
+loanbook %>% check_loanbook()
+```
+
+The columns `postcode` and `country` will save you time but aren't crucial. If
+you don't have them, fake them and move on. For example, if you lack `postcode`
+fake it with `mutate(loanbook, postcode = NA)`.
+
+More chunks take longer to run but use less memory; you'll need to experiment to
+find the number of chunks that best works for you.
+
+```{r}
+chunks <- 3
+chunked <- loanbook %>% mutate(chunk = as.integer(cut(row_number(), chunks)))
+
+# This "output" directory is temporary; you may use any folder in your computer
+out <- path(tempdir(), "output")
+dir_create(out)
+
+pb <- progress::progress_bar$new(total = length(unique(chunked$chunk)))
+for (i in unique(chunked$chunk)) {
+  pb$tick()
+
+  # 1. Match this chunk against the entire `tilt` dataset.
+  this_chunk <- filter(chunked, chunk == i)
+  this_result <- suggest_match(this_chunk, tilt)
+
+  # 2. If this chunk matched nothing, move to the next chunk
+  matched_nothing <- nrow(this_result) == 0L
+  if (matched_nothing) next()
+
+  # 3. Else, save the result to a .csv file.
+  vroom_write(this_result, path(out, paste0(i, ".csv")))
+}
+```
+
+Read the output of each chunk into a single dataframe.
+
+```{r}
+to_edit <- vroom(dir_ls(out))
+to_edit
+```
+
+Write it back to a single .csv and continue with steps 2 and 3.
+
+```{r}
+to_edit %>% vroom_write("to_edit.csv")
+```
+
+
+

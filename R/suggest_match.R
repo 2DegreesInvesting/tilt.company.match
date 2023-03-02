@@ -9,33 +9,15 @@
 #' @export
 #'
 #' @examples
-#' loanbook <- example_file("demo_loanbook.csv")
-#' loanbook
-#'
-#' tilt <- example_file("demo_tilt.csv")
-#' tilt
+#' library(vroom)
+#' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+#' tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
 #'
 #' suggest_match(loanbook, tilt)
 suggest_match <- function(loanbook,
                           tilt,
                           eligibility_threshold = 0.75,
                           suggestion_threshold = 0.9) {
-  loanbook <- vroom(loanbook, show_col_types = FALSE)
-  tilt <- vroom(tilt, show_col_types = FALSE)
-
-  # TODO: Extract checks
-  expected <- c("id", "company_name", "postcode", "country")
-  loanbook %>% check_crucial_names(expected)
-
-  has_no_duplicates <- identical(anyDuplicated(loanbook$id), 0L)
-  stopifnot(has_no_duplicates)
-
-  best_without_duplicates <- c("company_name", "postcode", "country")
-  report_duplicates(loanbook, best_without_duplicates)
-
-  non_nullable <- c("id", "company_name")
-  loanbook %>% abort_if_incomplete(non_nullable)
-
   loanbook_alias <- loanbook %>% mutate(company_alias = to_alias(.data$company_name))
   # TODO: We can pre-compute this before we send the tilt dataset
   tilt_alias <- tilt %>% mutate(company_alias = to_alias(.data$company_name))
@@ -116,6 +98,30 @@ suggest_match <- function(loanbook,
   to_edit
 }
 
-read <- function(...) {
-  vroom::vroom(..., show_col_types = FALSE)
+#' Checks your `loanbook` is as we expect
+#'
+#' @param loanbook Your `loanbook` dataset.
+#'
+#' @return Called for it's side effects. Returns `loanbook` invisibly.
+#' @export
+#'
+#' @examples
+#' library(vroom)
+#'
+#' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+#' check_loanbook(loanbook)
+check_loanbook <- function(loanbook) {
+  expected <- c("id", "company_name", "postcode", "country")
+  loanbook %>% check_crucial_names(expected)
+
+  has_no_duplicates <- identical(anyDuplicated(loanbook$id), 0L)
+  stopifnot(has_no_duplicates)
+
+  best_without_duplicates <- c("company_name", "postcode", "country")
+  report_duplicates(loanbook, best_without_duplicates)
+
+  non_nullable <- c("id", "company_name")
+  loanbook %>% abort_if_incomplete(non_nullable)
+
+  invisible(loanbook)
 }

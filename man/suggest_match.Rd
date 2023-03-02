@@ -27,11 +27,9 @@ A dataframe with suggested matching candidates.
 Given a loanbook and tilt datasets returns a dataset with suggested matches
 }
 \examples{
-loanbook <- example_file("demo_loanbook.csv")
-loanbook
-
-tilt <- example_file("demo_tilt.csv")
-tilt
+library(vroom)
+loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
 
 suggest_match(loanbook, tilt)
 }
