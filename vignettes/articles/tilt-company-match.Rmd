@@ -7,6 +7,5 @@ child <- here::here("inst", "templates", "get-started.Rmd")
 ```
 
 ```{r child=child}
-
 ```
 

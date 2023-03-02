@@ -1,5 +1,11 @@
 # tilt.company.match (development version)
 
+* New article "Handling a large loanbook".
+
+* New `check_loanbook()` extracts all checks.
+
+* New `suggest_match()` wraps the first step (#102).
+
 # tilt.company.match 0.0.0.9002
 
 * You can now get the source code of the article Get started with:
