@@ -10,8 +10,10 @@ knitr::opts_chunk$set(
 ```
 
 If your `loanbook` is large or you lack `postcode` or `country` your computer
-may run out of memory and crash. This article shows how to do the first step
-"suggest matches" multiple times but in smaller chunks of your `loanbook` (like
+may run out of memory and crash. This article shows an alternative way to run
+the first step of the matching process: Suggesting matches. You'll check the
+quality of your `loanbook` before expensive computations, and match multiple
+small chunks of your `loanbook` one by one (like
 [here](https://rmi-pacta.github.io/r2dii.match/articles/chunk-your-data.html)).
 
 ```{r}
@@ -20,6 +22,8 @@ library(vroom)
 library(fs)
 library(tilt.company.match)
 ```
+
+Read your `loanbook` and `tilt` datasets.
 
 ```{r}
 # TODO: Replace with the /path/to/your/real/tilt.csv
