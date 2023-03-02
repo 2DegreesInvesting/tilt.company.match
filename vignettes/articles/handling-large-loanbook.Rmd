@@ -54,6 +54,7 @@ chunked <- loanbook %>% mutate(chunk = as.integer(cut(row_number(), chunks)))
 out <- path(tempdir(), "output")
 dir_create(out)
 
+# In your console this shows a progress bar
 pb <- progress::progress_bar$new(total = length(unique(chunked$chunk)))
 for (i in unique(chunked$chunk)) {
   pb$tick()
