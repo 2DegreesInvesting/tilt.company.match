@@ -75,15 +75,16 @@ for (i in unique(chunked$chunk)) {
 Read the output of each chunk into a single dataframe.
 
 ```{r}
-to_edit <- vroom(dir_ls(out), show_col_types = FALSE)
+files <- dir_ls(out)
+# You may read only some files, say the first n, with: `vroom(files[1:n])`
+to_edit <- vroom(files, show_col_types = FALSE)
 to_edit
 ```
 
-Write it back to a single .csv and continue with steps 2 and 3.
+Write it back to a single .csv.
 
 ```{r}
 to_edit %>% vroom_write("to_edit.csv", delim = ",")
 ```
 
-
-
+Continue with steps 2 and 3 as usual.
