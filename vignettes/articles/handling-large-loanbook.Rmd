@@ -55,7 +55,7 @@ out <- path(tempdir(), "output")
 dir_create(out)
 
 # In your console this shows a progress bar
-pb <- progress::progress_bar$new(total = length(unique(chunked$chunk)))
+pb <- progress::progress_bar$new(total = chunks)
 for (i in unique(chunked$chunk)) {
   pb$tick()
 
@@ -82,7 +82,7 @@ to_edit
 Write it back to a single .csv and continue with steps 2 and 3.
 
 ```{r}
-to_edit %>% vroom_write("to_edit.csv")
+to_edit %>% vroom_write("to_edit.csv", delim = ",")
 ```
 
 
