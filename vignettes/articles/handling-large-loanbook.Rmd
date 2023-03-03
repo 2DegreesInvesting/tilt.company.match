@@ -9,10 +9,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-If your `loanbook` is large or you lack `postcode` or `country` your computer
-may run out of memory and crash. This article shows an alternative way to run
-the first step of the matching process: Suggesting matches. You'll check the
-quality of your `loanbook` before expensive computations, and match multiple
+If your `loanbook` is large, or if you lack `postcode` or `country`, your
+computer may run out of memory and crash. This article shows an alternative way
+to run the first step of the matching process: Suggesting matches. You'll check
+the quality of your `loanbook` before expensive computations, and match multiple
 small chunks of your `loanbook` one by one (like
 [here](https://rmi-pacta.github.io/r2dii.match/articles/chunk-your-data.html)).
 
@@ -75,7 +75,7 @@ for (i in unique(chunked$chunk)) {
 Read the output of each chunk into a single dataframe.
 
 ```{r}
-to_edit <- vroom(dir_ls(out))
+to_edit <- vroom(dir_ls(out), show_col_types = FALSE)
 to_edit
 ```
 
