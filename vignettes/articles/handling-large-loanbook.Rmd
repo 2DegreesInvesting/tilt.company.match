@@ -9,10 +9,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-If your `loanbook` is large or you lack `postcode` or `country` your computer
-may run out of memory and crash. This article shows an alternative way to run
-the first step of the matching process: Suggesting matches. You'll check the
-quality of your `loanbook` before expensive computations, and match multiple
+If your `loanbook` is large, or if you lack `postcode` or `country`, your
+computer may run out of memory and crash. This article shows an alternative way
+to run the first step of the matching process: Suggesting matches. You'll check
+the quality of your `loanbook` before expensive computations, and match multiple
 small chunks of your `loanbook` one by one (like
 [here](https://rmi-pacta.github.io/r2dii.match/articles/chunk-your-data.html)).
 
@@ -55,35 +55,36 @@ out <- path(tempdir(), "output")
 dir_create(out)
 
 # In your console this shows a progress bar
-pb <- progress::progress_bar$new(total = length(unique(chunked$chunk)))
+pb <- progress::progress_bar$new(total = chunks)
 for (i in unique(chunked$chunk)) {
   pb$tick()
 
   # 1. Match this chunk against the entire `tilt` dataset.
   this_chunk <- filter(chunked, chunk == i)
-  this_result <- suggest_match(this_chunk, tilt)
+  this_result <- suppressMessages(suggest_match(this_chunk, tilt))
 
   # 2. If this chunk matched nothing, move to the next chunk
   matched_nothing <- nrow(this_result) == 0L
   if (matched_nothing) next()
 
   # 3. Else, save the result to a .csv file.
-  vroom_write(this_result, path(out, paste0(i, ".csv")))
+  vroom_write(this_result, path(out, paste0(i, ".csv")), delim = ",")
 }
 ```
 
 Read the output of each chunk into a single dataframe.
 
 ```{r}
-to_edit <- vroom(dir_ls(out))
+files <- dir_ls(out)
+# You may read only some files, say the first n, with: `vroom(files[1:n])`
+to_edit <- vroom(files, show_col_types = FALSE)
 to_edit
 ```
 
-Write it back to a single .csv and continue with steps 2 and 3.
+Write it back to a single .csv.
 
 ```{r}
-to_edit %>% vroom_write("to_edit.csv")
+to_edit %>% vroom_write("to_edit.csv", delim = ",")
 ```
 
-
-
+Continue with steps 2 and 3 as usual.
