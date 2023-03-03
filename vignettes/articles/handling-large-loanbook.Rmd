@@ -61,14 +61,14 @@ for (i in unique(chunked$chunk)) {
 
   # 1. Match this chunk against the entire `tilt` dataset.
   this_chunk <- filter(chunked, chunk == i)
-  this_result <- suggest_match(this_chunk, tilt)
+  this_result <- suppressMessages(suggest_match(this_chunk, tilt))
 
   # 2. If this chunk matched nothing, move to the next chunk
   matched_nothing <- nrow(this_result) == 0L
   if (matched_nothing) next()
 
   # 3. Else, save the result to a .csv file.
-  vroom_write(this_result, path(out, paste0(i, ".csv")))
+  vroom_write(this_result, path(out, paste0(i, ".csv")), delim = ",")
 }
 ```
 
