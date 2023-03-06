@@ -2,9 +2,9 @@
 
 * New article "Handling a large loanbook".
 
-* New `check_requirements()` extracts all checks.
+* New `check_requirements()`.
 
-* New `suggest_match()` wraps the first step (#102).
+* New `suggest_match()` (#102).
 
 # tilt.company.match 0.0.0.9002
 
