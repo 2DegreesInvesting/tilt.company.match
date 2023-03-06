@@ -267,6 +267,7 @@ from_name_to_alias <- function() {
     "sanayi ve ticaret",  "sanayi ticaret",
     "shipping",             "shp",
     "sirketi",             "sti",
+    "societas europaea", "se",
     "sp z o o",           "spzoo",
     "sp z oo",           "spzoo",
     "spolka z ",           "sp z ",
