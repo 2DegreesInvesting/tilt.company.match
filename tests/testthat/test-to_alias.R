@@ -131,13 +131,13 @@ test_that("standardizes legal designation of companies in Spanish", {
 
 
 test_that("standardizes compagnies designations", {
-  #ag
+  # ag
   expect_equal(to_alias("Aktiengesellschaft"), "ag")
   expect_equal(to_alias("Aktien gesellschaft"), "ag")
   expect_equal(to_alias("Aktien-gesellschaft"), "ag")
-  #co
+  # co
   expect_equal(to_alias("Compagnie"), "co")
-  #gmbh
+  # gmbh
   expect_equal(to_alias("Gesellschaft mit beschränkter Haftung"), "gmbh")
   expect_equal(to_alias("Ges. mbH"), "gmbh")
   expect_equal(to_alias("G.m.b.H."), "gmbh")
@@ -151,40 +151,39 @@ test_that("standardizes compagnies designations", {
   expect_equal(to_alias("ges. m.bh"), "gmbh")
   expect_equal(to_alias("ges. m.b.h"), "gmbh")
   expect_equal(to_alias("ges.m.b.h"), "gmbh")
-  #kg
+  # kg
   expect_equal(to_alias("Kommanditgesellschaft"), "kg")
   expect_equal(to_alias("Komm. ges."), "kg")
   expect_equal(to_alias("Kommanditges."), "kg")
-  #kgaa
+  # kgaa
   expect_equal(to_alias("Kommanditgesellschaft auf Aktien"), "kgaa")
   expect_equal(to_alias("Kommanditgesellschaft aA"), "kgaa")
   expect_equal(to_alias("Kommanditges. auf Aktien"), "kgaa")
   expect_equal(to_alias("Kommanditges. aA"), "kgaa")
   expect_equal(to_alias("kg auf aktien"), "kgaa")
-  #ohg
+  # ohg
   expect_equal(to_alias("Offene Handelsgesellschaft"), "ohg")
-  #se
+  # se
   expect_equal(to_alias("Societas Europaea"), "se")
-  #ug
+  # ug
   expect_equal(to_alias("Unternehmergesellschaft (haftungsbeschränkt)"), "ug")
   expect_equal(to_alias("Unternehmergesellschaft"), "ug")
   expect_equal(to_alias("UG (haftungsbeschränkt)"), "ug")
-  #ek
+  # ek
   expect_equal(to_alias("eingetragener Kaufmann"), "ek")
-  #eg
+  # eg
   expect_equal(to_alias("eingetragene Genossenschaft"), "eg")
-  #eu
+  # eu
   expect_equal(to_alias("Einzelunternehmen"), "eu")
-  #ev
+  # ev
   expect_equal(to_alias("eingetragener Verein"), "ev")
-  #gbr
+  # gbr
   expect_equal(to_alias("Gesellschaft buergerliches Rechts"), "gbr")
   expect_equal(to_alias("Gesellschaft burgerliches Rechts"), "gbr")
-
 })
 
-test_that("from_name_to_alias() has the correct additional designations",{
- expect_snapshot(from_name_to_alias())
+test_that("from_name_to_alias() has the correct additional designations", {
+  expect_snapshot(from_name_to_alias())
 })
 
 # pacta_data_name_reductions ----------------------------------------------
