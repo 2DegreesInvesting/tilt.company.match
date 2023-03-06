@@ -20,15 +20,6 @@ companies in a tilt dataset from 2 Degrees Investing Initiative.
 reliable than a match by name alone.
 * The company may not exist in the tilt dataset.
 
-## Data requirements
-
-Both your loanbook and tilt dataset must meet these requirements:
-
-* It's an R dataframe.
-* It has the columns `id`, `company_name`, `postcode`, and `country`.
-* It may or may not have other columns.
-* The column `id` holds unique row-identifiers.
-
 ## System requirements
 
 * [Install R and RStudio](https://happygitwithr.com/install-r-rstudio.html).
@@ -97,81 +88,18 @@ tilt
 
 ### Check data quality
 
-Let's first check you `loanbook` is as we expect.
+Both your loanbook and tilt dataset must meet these requirements:
 
-#### Expected columns
+* It's an R dataframe.
+* It has the columns `id`, `company_name`, `postcode`, and `country`.
+* It may or may not have other columns.
+* The column `id` holds unique row-identifiers.
 
-Do you have the expected columns `id`, `company_name`, `postcode`, and `country`?
-
-```{r}
-expected <- c("id", "company_name", "postcode", "country")
-loanbook %>% check_crucial_names(expected)
-
-# Anything different throws an error
-bad <- rename(loanbook, ids = id)
-bad %>%
-  check_crucial_names(expected) %>%
-  try()
-```
-
-#### Duplicates
-
-Do you have any duplicates in the column `id`?
+We check the `tilt` dataset and you should check your `loanbook`. For details
+see `?check_loanbook()`.
 
 ```{r}
-has_no_duplicates <- identical(anyDuplicated(loanbook$id), 0L)
-# If you get an error, remove the duplicates and try again
-stopifnot(has_no_duplicates)
-```
-
-Do you have duplicates in `company_name`, `postcode` or `country`?
-
-It's best if there is none. But if you find duplicates and they belong to
-different companies, then you don't have to fix them.
-
-```{r}
-best_without_duplicates <- c("company_name", "postcode", "country")
-report_duplicates(loanbook, best_without_duplicates)
-```
-
-For example, here the column `misc_info` suggests the duplicates belong to
-different companies, so it's OK:
-
-```{r}
-loanbook %>%
-  filter(company_name == "Peasant Peter") %>%
-  filter(postcode == "01234")
-```
-
-#### Missing values
-
-Do you have missing values (`NA`s) in non-nullable columns?
-
-Non-nullable columns must not have missing values. If they do you have to remove
-them. Missing values in other columns are fine.
-
-```{r}
-non_nullable <- c("id", "company_name")
-loanbook %>% abort_if_incomplete(non_nullable)
-```
-
-For example, here the non-nullable `id` column has one missing value:
-
-```{r}
-bad_loanbook <- tribble(
-  ~id, ~company_name, ~postcode, ~country, ~misc_info,
-  NA, "John Meier's Groceries", "55555", "germany", "Y",
-  11, "John Meier's Groceries", "55555", "norway", "Y"
-)
-bad_loanbook %>%
-  abort_if_incomplete(non_nullable) %>%
-  try()
-
-fixed_loanbook <- filter(bad_loanbook, !is.na(id))
-# NA's are OK in columns other than non-nullable ones
-fixed_loanbook
-
-fixed_loanbook %>% abort_if_incomplete(non_nullable)
+check_loanbook(loanbook)
 ```
 
 ### Suggest matches
