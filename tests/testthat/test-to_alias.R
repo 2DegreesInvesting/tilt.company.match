@@ -129,6 +129,7 @@ test_that("standardizes legal designation of companies in Spanish", {
   expect_equal(to_alias("ABCSL"), to_alias("abc s l"))
 })
 
+
 test_that("standardizes compagnies designations", {
   #ag
   expect_equal(to_alias("Aktiengesellschaft"), "ag")
@@ -179,6 +180,11 @@ test_that("standardizes compagnies designations", {
   #gbr
   expect_equal(to_alias("Gesellschaft buergerliches Rechts"), "gbr")
   expect_equal(to_alias("Gesellschaft burgerliches Rechts"), "gbr")
+
+})
+
+test_that("from_name_to_alias() has the correct additional designations",{
+ expect_snapshot(from_name_to_alias())
 })
 
 # pacta_data_name_reductions ----------------------------------------------
