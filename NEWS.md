@@ -2,7 +2,7 @@
 
 * New article "Handling a large loanbook".
 
-* New `check_loanbook()` extracts all checks.
+* New `check_requirements()` extracts all checks.
 
 * New `suggest_match()` wraps the first step (#102).
 

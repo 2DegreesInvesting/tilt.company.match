@@ -154,15 +154,15 @@ suggest_match <- function(loanbook,
 #' library(dplyr, warn.conflicts = FALSE)
 #'
 #' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
-#' check_loanbook(loanbook)
+#' check_requirements(loanbook)
 #'
 #' # Do you have the expected columns?
 #' bad_name <- rename(loanbook, ids = id)
-#' try(check_loanbook(bad_name))
+#' try(check_requirements(bad_name))
 #'
 #' # Do you have any duplicates in the column `id`?
 #' bad_id <- bind_rows(loanbook, slice(loanbook, 1))
-#' try(check_loanbook(bad_id))
+#' try(check_requirements(bad_id))
 #'
 #' # Do you have missing values (`NA`s) in non-nullable columns?
 #' # styler: off
@@ -172,8 +172,8 @@ suggest_match <- function(loanbook,
 #'    11, "John Meier's Groceries",   "55555",  "norway",        "Y"
 #' )
 #' # styler: on
-#' try(check_loanbook(missing_id))
-check_loanbook <- function(loanbook) {
+#' try(check_requirements(missing_id))
+check_requirements <- function(loanbook) {
   expected <- c("id", "company_name", "postcode", "country")
   loanbook %>% check_crucial_names(expected)
 

@@ -98,10 +98,10 @@ tilt
 ### Check data quality
 
 Check your `loanbook` meets the [Data requirements] (we check the `tilt` dataset
-before we distribute it). For details see `?check_loanbook()`.
+before we distribute it). For details see `?check_requirements()`.
 
 ```{r}
-check_loanbook(loanbook)
+check_requirements(loanbook)
 ```
 
 ### Suggest matches

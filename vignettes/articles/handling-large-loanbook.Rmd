@@ -36,7 +36,7 @@ loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
 Check and fix your data first -- before engaging in expensive computations.
 
 ```{r}
-loanbook %>% check_loanbook()
+loanbook %>% check_requirements()
 ```
 
 The columns `postcode` and `country` will save you time but aren't crucial. If
