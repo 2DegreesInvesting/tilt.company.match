@@ -1,11 +1,55 @@
-#' Given a loanbook and tilt datasets returns a dataset with suggested matches
+#' Suggest matching companies in a `loanbook` and `tilt` datasets
 #'
-#' @param loanbook Path to a .csv file with your `loanbook` data.
-#' @param tilt Path to a .csv file with 2DII's `tilt` data.
-#' @param eligibility_threshold Eligibility threshold.
-#' @param suggestion_threshold Suggestion threshold.
+#' This function suggests that a company in your `loanbook` is the same as a
+#' company in the `tilt` dataset when the `similarity` between their names meets
+#' all of these conditions:
+#' * It's the highest among all other candidates.
+#' * It's above the value set in the argument `suggestion_threshold`.
+#' * It's the only such highest value in the group defined by a combination of
+#' `company_name` x `postcode` -- to avoid duplicates.
 #'
-#' @return A dataframe with suggested matching candidates.
+#' This function calculates the similarity between a standardized alias of the
+#' `company_name` from the `loanbook` and `tilt` datasets. The standardized
+#' alias makes real matches more likely by applying common best practices in
+#' names matching. Complete similarity corresponds to `1`, and complete
+#' dissimilarity corresponds to `0`.
+#'
+#' The columns `postcode` and `country` affect the quality of the matches and
+#' the amount of manual-validation work ahead:
+#' * If your `loanbook` has both `postcode` and `country` we match companies in
+#' that specific `postcode` and that specific `country`. You will likely match
+#' companies that are really the same (true positives) because it's unlikely
+#' that two companies with similar name will be located close to each other.
+#' This will cost you the minimum amount of manual-validation work ahead.
+#' * If your `loanbook` lacks `postcode` but has `country` we match companies in
+#' that specific `country` but across every `postcode`. You will possibly match
+#' companies that are not really the same (false positives) but happen to have a
+#' similar name and are located in the same `country`. This will cost you
+#' additional manual-validation work ahead.
+#' * If your `loanbook` has `postcode` but lacks `country` we match companies with
+#' the same `postcode` but  across every `country`. You will possibly match
+#' companies that are not really the same (false positives) but happen to have a
+#' similar name and the same
+#' postcode. This will cost you additional manual-validation work ahead.
+#' * If your `loanbook` lacks both `postcode` and `country` we match companies
+#' across the entire dataset.  You will most likely match companies that are not
+#' really the same (false positives). This will cost you the greatest amount of
+#' additional manual-validation work ahead.
+#'
+#' @param loanbook A `loanbook` dataframe like `demo_loanbook`.
+#' @param tilt A `tilt` dataframe like `demo_tilt`.
+#' @param eligibility_threshold Minimum value of `similarity` to keep a
+#'   candidate match. Values under it are most likely false positives and thus
+#'   dropped. This drastically reduce the number of candidates you'll need to
+#'   validate manually. We believe this benefit outweighs the potential loss of
+#'   a few true positives.
+#' @param suggestion_threshold Value of `similarity` above which a match may be
+#'   suggested.
+#'
+#' @return A dataframe with columns from the `loanbook` and `tilt` datasets and
+#'   additional columns `similarity`, `suggest_match` and `accept_match`. For
+#'   each company in the `loanbook` matching candidates are arranged by
+#'   descending `similarity`.
 #' @export
 #'
 #' @examples
