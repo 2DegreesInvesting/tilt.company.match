@@ -271,7 +271,10 @@ from_name_to_alias <- function() {
     "sp z o o",           "spzoo",
     "sp z oo",           "spzoo",
     "spolka z ",           "sp z ",
-    "ticaret",             "tic"
+    "ticaret",             "tic",
+    "unternehmergesellschaft", "ug",
+    "unternehmergesellschaft (haftungsbeschränkt)", "ug",
+
   )
   # styler: on
 }

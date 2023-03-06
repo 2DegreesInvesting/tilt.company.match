@@ -216,6 +216,8 @@ pacta_data_name_reductions <- tibble::tribble(
   "sirketi",             "sti",
   "san tic ltd sti",    "santicltdsti",
   "san tic anonim sti", "santicanonimsti",
+  "unternehmergesellschaft", "ug",
+  "unternehmergesellschaft (haftungsbeschränkt)", "ug",
   "1",             "one",
   "2",             "two",
   "3",           "three",
