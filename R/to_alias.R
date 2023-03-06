@@ -229,13 +229,16 @@ from_name_to_alias <- function() {
     "generation",             "gen",
     "gesellschaft buergerliches rechts", "gbr",
     "gesellschaft burgerliches rechts", "gbr",
-    "gesellschaft mit beschränkter haftung", "gmbh",
+    "gesellschaft mit beschrankter haftung", "gmbh",
     "gesellschaft mit beschr haftg", "gmbh",
+    "gesellschaft m b h", "gmbh",
     "gesellschaft mbh", "gmbh",
-    "ges mit beschränker haftung", "gmbh",
+    "ges mit beschranker haftung", "gmbh",
     "ges mit beschr haftg", "gmbh",
     "g mit beschr haftg", "gmbh",
+    "ges m b h", "gmbh",
     "ges mb h", "gmbh",
+    "ges m bh", "gmbh",
     "ges mbh",            "gmbh",
     "gesmbh", "gmbh",
     "golden",             "gld",
@@ -278,9 +281,9 @@ from_name_to_alias <- function() {
     "sp z oo",           "spzoo",
     "spolka z ",           "sp z ",
     "ticaret",             "tic",
-    "unternehmergesellschaft", "ug",
-    "unternehmergesellschaft (haftungsbeschränkt)", "ug",
-
+    "ug (haftungsbeschrankt)", "ug",
+    "unternehmergesellschaft (haftungsbeschrankt)", "ug",
+    "unternehmergesellschaft", "ug"
   )
   # styler: on
 }
