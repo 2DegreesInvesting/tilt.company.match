@@ -160,6 +160,7 @@ pacta_data_name_reductions <- tibble::tribble(
   "investment",          "invest",
   "limited",             "ltd",
   "company",              "co",
+  "compagnie",            "co",
   "public ltd co",             "plc",
   "public co ltd",             "pcl",
   "corporation",            "corp",

@@ -213,6 +213,7 @@ from_name_to_alias <- function() {
     "associates",           "assoc",
     "berhad",             "bhd",
     "company",              "co",
+    "compagnie",            "co",
     "corporation",            "corp",
     "designated activity company",             "dac",
     "development",             "dev",
