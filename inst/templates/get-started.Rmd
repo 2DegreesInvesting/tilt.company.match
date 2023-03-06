@@ -82,7 +82,7 @@ This example uses "demo" datasets. You should use your real `loanbook` and `tilt
 ```{r}
 # TODO: Replace with the path/to/your/real/loanbook.csv
 loanbook_csv <- example_file("demo_loanbook.csv")
-loanbook_csv
+loanbook_csv 
 
 loanbook <- vroom(loanbook_csv, show_col_types = FALSE)
 loanbook
@@ -254,7 +254,7 @@ Having considered all cases, you can now combine them all in a single dataset:
 ```{r}
 candidates <- bind_rows(lacks_none, lacks_postcode, lacks_country, lacks_both)
 
-candidates
+candidates 
 ```
 
 Above each join allowed any one company in your `loanbook` to match `"all"` of
@@ -381,6 +381,31 @@ vroom::vroom_write(to_edit, "to_edit.csv", delim = ",")
 
 # Or, you can install the writexl package with: `install.packages("writexl")`
 writexl::write_xlsx(to_edit, "to_edit.xlsx")
+```
+
+### Calculation of coverage statistics
+
+```{r}
+# matched companies based on suggested matches
+matched <- nrow(to_edit %>% dplyr::filter(suggest_match == TRUE))
+
+# share of matched companies from total loanbook companies
+matched_share <- nrow(to_edit %>% dplyr::filter(suggest_match == TRUE)) / nrow(loanbook %>% distinct(company_name))
+
+# Number and share of matched companies classified by misc_info from total loanbook companies
+# misc_info should be replaced with variables like sectors, headcount etc.
+share_df <- (loanbook %>% dplyr::count(misc_info)) %>%
+  dplyr::left_join(to_edit %>%
+    dplyr::filter(suggest_match == TRUE) %>%
+    dplyr::count(misc_info), by = c("misc_info"), suffix = c("_loanbook", "_merged"))
+share_df$share_misc <- share_df$n_merged / share_df$n_loanbook
+
+# Guidance on loan exposure
+# misc_info and id_tilt should be replaced based on target column names
+exposure <- to_edit %>%
+  dplyr::filter(suggest_match == TRUE) %>%
+  dplyr::group_by(misc_info) %>%
+  dplyr::summarise(sum_exposure = sum(id_tilt))
 ```
 
 ## 2. In a spreadsheet editor
