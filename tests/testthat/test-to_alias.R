@@ -206,6 +206,7 @@ pacta_data_name_reductions <- tibble::tribble(
   "financial",             "fin",
   "spolka z ",           "sp z ",
   "ograniczona odpowiedzialnoscia",              "oo",
+  "offene handelsgesellschaft", "ohg",
   "sp z oo",           "spzoo",
   "sp z o o",           "spzoo",
   "sanayi ve ticaret",  "sanayi ticaret",

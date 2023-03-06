@@ -253,6 +253,7 @@ from_name_to_alias <- function() {
     "limited",             "ltd",
     "limited partnership",              "lp",
     "ltd liability co",             "llc",
+    "offene handelsgesellschaft", "ohg",
     "ograniczona odpowiedzialnoscia",              "oo",
     "partner",             "prt",
     "partners",             "prt",
