@@ -12,9 +12,9 @@ suggest_match(
 )
 }
 \arguments{
-\item{loanbook}{A \code{loanbook} dataframe like \code{demo_loanbook}.}
+\item{loanbook}{A \code{loanbook} dataframe like \link{demo_loanbook}.}
 
-\item{tilt}{A \code{tilt} dataframe like \code{demo_tilt}.}
+\item{tilt}{A \code{tilt} dataframe like \link{demo_tilt}.}
 
 \item{eligibility_threshold}{Minimum value of \code{similarity} to keep a
 candidate match. Values under it are most likely false positives and thus

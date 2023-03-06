@@ -36,8 +36,8 @@
 #' really the same (false positives). This will cost you the greatest amount of
 #' additional manual-validation work ahead.
 #'
-#' @param loanbook A `loanbook` dataframe like `demo_loanbook`.
-#' @param tilt A `tilt` dataframe like `demo_tilt`.
+#' @param loanbook A `loanbook` dataframe like [demo_loanbook].
+#' @param tilt A `tilt` dataframe like [demo_tilt].
 #' @param eligibility_threshold Minimum value of `similarity` to keep a
 #'   candidate match. Values under it are most likely false positives and thus
 #'   dropped. This drastically reduce the number of candidates you'll need to
@@ -144,7 +144,7 @@ suggest_match <- function(loanbook,
 
 #' Checks your `loanbook` is as we expect
 #'
-#' @param loanbook Your `loanbook` dataset.
+#' @param loanbook A `loanbook` dataframe like [demo_loanbook].
 #'
 #' @return Called for it's side effects. Returns `loanbook` invisibly.
 #' @export
@@ -165,11 +165,13 @@ suggest_match <- function(loanbook,
 #' try(check_loanbook(bad_id))
 #'
 #' # Do you have missing values (`NA`s) in non-nullable columns?
+#' # styler: off
 #' missing_id <- tribble(
 #'   ~id,            ~company_name, ~postcode,  ~country, ~misc_info,
 #'    NA, "John Meier's Groceries",   "55555", "germany",        "Y",
 #'    11, "John Meier's Groceries",   "55555",  "norway",        "Y"
 #' )
+#' # styler: on
 #' try(check_loanbook(missing_id))
 check_loanbook <- function(loanbook) {
   expected <- c("id", "company_name", "postcode", "country")

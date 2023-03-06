@@ -20,6 +20,15 @@ companies in a tilt dataset from 2 Degrees Investing Initiative.
 reliable than a match by name alone.
 * The company may not exist in the tilt dataset.
 
+## Data requirements
+
+Both your loanbook and tilt dataset must meet these requirements:
+
+* It's an R dataframe.
+* It has the columns `id`, `company_name`, `postcode`, and `country`.
+* It may or may not have other columns.
+* The column `id` holds unique row-identifiers.
+
 ## System requirements
 
 * [Install R and RStudio](https://happygitwithr.com/install-r-rstudio.html).
@@ -88,15 +97,8 @@ tilt
 
 ### Check data quality
 
-Both your loanbook and tilt dataset must meet these requirements:
-
-* It's an R dataframe.
-* It has the columns `id`, `company_name`, `postcode`, and `country`.
-* It may or may not have other columns.
-* The column `id` holds unique row-identifiers.
-
-We check the `tilt` dataset and you should check your `loanbook`. For details
-see `?check_loanbook()`.
+Check your `loanbook` meets the [Data requirements] (we check the `tilt` dataset
+before we distribute it). For details see `?check_loanbook()`.
 
 ```{r}
 check_loanbook(loanbook)

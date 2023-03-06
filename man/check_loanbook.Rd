@@ -7,7 +7,7 @@
 check_loanbook(loanbook)
 }
 \arguments{
-\item{loanbook}{Your \code{loanbook} dataset.}
+\item{loanbook}{A \code{loanbook} dataframe like \link{demo_loanbook}.}
 }
 \value{
 Called for it's side effects. Returns \code{loanbook} invisibly.
@@ -31,10 +31,12 @@ bad_id <- bind_rows(loanbook, slice(loanbook, 1))
 try(check_loanbook(bad_id))
 
 # Do you have missing values (`NA`s) in non-nullable columns?
+# styler: off
 missing_id <- tribble(
   ~id,            ~company_name, ~postcode,  ~country, ~misc_info,
    NA, "John Meier's Groceries",   "55555", "germany",        "Y",
    11, "John Meier's Groceries",   "55555",  "norway",        "Y"
 )
+# styler: on
 try(check_loanbook(missing_id))
 }
