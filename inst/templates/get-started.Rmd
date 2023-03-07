@@ -404,10 +404,20 @@ misc_share <- loanbook %>%
 
 # Calculate loan exposure categorised based on misc_info
 # id_tilt column is used as the substitute due to unavailability of loan amount column in sample data. Please replace id_tilt column with the loan amount column.
-exposure <- to_edit %>%
+
+# Calculate number of loans and their share from total after grouping by misc_info
+exposure_count <- to_edit %>%
   filter(suggest_match) %>%
   group_by(misc_info) %>%
-  summarise(loan_exposure = sum(id_tilt))
+  summarise(num = n()) %>%
+  mutate(count_share = num/sum(num))
+
+# Calculate sum of loan values and their share from total value after grouping by misc_info
+exposure_sum <- to_edit %>%
+  filter(suggest_match) %>%
+  group_by(misc_info) %>%
+  summarise(loan_exposure = sum(id_tilt)) %>%
+  mutate(sum_share = loan_exposure/sum(loan_exposure))
 ```
 
 ## 2. In a spreadsheet editor
