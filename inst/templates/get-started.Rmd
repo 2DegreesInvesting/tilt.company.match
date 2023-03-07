@@ -386,41 +386,41 @@ writexl::write_xlsx(to_edit, "to_edit.xlsx")
 ### Calculate coverage statistics
 
 ```{r}
+# Dataframe with TRUE suggested matches
+suggested <- to_edit %>%
+  filter(suggest_match)
+
 # Matched companies based on suggested matches
-matched_rows <- to_edit %>%
-  filter(suggest_match) %>%
-  nrow()
+matched_rows <- suggested %>% nrow()
 
 # Share of matched companies from total loanbook companies
-matched_share <- to_edit %>%
-  filter(suggest_match) %>%
-  nrow() / loanbook %>%
-    distinct(company_name) %>%
-    nrow()
+matched_share <- matched_rows / loanbook %>%
+  distinct(company_name) %>%
+  nrow()
 matched_share
 
-# Number and share of matched companies classified by misc_info from total loanbook companies
+# Number and share of matched companies classified by misc_info from total
+# loanbook companies
 # misc_info should be replaced with variables like sectors, headcount etc.
-misc_share <- loanbook %>%
-  count(misc_info) %>%
-  left_join(to_edit %>%
-    filter(suggest_match) %>%
-    count(misc_info), by = c("misc_info"), suffix = c("_loanbook", "_merged")) %>%
+x <- loanbook %>% count(misc_info)
+y <- suggested %>% count(misc_info)
+misc_share <-
+  left_join(x, y, by = c("misc_info"), suffix = c("_loanbook", "_merged")) %>%
   mutate(n_share = n_merged / n_loanbook)
 
-# Calculate loan exposure categorised based on misc_info
-# id_tilt column is used as the substitute due to unavailability of loan amount column in sample data. Please replace id_tilt column with the loan amount column.
+# Calculate loan exposure categorised based on misc_info id_tilt column is used
+# as the substitute due to unavailability of loan amount column in sample data.
+# Please replace id_tilt column with the loan amount column.
 
-# Calculate number of loans and their share from total after grouping by misc_info
-exposure_count <- to_edit %>%
-  filter(suggest_match) %>%
-  group_by(misc_info) %>%
-  summarise(num = n()) %>%
-  mutate(count_share = num / sum(num))
+# Calculate number of loans and their share from total after grouping by
+# misc_info
+exposure_count <- suggested %>%
+  count(misc_info) %>%
+  mutate(count_share = n / sum(n))
 
-# Calculate sum of loan values and their share from total value after grouping by misc_info
-exposure_sum <- to_edit %>%
-  filter(suggest_match) %>%
+# Calculate sum of loan values and their share from total value after grouping
+# by misc_info
+exposure_sum <- suggested %>%
   group_by(misc_info) %>%
   summarise(sum_expo = sum(id_tilt)) %>%
   mutate(sum_share = sum_expo / sum(sum_expo))
