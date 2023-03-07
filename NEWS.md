@@ -1,5 +1,7 @@
 # tilt.company.match (development version)
 
+* Get started now links to the manual decision rules (#104).
+
 * New article "Handling a large loanbook".
 
 * New `check_loanbook()` extracts all checks.
