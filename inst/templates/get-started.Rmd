@@ -387,10 +387,16 @@ writexl::write_xlsx(to_edit, "to_edit.xlsx")
 
 ```{r}
 # Matched companies based on suggested matches
-matched_rows <- to_edit %>% filter(suggest_match) %>% nrow()
+matched_rows <- to_edit %>%
+  filter(suggest_match) %>%
+  nrow()
 
 # Share of matched companies from total loanbook companies
-matched_share <- to_edit %>% filter(suggest_match) %>% nrow()/ loanbook %>% distinct(company_name) %>% nrow()
+matched_share <- to_edit %>%
+  filter(suggest_match) %>%
+  nrow() / loanbook %>%
+    distinct(company_name) %>%
+    nrow()
 matched_share
 
 # Number and share of matched companies classified by misc_info from total loanbook companies
@@ -410,14 +416,14 @@ exposure_count <- to_edit %>%
   filter(suggest_match) %>%
   group_by(misc_info) %>%
   summarise(num = n()) %>%
-  mutate(count_share = num/sum(num))
+  mutate(count_share = num / sum(num))
 
 # Calculate sum of loan values and their share from total value after grouping by misc_info
 exposure_sum <- to_edit %>%
   filter(suggest_match) %>%
   group_by(misc_info) %>%
   summarise(loan_exposure = sum(id_tilt)) %>%
-  mutate(sum_share = loan_exposure/sum(loan_exposure))
+  mutate(sum_share = loan_exposure / sum(loan_exposure))
 ```
 
 ## 2. In a spreadsheet editor
