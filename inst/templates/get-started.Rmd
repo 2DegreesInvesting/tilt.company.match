@@ -422,8 +422,8 @@ exposure_count <- to_edit %>%
 exposure_sum <- to_edit %>%
   filter(suggest_match) %>%
   group_by(misc_info) %>%
-  summarise(loan_exposure = sum(id_tilt)) %>%
-  mutate(sum_share = loan_exposure / sum(loan_exposure))
+  summarise(sum_expo = sum(id_tilt)) %>%
+  mutate(sum_share = sum_expo / sum(sum_expo))
 ```
 
 ## 2. In a spreadsheet editor
