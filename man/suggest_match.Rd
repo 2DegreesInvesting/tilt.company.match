@@ -2,7 +2,7 @@
 % Please edit documentation in R/suggest_match.R
 \name{suggest_match}
 \alias{suggest_match}
-\title{Given a loanbook and tilt datasets returns a dataset with suggested matches}
+\title{Suggest matching companies in a \code{loanbook} and \code{tilt} datasets}
 \usage{
 suggest_match(
   loanbook,
@@ -12,19 +12,66 @@ suggest_match(
 )
 }
 \arguments{
-\item{loanbook}{Path to a .csv file with your \code{loanbook} data.}
+\item{loanbook}{A \code{loanbook} dataframe like \link{demo_loanbook}.}
 
-\item{tilt}{Path to a .csv file with 2DII's \code{tilt} data.}
+\item{tilt}{A \code{tilt} dataframe like \link{demo_tilt}.}
 
-\item{eligibility_threshold}{Eligibility threshold.}
+\item{eligibility_threshold}{Minimum value of \code{similarity} to keep a
+candidate match. Values under it are most likely false positives and thus
+dropped. This drastically reduce the number of candidates you'll need to
+validate manually. We believe this benefit outweighs the potential loss of
+a few true positives.}
 
-\item{suggestion_threshold}{Suggestion threshold.}
+\item{suggestion_threshold}{Value of \code{similarity} above which a match may be
+suggested.}
 }
 \value{
-A dataframe with suggested matching candidates.
+A dataframe with columns from the \code{loanbook} and \code{tilt} datasets and
+additional columns \code{similarity}, \code{suggest_match} and \code{accept_match}. For
+each company in the \code{loanbook} matching candidates are arranged by
+descending \code{similarity}.
 }
 \description{
-Given a loanbook and tilt datasets returns a dataset with suggested matches
+This function suggests that a company in your \code{loanbook} is the same as a
+company in the \code{tilt} dataset when the \code{similarity} between their names meets
+all of these conditions:
+\itemize{
+\item It's the highest among all other candidates.
+\item It's above the value set in the argument \code{suggestion_threshold}.
+\item It's the only such highest value in the group defined by a combination of
+\code{company_name} x \code{postcode} -- to avoid duplicates.
+}
+}
+\details{
+This function calculates the similarity between a standardized alias of the
+\code{company_name} from the \code{loanbook} and \code{tilt} datasets. The standardized
+alias makes real matches more likely by applying common best practices in
+names matching. Complete similarity corresponds to \code{1}, and complete
+dissimilarity corresponds to \code{0}.
+
+The columns \code{postcode} and \code{country} affect the quality of the matches and
+the amount of manual-validation work ahead:
+\itemize{
+\item If your \code{loanbook} has both \code{postcode} and \code{country} we match companies in
+that specific \code{postcode} and that specific \code{country}. You will likely match
+companies that are really the same (true positives) because it's unlikely
+that two companies with similar name will be located close to each other.
+This will cost you the minimum amount of manual-validation work ahead.
+\item If your \code{loanbook} lacks \code{postcode} but has \code{country} we match companies in
+that specific \code{country} but across every \code{postcode}. You will possibly match
+companies that are not really the same (false positives) but happen to have a
+similar name and are located in the same \code{country}. This will cost you
+additional manual-validation work ahead.
+\item If your \code{loanbook} has \code{postcode} but lacks \code{country} we match companies with
+the same \code{postcode} but  across every \code{country}. You will possibly match
+companies that are not really the same (false positives) but happen to have a
+similar name and the same
+postcode. This will cost you additional manual-validation work ahead.
+\item If your \code{loanbook} lacks both \code{postcode} and \code{country} we match companies
+across the entire dataset.  You will most likely match companies that are not
+really the same (false positives). This will cost you the greatest amount of
+additional manual-validation work ahead.
+}
 }
 \examples{
 library(vroom)
