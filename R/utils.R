@@ -10,6 +10,7 @@
 #'
 #' @return NULL
 #' @export
+#' @keywords internal
 report_duplicates <- function(data, cols) {
   duplicates <- data %>%
     dplyr::group_by(!!!rlang::syms(cols)) %>%
