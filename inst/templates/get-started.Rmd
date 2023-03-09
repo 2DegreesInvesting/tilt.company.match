@@ -4,7 +4,6 @@ title: "tilt.company.match"
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  cache = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -178,36 +177,11 @@ from loanbook has been matched to more than one company from the tilt dataset or
 reverse.
 
 ```{r}
-# Good
 edited %>% check_duplicated_relation()
 ```
 
-With bad data you get informative errors.
-
-```{r}
-# Bad: A single loanbook-company can't match multiple tilt-companies
-bad_edited <- edited %>%
-  mutate(accept_match = if_else(id %in% c(1, 2), TRUE, accept_match))
-bad_edited %>% filter(id %in% c(1, 2))
-
-bad_edited %>%
-  check_duplicated_relation() %>%
-  try()
-
-# Bad: Multiple loanbook-companies can't match a single tilt-company
-bad_edited2 <- demo_matched %>%
-  filter(id_tilt == 3) %>%
-  mutate(id = 12) %>%
-  bind_rows(demo_matched)
-bad_edited2 %>%
-  filter(accept_match == TRUE & id_tilt == 3)
-
-bad_edited2 %>%
-  check_duplicated_relation() %>%
-  try()
-```
-
-If your edited dataset is wrong, go back to your spreadsheet editor (i.e. repeat step 2), fix it, then check it again (i.e. repeat step 3).
+With bad data you get informative errors (for examples see
+`?check_duplicated_relation()`) -- fix it and check it again.
 
 ### Pick the matching companies
 
