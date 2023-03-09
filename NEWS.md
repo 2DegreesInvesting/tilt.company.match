@@ -1,5 +1,8 @@
 # tilt.company.match (development version)
 
+
+* The Reference section of the website now shows the higher-level API (#117).
+
 * Get started now links to the manual decision rules (#104).
 
 * New article "Handling a large loanbook".
