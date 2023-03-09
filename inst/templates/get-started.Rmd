@@ -1,5 +1,8 @@
 ---
 title: "tilt.company.match"
+editor_options: 
+  chunk_output_type: console
+output: github_document
 ---
 
 ```{r, include = FALSE}
