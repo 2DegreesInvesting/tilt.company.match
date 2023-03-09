@@ -111,420 +111,53 @@ so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' ## Installation</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' You can install the development version of tilt.company.match from</span></span>
-<span><span class="co">#' [GitHub](https://github.com/) with:</span></span>
+<span><span class="co">#' You can install the development version of</span></span>
+<span><span class="co">#' [tilt.company.match](https://github.com/2DegreesInvesting/tilt.company.match)</span></span>
+<span><span class="co">#' from [r-universe](https://r-universe.dev/) with:</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' ```r</span></span>
+<span><span class="co">#' options(repos = c("https://2degreesinvesting.r-universe.dev", getOption("repos")))</span></span>
+<span><span class="co">#' install.packages("tilt.company.match")</span></span>
+<span><span class="co">#' ```</span></span>
+<span><span class="co">#' </span></span>
+<span><span class="co">#' Or you can install it from [GitHub](https://github.com/) with:</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' ``` r</span></span>
 <span><span class="co">#' # install.packages("devtools")</span></span>
 <span><span class="co">#' devtools::install_github("2DegreesInvesting/tilt.company.match")</span></span>
 <span><span class="co">#' ```</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' ## Matching loanbooks to the tilt database</span></span>
+<span><span class="co">#' ## Example</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' The matching problem is characterised as follows:</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' -   matching companies from banks\` loanbooks to tilt will face problems</span></span>
-<span><span class="co">#'     of inconsistent company names (typos, conventions...)</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' -   it is expected that postcode will be available as relatively reliable </span></span>
-<span><span class="co">#'     additional information for most companies</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' -   not all companies in loanbooks will be in tilt db (thus not have a</span></span>
-<span><span class="co">#'     match)</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' To match the companies provided in a loanbook to companies in the tilt</span></span>
-<span><span class="co">#' database we expect a loanbook dataframe and a tilt db dataframe that</span></span>
-<span><span class="co">#' hold at least the columns **company_name**, **postcode** and</span></span>
-<span><span class="co">#' **country** and a column **id** holding unique row identifiers. Further columns </span></span>
-<span><span class="co">#' that educate decisions made by humans in the matching process may be present. </span></span>
-<span><span class="co">#' For an example compare demo data below.</span></span>
+<span><span class="co">#' Here is a minimal example of what you can do with the package</span></span>
+<span><span class="co">#' tilt.copmany.match. For a complete and gentle walk-through see [Get</span></span>
+<span><span class="co">#' started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vroom.r-lib.org" class="external-link">vroom</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://2degreesinvesting.github.io/tilt.company.match/">tilt.company.match</a></span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demo_loanbook</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># TODO: Replace with the path/to/your/real/loanbook.csv</span></span>
+<span><span class="va">loanbook_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_loanbook.csv"</span><span class="op">)</span></span>
+<span><span class="va">loanbook_csv</span></span>
+<span></span>
+<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="va">loanbook_csv</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">loanbook</span></span>
+<span></span>
+<span><span class="co"># TODO: Replace with the path/to/your/real/tilt.csv</span></span>
+<span><span class="va">tilt_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"demo_tilt.csv"</span><span class="op">)</span></span>
+<span><span class="va">tilt_csv</span></span>
+<span></span>
+<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="va">tilt_csv</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tilt</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/check_loanbook.html">check_loanbook</a></span><span class="op">(</span><span class="va">loanbook</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/suggest_match.html">suggest_match</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">tilt</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' ### Pre-matching functions to check the data</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' I order to run the matching process optimally, here are some useful</span></span>
-<span><span class="co">#' functions to check your data before the matching process.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' #### Check crucial columns names</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' It is crucial to have the right columns' names in your loanbook, exactly like in </span></span>
-<span><span class="co">#' our demo_loanbook. Here is a function to check if your loanbook has the necessary </span></span>
-<span><span class="co">#' names, which are declared under "crucial_names".</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
-<span><span class="va">crucial_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span>, <span class="st">"postcode"</span>, <span class="st">"country"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/check_crucial_names.html">check_crucial_names</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">crucial_names</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Now, let us rename the loanbook "country" column into "countries" and "company_name"</span></span>
-<span><span class="co">#' into "Company Name".</span></span>
-<span><span class="co">#' If you un-comment (remove the hashtag) the line, it throws an error.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">wrongly_named_loanbook</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>    <span class="st">"countries"</span> <span class="op">=</span> <span class="st">"country"</span>,</span>
-<span>    <span class="st">"Company Name"</span> <span class="op">=</span> <span class="st">"company_name"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># un-comment this line to have the error</span></span>
-<span><span class="co"># check_crucial_names(wrongly_named_loanbook, crucial_names)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' If you have an error in your loanbook, you can rename your loanbook columns, </span></span>
-<span><span class="co">#' using the dplyr::rename() function, and perform a sanity check just after.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">corrected_loanbook</span> <span class="op">&lt;-</span> <span class="va">wrongly_named_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>    <span class="st">"country"</span> <span class="op">=</span> <span class="st">"countries"</span>,</span>
-<span>    <span class="st">"company_name"</span> <span class="op">=</span> <span class="st">"Company Name"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/check_crucial_names.html">check_crucial_names</a></span><span class="op">(</span><span class="va">corrected_loanbook</span>, <span class="va">crucial_names</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' #### Report duplicates</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' The function **report_duplicates** shows whether there are duplicates on</span></span>
-<span><span class="co">#' some columns of interest. In this case, we strongly suggest duplicates</span></span>
-<span><span class="co">#' on the **company_name**, **postcode** and **country** columns combination. We</span></span>
-<span><span class="co">#' strongly encourage to use it on the loanbook data set.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span></span>
-<span><span class="va">columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"company_name"</span>, <span class="st">"postcode"</span>, <span class="st">"country"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/report_duplicates.html">report_duplicates</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">columns</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Note: In our example we see, that while there are duplicate rows on</span></span>
-<span><span class="co">#' columns company_name, postcode, country they seem to do belong to different</span></span>
-<span><span class="co">#' companies so we do not need to fix this in our loanbook.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' #### Report missing values</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Missing values or NAs should ideally exist not in the loanbook. The function</span></span>
-<span><span class="co">#' **abort_if_incomplete()** checks how many NAs there are in each columns of the data</span></span>
-<span><span class="co">#' set and report them to the user.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Here, the loanbook data set does not have any NAs.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span><span class="va">demo_loanbook</span>, non_nullable_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' There are some columns (currently **id** and **company_name**) on which we do </span></span>
-<span><span class="co">#' not allow missings. In case there are missings on these columns report_missings()</span></span>
-<span><span class="co">#' will throw an error. You then have to removed affected rows from your data. On other</span></span>
-<span><span class="co">#' columns, e.g. **postcode** missings will be reported for information purposes. </span></span>
-<span><span class="co">#' However they do not require action from user side.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## ----error=TRUE---------------------------------------------------------------</span></span>
-<span><span class="co"># missings on a non-crucial column</span></span>
-<span><span class="va">missing_non_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>postcode <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span>, <span class="cn">NA_character_</span>, <span class="va">.data</span><span class="op">$</span><span class="va">postcode</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">missing_non_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span>non_nullable_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># missings on a crucial column</span></span>
-<span><span class="va">missing_crucial</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_name <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="fl">1</span>, <span class="cn">NA_character_</span>, <span class="va">.data</span><span class="op">$</span><span class="va">postcode</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">missing_crucial</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/abort_if_incomplete.html">abort_if_incomplete</a></span><span class="op">(</span>non_nullable_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"company_name"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ### Preprocessing</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' In a first step, the company_names are preprocessed to reduce noise and</span></span>
-<span><span class="co">#' increase consistency. To this end use a function called to_alias(). </span></span>
-<span><span class="co">#' We assign the result of the preprocessing to a new</span></span>
-<span><span class="co">#' column **company_alias**.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook</span> <span class="op">&lt;-</span> <span class="va">demo_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">loanbook</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tilt</span> <span class="op">&lt;-</span> <span class="va">demo_tilt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>company_alias <span class="op">=</span> <span class="fu"><a href="../reference/to_alias.html">to_alias</a></span><span class="op">(</span><span class="va">company_name</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tilt</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ### Deriving Candidates</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' To inform the decision about which companies in your `loanbook` match companies in the `tilt`</span></span>
-<span><span class="co">#' dataset, we compare the values in the columns `postcode` and `country`:</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' * If your `loanbook` has both `postcode` and `country` we match companies in that specific `postcode` and that specific `country`. You will likely match companies that are really the same (true positives) because it's unlikely that two companies with similar name will be located close to each other. This will cost you the minimum amount of manual-validation work ahead.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_lacks_none</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">postcode</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">tilt</span>,</span>
-<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"postcode"</span><span class="op">)</span>,</span>
-<span>    suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
-<span>    multiple <span class="op">=</span> <span class="st">"all"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' * If your `loanbook` lacks `postcode` but has `country` we match companies in that specific `country` but across every `postcode`. You will possibly match companies that are not really</span></span>
-<span><span class="co">#' the same (false positives) but happen to have a similar name and are located in</span></span>
-<span><span class="co">#' the same `country`. This will cost you additional manual-validation work ahead.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_lacks_postcode</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">postcode</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">tilt</span>,</span>
-<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span><span class="op">)</span>,</span>
-<span>    suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
-<span>    multiple <span class="op">=</span> <span class="st">"all"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' * If your `loanbook` has `postcode` but lacks `country` we match companies with the same `postcode` but  across every `country`. You will possibly match companies that are not really</span></span>
-<span><span class="co">#' the same (false positives) but happen to have a similar name and the same</span></span>
-<span><span class="co">#' postcode. This will cost you additional manual-validation work ahead.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_lacks_country</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">postcode</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">tilt</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"postcode"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' * If your `loanbook` lacks both `postcode` and `country` we match companies across the entire dataset.  You will most likely match companies that are not really</span></span>
-<span><span class="co">#' the same (false positives). This will cost you the greatest amount of additional</span></span>
-<span><span class="co">#' manual-validation work ahead.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_lacks_both</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">postcode</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>postcode <span class="op">=</span> <span class="st">"join_helper"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">tilt</span>, postcode <span class="op">=</span> <span class="st">"join_helper"</span><span class="op">)</span>,</span>
-<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"postcode"</span><span class="op">)</span>,</span>
-<span>    suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"_tilt"</span><span class="op">)</span>,</span>
-<span>    multiple <span class="op">=</span> <span class="st">"all"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>postcode <span class="op">=</span> <span class="cn">NA_character_</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Having considered all cases, you can now combine them all in a single dataset:</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_with_candidates</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
-<span>  <span class="va">loanbook_lacks_none</span>,</span>
-<span>  <span class="va">loanbook_lacks_postcode</span>,</span>
-<span>  <span class="va">loanbook_lacks_country</span>,</span>
-<span>  <span class="va">loanbook_lacks_both</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">loanbook_with_candidates</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' One can see that e.g. the company with the loanbook id 1 has 3 potential</span></span>
-<span><span class="co">#' matches in the tilt db that have the same postcode (tilt id 1, 2, 4).</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Next, we are calculating the string similarity between the aliased</span></span>
-<span><span class="co">#' company name in the loanbook with the aliased company names in the tilt</span></span>
-<span><span class="co">#' db in the same postcode and ordering by descending proximity. A complete</span></span>
-<span><span class="co">#' similarity corresponds to 1, complete dissimilarity corresponds to 0.</span></span>
-<span><span class="co">#' There are several string similarity metrics available with the</span></span>
-<span><span class="co">#' **stringdist**-package. Depending on the nature and generation modality</span></span>
-<span><span class="co">#' of the text different metrics perform best. For the current problem the</span></span>
-<span><span class="co">#' Jaro-Winkler metric with a prefix factor of 0.1 is chosen. This metric</span></span>
-<span><span class="co">#' tends to be suitable for comparing human typed text that might have</span></span>
-<span><span class="co">#' typos.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">loanbook_with_candidates_and_dist</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>string_sim <span class="op">=</span> <span class="fu">stringdist</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringdist/man/stringsim.html" class="external-link">stringsim</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">company_alias</span>, b <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">company_alias_tilt</span>, method <span class="op">=</span> <span class="st">"jw"</span>, p <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">id</span>, <span class="op">-</span><span class="va">string_sim</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">loanbook_with_candidates_and_dist</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Based an empiric research we decided to remove match candidates with a similarity</span></span>
-<span><span class="co">#' under a certain threshold. This helps drastically reduce the number of </span></span>
-<span><span class="co">#' candidates, making the data easier to process for a human. </span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">min_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.75</span></span>
-<span></span>
-<span><span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">string_sim</span><span class="op">)</span> <span class="op">|</span> <span class="va">string_sim</span> <span class="op">&gt;</span> <span class="va">min_threshold</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Note that, in very rare cases, we might loose matches this way, since candidates</span></span>
-<span><span class="co">#' that are removed here due to the lower threshold are no longer included in the </span></span>
-<span><span class="co">#' matching. We concluded that the improved ease of use justifies those edge cases. </span></span>
-<span><span class="co">#' Companies that have no more candidates after filtering with the lower threshold </span></span>
-<span><span class="co">#' are reported.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">before_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">after_filter_id_and_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">company_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_all</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">lost_companies</span> <span class="op">&lt;-</span> <span class="va">before_filter_id_and_company</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">after_filter_id_and_company</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">lost_companies</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ## Selecting matches</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' In order to make the work of a human working on the matching as easy as</span></span>
-<span><span class="co">#' possible what can be automated should be automated. However correct</span></span>
-<span><span class="co">#' matching is essential for the project success so incorrect matches,</span></span>
-<span><span class="co">#' which cannot ultimately be ruled out when matching automatically are not</span></span>
-<span><span class="co">#' acceptable. As a consequence for now the following workflow is</span></span>
-<span><span class="co">#' suggested.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' A human coder will have to inspect the data. It is advisable do to so in</span></span>
-<span><span class="co">#' a spreadsheet application. A row is selected as match by setting column</span></span>
-<span><span class="co">#' **accept_match** to TRUE. To support this the column **suggest_match**</span></span>
-<span><span class="co">#' is provided.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' The **suggest_match** column is set to TRUE if:</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' -   The match is above a determined threshold.</span></span>
-<span><span class="co">#' -   It is the highest match of all matches.</span></span>
-<span><span class="co">#' -   There is only 1 highest match per **company_name** x **id**</span></span>
-<span><span class="co">#'     combination to avoid duplicates.</span></span>
-<span><span class="co">#' -   country and postcode are available for the company in the loanbook    </span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">highest_matches_per_company</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">string_sim</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">string_sim</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">threshold</span> <span class="op">&lt;-</span> <span class="fl">0.9</span> <span class="co"># Threshold decided upon extensive experience with r2dii.match function and processes</span></span>
-<span></span>
-<span><span class="va">highest_matches_per_company_above_thresh</span> <span class="op">&lt;-</span> <span class="va">highest_matches_per_company</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">string_sim</span> <span class="op">&gt;</span> <span class="va">threshold</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">postcode</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">highest_matches_per_company_above_thresh_wo_duplicates</span> <span class="op">&lt;-</span> <span class="va">highest_matches_per_company_above_thresh</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duplicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="../reference/duplicated_paste.html">duplicated_paste</a></span><span class="op">(</span><span class="va">company_name</span>, <span class="va">postcode</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">duplicates</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id_tilt</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>suggest_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">loanbook_with_candidates_and_dist_and_suggestion</span> <span class="op">&lt;-</span> <span class="va">loanbook_with_candidates_and_dist_filtered</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">highest_matches_per_company_above_thresh_wo_duplicates</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"id_tilt"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">loanbook_with_candidates_and_dist_and_suggestion</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' **Notes**: </span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' -   Even a match of 1 in the same postcode can in rare cases be a False positive, </span></span>
-<span><span class="co">#'     compare e.g. company 4 ("Peasant Paul") in the example data.</span></span>
-<span><span class="co">#' -   We do not want to automatically approve unique matches because there may be </span></span>
-<span><span class="co">#'     few cases where multiple companies in the same ZIP code have the same name. </span></span>
-<span><span class="co">#'     In these cases, additional information (for example, the sector, street name,</span></span>
-<span><span class="co">#'     or main activity etc.) can help to make a final decision.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ### Check matching process</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' After having matched manually each companies, we can check for the</span></span>
-<span><span class="co">#' companies that were not matched in the loanbook. This can be used as a</span></span>
-<span><span class="co">#' 'double-check' to see if the two data sets were correctly manually</span></span>
-<span><span class="co">#' matched. The demo-matched data set is an example of what the data set</span></span>
-<span><span class="co">#' should look like after being manually checked: the **accept_match**</span></span>
-<span><span class="co">#' column is now changed to TRUE or NA, depending on whether a company</span></span>
-<span><span class="co">#' should be matched or not.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">manually_matched</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ### Report companies with no matches</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' We can then use the **report_no_matches** function and determine</span></span>
-<span><span class="co">#' companies in the loanbook for which no match was selected or found.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">loanbook</span>, <span class="va">manually_matched</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">not_matched</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' ### Report duplicate matches</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' To check some manual errors during the manual matching process, we can</span></span>
-<span><span class="co">#' use the **check_duplicated_relation** function. It checks if a company</span></span>
-<span><span class="co">#' from loanbook has been matched to \&gt; 1 company from the tilt dataset or</span></span>
-<span><span class="co">#' reverse.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Here, the demo_matched data set is hand-matched correctly: the column</span></span>
-<span><span class="co">#' **accept_match** has been manually changed and verified.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">manually_matched</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' The function does not throw an error and inform that no duplicates were</span></span>
-<span><span class="co">#' found.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="fu"><a href="../reference/check_duplicated_relation.html">check_duplicated_relation</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Now let us insert duplicated matches for the company with the ids 1 and</span></span>
-<span><span class="co">#' 2.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">duplicate_in_loanbook</span> <span class="op">&lt;-</span> <span class="va">manually_matched</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>accept_match <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="cn">TRUE</span>, <span class="va">accept_match</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">duplicate_in_loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' The function then abort and throws an error with the lines of the</span></span>
-<span><span class="co">#' duplicated rows.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="co"># un-comment this line to have the error</span></span>
-<span><span class="co"># check_duplicated_relation(duplicate_in_loanbook)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' Also, an error is thrown if we insert a duplicate match of a company</span></span>
-<span><span class="co">#' from the tilt db to the loanbook.</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">duplicate_tilt_id_row</span> <span class="op">&lt;-</span> <span class="va">demo_matched</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span><span class="va">duplicate_tilt_id</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">demo_matched</span>, <span class="va">duplicate_tilt_id_row</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">duplicate_tilt_id</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">accept_match</span> <span class="op">==</span> <span class="cn">TRUE</span> <span class="op">&amp;</span> <span class="va">id_tilt</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="co"># un-comment this line to have the error</span></span>
-<span><span class="co"># check_duplicated_relation(duplicate_tilt_id)</span></span></code></pre>
+<span><span class="co">#' [Get</span></span>
+<span><span class="co">#' started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).</span></span></code></pre>
   </main>
 </div>
 
