@@ -24,6 +24,7 @@
 #' data %>%
 #'   abort_if_incomplete() %>%
 #'   try()
+#' @keywords internal
 abort_if_incomplete <- function(data, non_nullable_cols = names(data)) {
   incomplete <- select_incomplete(data[non_nullable_cols])
   if (any(incomplete)) {

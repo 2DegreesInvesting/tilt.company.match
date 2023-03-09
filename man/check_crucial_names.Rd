@@ -24,3 +24,4 @@ x <- c(a = 1)
 check_crucial_names(x, "a")
 try(check_crucial_names(x, "bad"))
 }
+\keyword{internal}

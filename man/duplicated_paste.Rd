@@ -35,3 +35,4 @@ paste(c("a", "a"), 1:2)
 duplicated_paste(c("a", "a"), c(1, 1))
 paste(c("a", "a"), c(1, 1))
 }
+\keyword{internal}

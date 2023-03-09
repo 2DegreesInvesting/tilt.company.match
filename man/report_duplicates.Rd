@@ -17,3 +17,4 @@ Reports duplicates in \code{data} on columns \code{cols}. More specifically, we 
 interested in this case on the \code{company_name}, \code{postcode} and \code{country} columns.
 Duplicates are reported via a warning.
 }
+\keyword{internal}
