@@ -439,7 +439,7 @@ exposure_sum <- suggested %>%
 ### Accept or reject matches
 
 * Import the dataset `to_edit` into a spreadsheet editor like Excel or GoogleSheets.
-* For each row decide if you want to reject or accept the suggested match. By default
+* For each row decide if you want to reject or accept the suggested match ([manual decision rules](https://docs.google.com/document/d/140t0YOaTbX0Vh4Fpay8y5pEJjXXPxXbupxjoyymimRc)). By default
 each row is rejected. To accept it type TRUE in the column `accept_match`.
 * Save the edited file to later use it again in R, for example e.g. as "edited.csv".
 
