@@ -120,3 +120,6 @@ suggest_match(loanbook, tilt)
 #> #   variable names ¹​company_name, ²​postcode, ³​misc_info, ⁴​company_alias,
 #> #   ⁵​company_name_tilt, ⁶​misc_info_tilt, ⁷​company_alias_tilt
 ```
+
+[Get
+started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).

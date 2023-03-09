@@ -72,3 +72,6 @@ check_loanbook(loanbook)
 
 suggest_match(loanbook, tilt)
 ```
+
+[Get
+started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).
