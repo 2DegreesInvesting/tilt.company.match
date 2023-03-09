@@ -1,5 +1,6 @@
 # tilt.company.match (development version)
 
+* The home page of the website now shows a minimal example and points to Get started for details (#109).
 
 * The Reference section of the website now shows the higher-level API (#117).
 
