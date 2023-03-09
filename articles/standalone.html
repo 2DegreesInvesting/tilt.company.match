@@ -128,6 +128,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' data %&gt;%</span></span>
 <span><span class="co">#'   abort_if_incomplete() %&gt;%</span></span>
 <span><span class="co">#'   try()</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">abort_if_incomplete</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">non_nullable_cols</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">incomplete</span> <span class="op">&lt;-</span> <span class="fu">select_incomplete</span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="va">non_nullable_cols</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="va">incomplete</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -160,6 +161,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' check_crucial_names(x, "a")</span></span>
 <span><span class="co">#' try(check_crucial_names(x, "bad"))</span></span>
 <span><span class="co">#' @export</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">check_crucial_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">expected_names</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/is_named.html" class="external-link">is_named</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">is.character</a></span><span class="op">(</span><span class="va">expected_names</span><span class="op">)</span><span class="op">)</span></span>
@@ -240,6 +242,15 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' @examples</span></span>
 <span><span class="co">#' demo_tilt</span></span>
 <span><span class="st">"demo_tilt"</span></span>
+<span><span class="co">#' @name demo_loanbook</span></span>
+<span><span class="co">#' @keywords internal</span></span>
+<span><span class="cn">NULL</span></span>
+<span><span class="co">#' @name demo_tilt</span></span>
+<span><span class="co">#' @keywords internal</span></span>
+<span><span class="cn">NULL</span></span>
+<span><span class="co">#' @name demo_matched</span></span>
+<span><span class="co">#' @keywords internal</span></span>
+<span><span class="cn">NULL</span></span>
 <span><span class="co">#' Detect duplicated strings</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' @inheritDotParams base::paste</span></span>
@@ -252,6 +263,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#'</span></span>
 <span><span class="co">#' duplicated_paste(c("a", "a"), c(1, 1))</span></span>
 <span><span class="co">#' paste(c("a", "a"), c(1, 1))</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">duplicated_paste</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -483,6 +495,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' # And in combination with `to_alias()`</span></span>
 <span><span class="co">#' to_alias(c("AA", "BB", "1"), from_to = append_replacements)</span></span>
 <span><span class="co">#' @export</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">to_alias</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,</span>
 <span>                     <span class="va">from_to</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                     <span class="va">ownership</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -596,6 +609,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' @return [tibble::tibble] with columns `from` and</span></span>
 <span><span class="co">#' `to`.</span></span>
 <span><span class="co">#' @export</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">from_name_to_alias</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># styler: off</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
@@ -713,6 +727,7 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#'</span></span>
 <span><span class="co">#' @return NULL</span></span>
 <span><span class="co">#' @export</span></span>
+<span><span class="co">#' @keywords internal</span></span>
 <span><span class="va">report_duplicates</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">cols</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">duplicates</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">syms</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
