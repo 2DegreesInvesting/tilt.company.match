@@ -916,6 +916,30 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">inform</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"No duplicated matches found in the data."</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">manually_matched</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#' Render a .Rmd file into a .md file under tests/testthat/demos</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' One use case of this  function is when you are working on a PR and want to</span></span>
+<span><span class="co">#' share the output of an .Rmd file. Once done would delete the .md file and</span></span>
+<span><span class="co">#' merge the PR.</span></span>
+<span><span class="co">#' @noRd</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' render_demo("vignettes/articles/tilt-company-match.Rmd")</span></span>
+<span><span class="va">render_demo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">md</span> <span class="op">&lt;-</span> <span class="va">path</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_file.html" class="external-link">path_file</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_file.html" class="external-link">path_ext_remove</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_file.html" class="external-link">path_ext_set</a></span><span class="op">(</span><span class="st">".md"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">parent</span> <span class="op">&lt;-</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/create.html" class="external-link">dir_create</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html" class="external-link">test_path</a></span><span class="op">(</span><span class="st">"demos"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span></span>
+<span>    <span class="va">path</span>,</span>
+<span>    <span class="st">"md_document"</span>,</span>
+<span>    output_file <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="va">parent</span>, <span class="va">md</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
   </main>
