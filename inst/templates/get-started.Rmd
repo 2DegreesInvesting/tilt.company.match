@@ -394,9 +394,10 @@ matched_rows <- suggested %>% nrow()
 matched_rows
 
 #### Share of matched companies from total loanbook companies
-matched_share <- matched_rows / loanbook %>%
+total_rows <- loanbook %>%
   distinct(company_name) %>%
   nrow()
+matched_share <- matched_rows / total_rows
 matched_share
 ```
 
