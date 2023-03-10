@@ -20,9 +20,10 @@
 #' pick_unmatched(loanbook, accepted)
 #'
 #' # It's rigurous but fails with informative messages:
-#' # * The names of crucial columns must be as documented.
+#' # The names of crucial columns must be as documented.
 #' try(pick_unmatched(loanbook, tibble(ids = 1, accept_match = TRUE)))
-#' # * The type of `accept_match` must be as documented.
+#'
+#' # The type of `accept_match` must be as documented.
 #' try(pick_unmatched(loanbook, tibble(id = 1, accept_match = "TRUE")))
 pick_unmatched <- function(loanbook, accepted) {
   check_crucial_names(loanbook, c("id", "company_name"))
