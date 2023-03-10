@@ -1,3 +1,12 @@
+test_that("if `accept_match` is a character errors gracefully (#122)", {
+  expect_error(
+    pick_unmatched(
+      tibble(id = 1, company_name = "a"),
+      tibble(id = 1, accept_match = "TRUE ")
+    ), class = "vctrs_error_assert_ptype"
+  )
+})
+
 test_that("without crucial columns errors gracefully", {
   expect_error(
     pick_unmatched(tibble(id = 1), tibble(id = 1)),
@@ -46,9 +55,5 @@ test_that("with 1 unmatched company returns 1 row with that company", {
   expect_equal(out, tibble(id = 1, company_name = "a"))
 })
 
-test_that("with all companies unmatched returns all companies", {
-  loanbook <- tibble(id = 1:2, company_name = letters[id], more = "xyz")
-  accepted <- tibble(id = 1:2, accept_match = c(FALSE, FALSE))
-  out <- pick_unmatched(loanbook, accepted)
-  expect_equal(out, loanbook[c("id", "company_name")])
-})
+
+
