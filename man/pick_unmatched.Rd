@@ -30,6 +30,9 @@ accepted
 
 pick_unmatched(loanbook, accepted)
 
-bad_type <- tibble(id = 1, accept_match = "TRUE")
-pick_unmatched(loanbook, bad_type)
+# It's rigurous:
+# * The names of crucial columns must be as documented.
+try(pick_unmatched(loanbook, tibble(ids = 1, accept_match = TRUE)))
+# * The type of `accept_match` must be as documented.
+try(pick_unmatched(loanbook, tibble(id = 1, accept_match = "TRUE")))
 }
