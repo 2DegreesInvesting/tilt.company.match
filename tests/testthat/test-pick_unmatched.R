@@ -54,6 +54,3 @@ test_that("with 1 unmatched company returns 1 row with that company", {
   out <- pick_unmatched(loanbook, accepted)
   expect_equal(out, tibble(id = 1, company_name = "a"))
 })
-
-
-
