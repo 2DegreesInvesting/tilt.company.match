@@ -10,6 +10,7 @@
 #' not matched by the tilt data set.
 #'
 #' @export
+#' @keywords internal
 report_no_matches <- function(loanbook, manually_matched) {
   force(loanbook)
   force(manually_matched)
