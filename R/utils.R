@@ -76,18 +76,35 @@ report_no_matches <- function(loanbook, manually_matched) {
   return(not_matched_companies)
 }
 
-#' Reports duplicates from manual matching outcome
+#' Check each company in one datasetet matches a single company in the other one
 #'
-#' Function throws a descriptive error if a company from the loanbook is
-#' matched to > 1 company in the tilt db or reverse.
+#' @param manually_matched A dataframe holding the result of the matching
+#'   process, after the user has manually verified and matched the results, like
+#'   [demo_matched].
 #'
+#' @return This function is called for it's side effect and returns an error or
+#'   `manually_matched` invisibly.
 #'
-#' @param manually_matched Tibble holding the result of the matching process,
-#'   after the user has manually verified and matched the results
-#'
-#' @return Input `manually_matched`
 #' @importFrom rlang .data
 #' @export
+#' @examples
+#' library(tibble)
+#'
+#' # Multiple loanbook-companies can't match a single tilt-company
+#' many_to_one <- tribble(
+#'   ~id,   ~company_name, ~accept_match, ~id_tilt, ~company_name_tilt,
+#'   1,            "aaa",          TRUE,        3,               "aaa",
+#'   2,            "aab",          TRUE,        3,               "aab"
+#' )
+#' try(check_duplicated_relation(many_to_one))
+#'
+#' # A single loanbook-company can't match multiple tilt-companies
+#' one_to_many <- tibble::tribble(
+#'   ~id,   ~company_name, ~accept_match, ~id_tilt, ~company_name_tilt,
+#'   1,           "aaa",          TRUE,        1,    "aaa",
+#'   1,           "aaa",          TRUE,        2,    "aab"
+#' )
+#' try(check_duplicated_relation(one_to_many))
 check_duplicated_relation <- function(manually_matched) {
   suggested_matches <- manually_matched %>%
     dplyr::filter(.data$accept_match)
