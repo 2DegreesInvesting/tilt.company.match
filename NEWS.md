@@ -1,9 +1,9 @@
 # tilt.company.match (development version)
 
-* New `pick_unmatched()` supersedes `report_no_matches()`. It does not throw
-messages as the useful information is available in the output data-frame. It
-also has a simpler implementation and is more strict about its inputs, and more
-informative when something is unexpected (#122).
+* New `pick_unmatched()` supersedes `report_no_matches()`. It outputs the same but does not throw
+messages because the useful information is available in the output data-frame.
+It also has a simpler implementation and is more strict about its inputs, and
+more informative when something is unexpected (#122).
 
 * The home page of the website now shows a minimal example and points to Get started for details (#109).
 
