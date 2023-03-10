@@ -1,5 +1,5 @@
 ---
-title: "Marching companies"
+title: "Matching companies"
 ---
 
 ```{r echo=FALSE}
