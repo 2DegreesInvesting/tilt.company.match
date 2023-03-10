@@ -3,7 +3,8 @@ test_that("if `accept_match` is a character errors gracefully (#122)", {
     pick_unmatched(
       tibble(id = 1, company_name = "a"),
       tibble(id = 1, accept_match = "TRUE ")
-    ), class = "vctrs_error_assert_ptype"
+    ),
+    class = "vctrs_error_assert_ptype"
   )
 })
 
