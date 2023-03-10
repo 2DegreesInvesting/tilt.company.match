@@ -36,3 +36,11 @@ test_that("it's the same as anti_join(loanbook, filter(matched, accept_match))",
   out2 <- anti_join(loanbook, filter(matched, accept_match)) |> suppressMessages()
   expect_equal(out, out2[names(out)])
 })
+
+test_that("pick_unmatched() returns the same as report_no_matches()", {
+  loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+  validated <- vroom(example_file("demo_matched.csv"), show_col_types = FALSE)
+  out <- pick_unmatched(loanbook, validated)
+  out2 <- report_no_matches(loanbook, validated) |> suppressMessages()
+  expect_equal(out, out2[names(out)])
+})
