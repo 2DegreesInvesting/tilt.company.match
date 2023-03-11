@@ -1,8 +1,8 @@
 #' Report duplicate rows
 #'
 #' Reports duplicates in `data` on columns `cols`. More specifically, we are
-#' interested in this case on the `company_name`, `postcode` and `country` columns.
-#' Duplicates are reported via a warning.
+#' interested in this case on the `company_name`, `postcode` and `country`
+#' columns. Duplicates are reported via a warning.
 #'
 #' @param data Tibble holding a result data set.
 #' @param cols Vector of columns names on which we want to test if there are
@@ -35,14 +35,15 @@ report_duplicates <- function(data, cols) {
 #'
 #' @param loanbook Loanbook data set
 #'
-#' @param manually_matched Tibble holding the result of the matching process, after the
-#'   user has manually selected and matched the companies in the loanbook with
-#'   the tilt data set.
+#' @param manually_matched Tibble holding the result of the matching process,
+#'   after the user has manually selected and matched the companies in the
+#'   loanbook with the tilt data set.
 #'
-#' @return `not_matched_companies` Tibble holding id and company name of the companies
-#' not matched by the tilt data set.
+#' @return `not_matched_companies` Tibble holding id and company name of the
+#'   companies not matched by the tilt data set.
 #'
 #' @export
+#' @keywords internal
 report_no_matches <- function(loanbook, manually_matched) {
   # Filter first by all the manual successful matches in order to
   # suppress the duplicates caused by the string matching.
