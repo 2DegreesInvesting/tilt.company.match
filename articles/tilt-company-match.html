@@ -712,28 +712,23 @@ one.</p>
 <p>Manual work is prone to errors. Check the edited dataset to ensure
 it’s correct:</p>
 <ul>
-<li>Use <code><a href="../reference/report_no_matches.html">report_no_matches()</a></code> to explore companies in the
+<li>Use <code><a href="../reference/pick_unmatched.html">pick_unmatched()</a></code> to explore companies in the
 loanbook that didn’t match any company in the tilt dataset.</li>
 </ul>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Joining with `by = join_by(id, company_name, postcode, country, misc_info)`</span></span>
-<span><span class="co">#&gt; Companies not matched in the loanbook by the tilt data set: Peasant Paul Bread</span></span>
-<span><span class="co">#&gt; Bakers Limited Screwdriver Experts Screwdriver Expert John Meier's Groceries</span></span>
-<span><span class="co">#&gt; John Meier's Groceries John Meier's Groceries Best Bakers <span style="color: #0000BB;">ℹ</span> Did you match these</span></span>
-<span><span class="co">#&gt; companies manually correctly ?</span></span>
+<code class="sourceCode R"><span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/pick_unmatched.html">pick_unmatched</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
 <span><span class="va">not_matched</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
-<span><span class="co">#&gt;   company_name              id</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Peasant Paul               4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Bread Bakers Limited       5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Screwdriver Experts        7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Screwdriver Expert         8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> John Meier's Groceries     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> John Meier's Groceries    10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> John Meier's Groceries    11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Best Bakers               12</span></span></code></pre></div>
+<span><span class="co">#&gt;      id company_name          </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     4 Peasant Paul          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     5 Bread Bakers Limited  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     7 Screwdriver Experts   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     8 Screwdriver Expert    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     9 John Meier's Groceries</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    10 John Meier's Groceries</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>    11 John Meier's Groceries</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>    12 Best Bakers</span></span></code></pre></div>
 <ul>
 <li>Use <code><a href="../reference/check_duplicated_relation.html">check_duplicated_relation()</a></code> to check if a company
 from loanbook has been matched to more than one company from the tilt
