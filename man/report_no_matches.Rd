@@ -9,14 +9,15 @@ report_no_matches(loanbook, manually_matched)
 \arguments{
 \item{loanbook}{Loanbook data set}
 
-\item{manually_matched}{Tibble holding the result of the matching process, after the
-user has manually selected and matched the companies in the loanbook with
-the tilt data set.}
+\item{manually_matched}{Tibble holding the result of the matching process,
+after the user has manually selected and matched the companies in the
+loanbook with the tilt data set.}
 }
 \value{
-\code{not_matched_companies} Tibble holding id and company name of the companies
-not matched by the tilt data set.
+\code{not_matched_companies} Tibble holding id and company name of the
+companies not matched by the tilt data set.
 }
 \description{
 Reports companies that were not matched in the loanbook
 }
+\keyword{internal}

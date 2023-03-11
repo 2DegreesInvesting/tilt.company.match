@@ -427,11 +427,11 @@ loanbook
 
 Manual work is prone to errors. Check the edited dataset to ensure it's correct:
 
-- Use `report_no_matches()` to explore companies in the loanbook that didn't match
+- Use `pick_unmatched()` to explore companies in the loanbook that didn't match
 any company in the tilt dataset.
 
 ```{r}
-not_matched <- loanbook %>% report_no_matches(edited)
+not_matched <- loanbook %>% pick_unmatched(edited)
 not_matched
 ```
 

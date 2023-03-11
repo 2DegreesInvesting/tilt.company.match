@@ -115,7 +115,7 @@ suggest_match <- function(loanbook,
 
   best_candidates <- okay_candidates %>%
     filter(.data$similarity > eligibility_threshold | is.na(.data$similarity))
-
+  # FIXME: Dead code?
   unmatched <- anti_join(
     okay_candidates %>% distinct(id, .data$company_name),
     best_candidates %>% distinct(id, .data$company_name)
