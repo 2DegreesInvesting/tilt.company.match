@@ -28,9 +28,9 @@ test_that("without crucial datasets errors gracefully", {
   accepted <- read_example("demo_matched.csv")
 
   expect_no_error(report_no_matches(loanbook, accepted))
-  expect_error(report_no_matches(loanbook), "accepted.*missing.*no default")
+  expect_error(report_no_matches(loanbook), "matched.*missing.*no default")
   expect_error(
-    report_no_matches(accepted = accepted),
+    report_no_matches(manually_matched = accepted),
     "loanbook.*missing.*no default"
   )
 })
