@@ -23,3 +23,12 @@ test_that("additional columns appear in the output", {
   expect_true(hasName(suggest_match(toy(x = 1), toy(y = 1)), "x"))
   expect_true(hasName(suggest_match(toy(x = 1), toy(y = 1)), "y"))
 })
+
+test_that("with 1 out of 2 matches outputs 1-row", {
+  t <- toy(id = 2, company_name = "b")
+  l <- bind_rows(toy(), t)
+  out <- suggest_match(l, t)
+  expect_equal(nrow(out), 1L)
+  expect_equal(out$id, 2)
+  expect_equal(out$company_name, "b")
+})
