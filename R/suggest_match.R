@@ -74,7 +74,8 @@ suggest_match <- function(loanbook,
       by = c("country", "postcode"),
       suffix = c("", "_tilt"),
       multiple = "all"
-    )
+    ) |>
+    suppressMessages()
 
   lacks_postcode <- loanbook_alias %>%
     filter(is.na(.data$postcode) & !is.na(.data$country)) %>%
