@@ -20,7 +20,8 @@ report_no_matches <- function(loanbook, manually_matched) {
   # suppress the duplicates caused by the string matching.
   matched <- dplyr::filter(manually_matched, .data$accept_match)
 
-  coverage <- dplyr::left_join(loanbook, matched) %>%
+  # TODO: Simplify with `anti_join()`
+  dplyr::left_join(loanbook, matched) %>%
     suppressMessages() |>
     dplyr::mutate(
       matched = dplyr::case_when(
@@ -28,9 +29,7 @@ report_no_matches <- function(loanbook, manually_matched) {
         is.na(accept_match) ~ "Not Matched",
         TRUE ~ "Not Matched"
       )
-    )
-
-  coverage %>%
+    ) |>
     dplyr::filter(matched == "Not Matched") %>%
     dplyr::distinct(.data$company_name, .data$id)
 }
