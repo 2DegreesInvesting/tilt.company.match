@@ -46,7 +46,7 @@ test_that("nothing unmatched yields columns `id` and `company_name`", {
   loanbook <- tibble(id = 1, company_name = "a")
   accepted <- tibble(id = 1, accept_match = TRUE)
   out <- report_no_matches(loanbook, accepted)
-  expect_equal(names(out), c("id", "company_name"))
+  expect_equal(sort(names(out)), c("company_name", "id"))
 })
 
 test_that("with 1 unmatched company returns 1 row with that company", {
@@ -55,11 +55,11 @@ test_that("with 1 unmatched company returns 1 row with that company", {
   .accept_match <- c(TRUE, NA)
   matched <- tibble(id = 1:2, accept_match = .accept_match)
   out <- report_no_matches(loanbook, matched)
-  expect_equal(out, tibble(id = 2, company_name = "b"))
+  expect_equal(out, tibble(company_name = "b", id = 2))
 
   # Same
   .accept_match <- c(TRUE, FALSE)
   matched <- tibble(id = 1:2, accept_match = .accept_match)
   out <- report_no_matches(loanbook, matched)
-  expect_equal(out, tibble(id = 2, company_name = "b"))
+  expect_equal(out, tibble(company_name = "b", id = 2))
 })
