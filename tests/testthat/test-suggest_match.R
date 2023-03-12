@@ -23,7 +23,7 @@ test_that("additional columns appear in the output", {
   expect_true(hasName(suggest_match(toy(x = 1), toy(y = 1)), "y"))
 })
 
-test_that("with 1 out of 2 matches outputs 1-row", {
+test_that("with 1 match in a 2-row loanbook outputs the 1 matching company", {
   t <- toy(id = 2, company_name = "b")
   l <- bind_rows(toy(), t)
   out <- suggest_match(l, t)
