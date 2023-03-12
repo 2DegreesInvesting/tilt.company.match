@@ -1,7 +1,7 @@
 test_that("hasn't changed", {
   loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
   tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
-  out <- suggest_match(loanbook, tilt)
+  out <- suggest_match(loanbook, tilt) |> suppressMessages()
   expect_snapshot(as.data.frame(out))
 })
 
@@ -15,8 +15,10 @@ test_that("output with a fully matched company", {
   # FIXME:
   # * `postcode_tilt` must not be NA
   # * `country_tilt` must not be NA
+  # * Remove "Joining with ..." message
   loanbook <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
   tilt <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  glimpse(suggest_match(loanbook, tilt))
+  out <- suggest_match(loanbook, tilt) |> suppressMessages()
+  expect_snapshot_output(glimpse(out))
 })
 

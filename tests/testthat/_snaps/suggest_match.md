@@ -61,3 +61,21 @@
       17          <NA>         <NA>         NA            NA           NA
       18          <NA>         <NA>         NA            NA           NA
 
+# output with a fully matched company
+
+    Rows: 1
+    Columns: 13
+    $ id                 [3m[38;5;246m<dbl>[39m[23m 1
+    $ company_name       [3m[38;5;246m<chr>[39m[23m "a"
+    $ country            [3m[38;5;246m<chr>[39m[23m "b"
+    $ postcode           [3m[38;5;246m<chr>[39m[23m "c"
+    $ company_alias      [3m[38;5;246m<chr>[39m[23m "a"
+    $ id_tilt            [3m[38;5;246m<dbl>[39m[23m 1
+    $ company_name_tilt  [3m[38;5;246m<chr>[39m[23m "a"
+    $ company_alias_tilt [3m[38;5;246m<chr>[39m[23m "a"
+    $ postcode_tilt      [3m[38;5;246m<chr>[39m[23m NA
+    $ country_tilt       [3m[38;5;246m<chr>[39m[23m NA
+    $ similarity         [3m[38;5;246m<dbl>[39m[23m 1
+    $ suggest_match      [3m[38;5;246m<lgl>[39m[23m TRUE
+    $ accept_match       [3m[38;5;246m<lgl>[39m[23m NA
+
