@@ -12,6 +12,8 @@
 #' @export
 #' @keywords internal
 report_no_matches <- function(loanbook, manually_matched) {
+  check_crucial_names(loanbook, c("id", "company_name"))
+  check_crucial_names(manually_matched, c("id", "accept_match"))
   vctrs::vec_assert(manually_matched$accept_match, logical())
 
   # Filter first by all the manual successful matches in order to
