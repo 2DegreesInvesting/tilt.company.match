@@ -21,10 +21,8 @@ test_that("output with a fully matched company", {
 })
 
 test_that("with no match outputs 0-rows", {
-  l <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  t <- tibble(id = 2, company_name = "x", country = "b", postcode = "c")
   expect_warning(
-    out <- suggest_match(l, t),
+    out <- suggest_match(toy(), toy(id = 2, company_name = "x")),
     # FIXME
     "no non-missing arguments to max; returning -Inf"
   ) |> suppressMessages()
