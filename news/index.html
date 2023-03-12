@@ -52,7 +52,7 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="tiltcompanymatch-development-version">tilt.company.match (development version)<a class="anchor" aria-label="anchor" href="#tiltcompanymatch-development-version"></a></h2>
-<ul><li><p>New <code><a href="../reference/pick_unmatched.html">pick_unmatched()</a></code> supersedes <code><a href="../reference/report_no_matches.html">report_no_matches()</a></code>. It outputs the same but does not throw messages because the useful information is available in the output data-frame. It also has a simpler implementation and is more strict about its inputs, and more informative when something is unexpected (#122).</p></li>
+<ul><li><p><code><a href="../reference/report_no_matches.html">report_no_matches()</a></code> is now stricter about it’s inputs and errors with informative messages (#122). Also it no longer throws a message about unmatched companies because the output already provides that information.</p></li>
 <li><p>The home page of the website now shows a minimal example and points to Get started for details (#109).</p></li>
 <li><p>The Reference section of the website now shows the higher-level API (#117).</p></li>
 <li><p>Get started now links to the manual decision rules (#104).</p></li>

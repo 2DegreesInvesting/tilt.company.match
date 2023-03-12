@@ -510,11 +510,11 @@ out so you can copy-paste and run it as a single .R script.</p>
 <span><span class="co">#' </span></span>
 <span><span class="co">#' Manual work is prone to errors. Check the edited dataset to ensure it's correct:</span></span>
 <span><span class="co">#' </span></span>
-<span><span class="co">#' - Use `pick_unmatched()` to explore companies in the loanbook that didn't match</span></span>
+<span><span class="co">#' - Use `report_no_matches()` to explore companies in the loanbook that didn't match</span></span>
 <span><span class="co">#' any company in the tilt dataset.</span></span>
 <span><span class="co">#' </span></span>
 <span><span class="co">## -----------------------------------------------------------------------------</span></span>
-<span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/pick_unmatched.html">pick_unmatched</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
+<span><span class="va">not_matched</span> <span class="op">&lt;-</span> <span class="va">loanbook</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/report_no_matches.html">report_no_matches</a></span><span class="op">(</span><span class="va">edited</span><span class="op">)</span></span>
 <span><span class="va">not_matched</span></span>
 <span></span>
 <span><span class="co">#' </span></span>
