@@ -4,3 +4,19 @@ test_that("hasn't changed", {
   out <- suggest_match(loanbook, tilt)
   expect_snapshot(as.data.frame(out))
 })
+
+test_that("output with a fully matched company", {
+  # TODO:
+  # For consistency with `r2dii.match::match_name()`:
+  # * Rename `similarity` to `score`
+  # * Remove `suggest_match` and `accept_match`. Ask users to indicate match
+  # by setting `score` to 1
+  # * `accept_match` should be FALSE not NA
+  # FIXME:
+  # * `postcode_tilt` must not be NA
+  # * `country_tilt` must not be NA
+  loanbook <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
+  tilt <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
+  glimpse(suggest_match(loanbook, tilt))
+})
+
