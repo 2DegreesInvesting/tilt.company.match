@@ -1,4 +1,5 @@
 test_that("hasn't changed", {
+  withr::local_options(list(width = 200))
   loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
   tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
   out <- suggest_match(loanbook, tilt) |> suppressMessages()
@@ -19,6 +20,6 @@ test_that("output with a fully matched company", {
   loanbook <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
   tilt <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
   out <- suggest_match(loanbook, tilt) |> suppressMessages()
-  expect_snapshot_output(glimpse(out))
+  expect_snapshot_output(as.list(out))
 })
 
