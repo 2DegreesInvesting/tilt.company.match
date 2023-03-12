@@ -15,7 +15,6 @@ test_that("output with a fully matched company", {
   # FIXME:
   # * `postcode_tilt` must not be NA
   # * `country_tilt` must not be NA
-  # * Remove "Joining with ..." message
   out <- suggest_match(toy(), toy())
   expect_snapshot_output(as.list(out))
 })
