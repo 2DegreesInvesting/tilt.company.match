@@ -16,9 +16,19 @@ test_that("output with a fully matched company", {
   # * `postcode_tilt` must not be NA
   # * `country_tilt` must not be NA
   # * Remove "Joining with ..." message
-  loanbook <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  tilt <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  out <- suggest_match(loanbook, tilt) |> suppressMessages()
+  l <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
+  t <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
+  out <- suggest_match(l, t) |> suppressMessages()
   expect_snapshot_output(as.list(out))
+})
+
+test_that("with no match outputs 0-rows", {
+  l <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
+  t <- tibble(id = 2, company_name = "x", country = "b", postcode = "c")
+  # FIXME
+  expect_warning(
+    out <- suggest_match(l, t), "no non-missing arguments to max; returning -Inf"
+  ) |> suppressMessages()
+  expect_equal(nrow(out), 0L)
 })
 
