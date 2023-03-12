@@ -16,9 +16,7 @@ test_that("output with a fully matched company", {
   # * `postcode_tilt` must not be NA
   # * `country_tilt` must not be NA
   # * Remove "Joining with ..." message
-  l <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  t <- tibble(id = 1, company_name = "a", country = "b", postcode = "c")
-  out <- suggest_match(l, t) |> suppressMessages()
+  out <- suggest_match(toy(), toy()) |> suppressMessages()
   expect_snapshot_output(as.list(out))
 })
 
