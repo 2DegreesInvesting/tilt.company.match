@@ -18,8 +18,7 @@ report_no_matches <- function(loanbook, manually_matched) {
 
   # Filter first by all the manual successful matches in order to
   # suppress the duplicates caused by the string matching.
-  matched <- manually_matched %>%
-    dplyr::filter(.data$accept_match == TRUE)
+  matched <- dplyr::filter(manually_matched, .data$accept_match)
 
   coverage <- dplyr::left_join(loanbook, matched) %>%
     suppressMessages() |>
