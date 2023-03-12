@@ -31,9 +31,7 @@ report_no_matches <- function(loanbook, manually_matched) {
       )
     )
 
-  not_matched_companies <- coverage %>%
+  coverage %>%
     dplyr::filter(matched == "Not Matched") %>%
     dplyr::distinct(.data$company_name, .data$id)
-
-  return(not_matched_companies)
 }
