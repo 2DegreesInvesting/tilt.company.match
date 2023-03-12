@@ -6,15 +6,6 @@ test_that("hasn't changed", {
 })
 
 test_that("output with a fully matched company", {
-  # TODO:
-  # For consistency with `r2dii.match::match_name()`:
-  # * Rename `similarity` to `score`
-  # * Remove `suggest_match` and `accept_match`. Ask users to indicate match
-  # by setting `score` to 1
-  # * `accept_match` should be FALSE not NA
-  # FIXME:
-  # * `postcode_tilt` must not be NA
-  # * `country_tilt` must not be NA
   out <- suggest_match(toy(), toy())
   expect_snapshot_output(as.list(out))
 })
