@@ -74,7 +74,8 @@ suggest_match <- function(loanbook,
       by = c("country", "postcode"),
       suffix = c("", "_tilt"),
       multiple = "all"
-    )
+    ) |>
+    suppressMessages()
 
   lacks_postcode <- loanbook_alias %>%
     filter(is.na(.data$postcode) & !is.na(.data$country)) %>%
@@ -83,11 +84,13 @@ suggest_match <- function(loanbook,
       by = c("country"),
       suffix = c("", "_tilt"),
       multiple = "all"
-    )
+    ) %>%
+    suppressMessages()
 
   lacks_country <- loanbook_alias %>%
     filter(!is.na(.data$postcode) & is.na(.data$country)) %>%
-    left_join(tilt_alias, by = c("postcode"), suffix = c("", "_tilt"))
+    left_join(tilt_alias, by = c("postcode"), suffix = c("", "_tilt")) %>%
+    suppressMessages()
 
   lacks_both <- loanbook_alias %>%
     filter(is.na(.data$postcode) & is.na(.data$country)) %>%
@@ -98,6 +101,7 @@ suggest_match <- function(loanbook,
       suffix = c("", "_tilt"),
       multiple = "all"
     ) %>%
+    suppressMessages() %>%
     mutate(postcode = NA_character_)
 
   candidates <- bind_rows(lacks_none, lacks_postcode, lacks_country, lacks_both)
@@ -119,7 +123,8 @@ suggest_match <- function(loanbook,
   unmatched <- anti_join(
     okay_candidates %>% distinct(id, .data$company_name),
     best_candidates %>% distinct(id, .data$company_name)
-  )
+  ) %>%
+    suppressMessages()
 
   candidates_suggest_match <- best_candidates %>%
     # - It's the highest among all other candidates.
@@ -137,6 +142,7 @@ suggest_match <- function(loanbook,
 
   to_edit <- best_candidates %>%
     left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
+    suppressMessages() %>%
     mutate(accept_match = NA)
 
   to_edit
