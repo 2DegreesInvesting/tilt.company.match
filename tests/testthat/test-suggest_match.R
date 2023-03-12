@@ -10,6 +10,13 @@ test_that("output with a fully matched company", {
   expect_snapshot_output(as.list(out))
 })
 
+test_that("the output preserves tilt's postcode and country", {
+  skip("FIXME #130")
+  out <- suggest_match(toy(), toy())
+  expect_false(is.na(out$postcode_tilt))
+  expect_false(is.na(out$country_tilt))
+})
+
 test_that("with no match outputs 0-rows", {
   expect_warning(
     out <- suggest_match(toy(), toy(id = 2, company_name = "x")),
@@ -60,6 +67,10 @@ test_that("is sensitive to `suggestion_treshold", {
     select(similarity, company_name, suggest_match) |>
     pull(suggest_match) |>
     expect_true()
+})
+
+test_that("", {
+  skip("TODO characterize eligibility_threshold")
 })
 
 test_that("", {
