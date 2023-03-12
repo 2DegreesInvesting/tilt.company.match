@@ -19,6 +19,7 @@ test_that("the output preserves tilt's postcode and country (#130)", {
 
 test_that("with no match outputs 0-rows", {
   out <- suggest_match(toy(), toy(id = 2, company_name = "x")) |>
+    # FIXME
     suppressWarnings()
   expect_equal(nrow(out), 0L)
 })
