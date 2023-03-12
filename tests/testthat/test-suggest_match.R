@@ -29,9 +29,6 @@ test_that("with no match outputs 0-rows", {
 })
 
 test_that("additional columns appear in the output", {
-  # TODO:
-  # * Document that all input columns apprear in the output
-  # * Show ways to save memory by using crucial columns only then joining back
   expect_true(hasName(suggest_match(toy(x = 1), toy(y = 1)), "x"))
   expect_true(hasName(suggest_match(toy(x = 1), toy(y = 1)), "y"))
 })

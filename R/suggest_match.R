@@ -46,12 +46,20 @@
 #' @param suggestion_threshold Value of `similarity` above which a match may be
 #'   suggested.
 #'
-#' @return A dataframe with columns from the `loanbook` and `tilt` datasets and
-#'   additional columns `similarity`, `suggest_match` and `accept_match`. For
-#'   each company in the `loanbook` matching candidates are arranged by
-#'   descending `similarity`.
-#' @export
+#' @return A dataframe with:
+#'   * All the columns from the `loanbook` dataset.
+#'   * All the columns from the `tilt` dataset butthe columns
+#'   `id`, `company_name`, `postcode` and `country` all get the suffix "_tilt".
+#'   * New columns:
+#'       * `company_alias`
+#'       * `company_alias_tilt`
+#'       * `similarity`
+#'       * `suggest_match`
+#'       * `accept_match`.
+#' For each company in the `loanbook` matching candidates are arranged by
+#' descending `similarity`.
 #'
+#' @export
 #' @examples
 #' library(vroom)
 #' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
