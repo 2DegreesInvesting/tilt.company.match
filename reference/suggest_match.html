@@ -113,11 +113,18 @@ suggested.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A dataframe with columns from the <code>loanbook</code> and <code>tilt</code> datasets and
-additional columns <code>similarity</code>, <code>suggest_match</code> and <code>accept_match</code>. For
-each company in the <code>loanbook</code> matching candidates are arranged by
-descending <code>similarity</code>.</p>
-    </div>
+<p>A dataframe with:</p><ul><li><p>All the columns from the <code>loanbook</code> dataset.</p></li>
+<li><p>All the columns from the <code>tilt</code> dataset butthe columns
+<code>id</code>, <code>company_name</code>, <code>postcode</code> and <code>country</code> all get the suffix "_tilt".</p></li>
+<li><p>New columns:</p><ul><li><p><code>company_alias</code></p></li>
+<li><p><code>company_alias_tilt</code></p></li>
+<li><p><code>similarity</code></p></li>
+<li><p><code>suggest_match</code></p></li>
+<li><p><code>accept_match</code>.
+For each company in the <code>loanbook</code> matching candidates are arranged by
+descending <code>similarity</code>.</p></li>
+</ul></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function calculates the similarity between a standardized alias of the

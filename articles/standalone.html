@@ -390,12 +390,20 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' @param suggestion_threshold Value of `similarity` above which a match may be</span></span>
 <span><span class="co">#'   suggested.</span></span>
 <span><span class="co">#'</span></span>
-<span><span class="co">#' @return A dataframe with columns from the `loanbook` and `tilt` datasets and</span></span>
-<span><span class="co">#'   additional columns `similarity`, `suggest_match` and `accept_match`. For</span></span>
-<span><span class="co">#'   each company in the `loanbook` matching candidates are arranged by</span></span>
-<span><span class="co">#'   descending `similarity`.</span></span>
-<span><span class="co">#' @export</span></span>
+<span><span class="co">#' @return A dataframe with:</span></span>
+<span><span class="co">#'   * All the columns from the `loanbook` dataset.</span></span>
+<span><span class="co">#'   * All the columns from the `tilt` dataset butthe columns</span></span>
+<span><span class="co">#'   `id`, `company_name`, `postcode` and `country` all get the suffix "_tilt".</span></span>
+<span><span class="co">#'   * New columns:</span></span>
+<span><span class="co">#'       * `company_alias`</span></span>
+<span><span class="co">#'       * `company_alias_tilt`</span></span>
+<span><span class="co">#'       * `similarity`</span></span>
+<span><span class="co">#'       * `suggest_match`</span></span>
+<span><span class="co">#'       * `accept_match`.</span></span>
+<span><span class="co">#' For each company in the `loanbook` matching candidates are arranged by</span></span>
+<span><span class="co">#' descending `similarity`.</span></span>
 <span><span class="co">#'</span></span>
+<span><span class="co">#' @export</span></span>
 <span><span class="co">#' @examples</span></span>
 <span><span class="co">#' library(vroom)</span></span>
 <span><span class="co">#' loanbook &lt;- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)</span></span>
@@ -843,6 +851,27 @@ corresponding file <a href="https://github.com/2DegreesInvesting/tilt.company.ma
 <span><span class="co">#' @param rhs A function call using the magrittr semantics.</span></span>
 <span><span class="co">#' @return The result of calling `rhs(lhs)`.</span></span>
 <span><span class="cn">NULL</span></span>
+<span><span class="co">#' Help construct test data like the `loanbook` and `tilt` datasets</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param id,company_name,country,postcode Minimum columns.</span></span>
+<span><span class="co">#' @inheritDotParams tibble::tibble</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return Tibble</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' toy()</span></span>
+<span><span class="co">#' toy(id = 1:2)</span></span>
+<span><span class="co">#' toy(id = NULL)</span></span>
+<span><span class="co">#' toy(new = "xyz")</span></span>
+<span><span class="co">#' @noRd</span></span>
+<span><span class="va">toy</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">company_name</span> <span class="op">=</span> <span class="st">"a"</span>, <span class="va">country</span> <span class="op">=</span> <span class="st">"b"</span>, <span class="va">postcode</span> <span class="op">=</span> <span class="st">"c"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>    id <span class="op">=</span> <span class="va">id</span>,</span>
+<span>    company_name <span class="op">=</span> <span class="va">company_name</span>,</span>
+<span>    country <span class="op">=</span> <span class="va">country</span>,</span>
+<span>    postcode <span class="op">=</span> <span class="va">postcode</span>,</span>
+<span>    <span class="va">...</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span><span class="co">#' Report duplicate rows</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' Reports duplicates in `data` on columns `cols`. More specifically, we are</span></span>
