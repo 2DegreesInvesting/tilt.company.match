@@ -20,3 +20,21 @@ companies not matched by the tilt data set.
 \description{
 Reports companies that were not matched in the loanbook
 }
+\examples{
+library(tibble)
+
+loanbook <- tibble(id = 1:2, company_name = letters[id], irrelevant = "xyz")
+loanbook
+
+accepted <- tibble(id = 1:2, accept_match = c(TRUE, FALSE))
+accepted
+
+report_no_matches(loanbook, accepted)
+
+# It's rigurous but fails with informative messages:
+# The names of crucial columns must be as documented.
+try(report_no_matches(loanbook, tibble(ids = 1, accept_match = TRUE)))
+
+# The type of `accept_match` must be as documented.
+try(report_no_matches(loanbook, tibble(id = 1, accept_match = "TRUE")))
+}

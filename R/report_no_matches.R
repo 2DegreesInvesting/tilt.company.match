@@ -10,6 +10,7 @@
 #'   companies not matched by the tilt data set.
 #'
 #' @export
+#' @examples
 #' library(tibble)
 #'
 #' loanbook <- tibble(id = 1:2, company_name = letters[id], irrelevant = "xyz")
