@@ -13,7 +13,6 @@ test_that("output with a fully matched company", {
 test_that("with no match outputs 0-rows", {
   expect_warning(
     out <- suggest_match(toy(), toy(id = 2, company_name = "x")),
-    # FIXME
     "no non-missing arguments to max; returning -Inf"
   )
   expect_equal(nrow(out), 0L)
