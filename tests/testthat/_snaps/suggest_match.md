@@ -61,3 +61,45 @@
       17          <NA>         <NA>         NA            NA           NA
       18          <NA>         <NA>         NA            NA           NA
 
+# output with a fully matched company
+
+    $id
+    [1] 1
+    
+    $company_name
+    [1] "a"
+    
+    $country
+    [1] "b"
+    
+    $postcode
+    [1] "c"
+    
+    $company_alias
+    [1] "a"
+    
+    $id_tilt
+    [1] 1
+    
+    $company_name_tilt
+    [1] "a"
+    
+    $company_alias_tilt
+    [1] "a"
+    
+    $postcode_tilt
+    [1] NA
+    
+    $country_tilt
+    [1] NA
+    
+    $similarity
+    [1] 1
+    
+    $suggest_match
+    [1] TRUE
+    
+    $accept_match
+    [1] NA
+    
+

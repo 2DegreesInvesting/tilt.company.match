@@ -26,10 +26,22 @@ a few true positives.}
 suggested.}
 }
 \value{
-A dataframe with columns from the \code{loanbook} and \code{tilt} datasets and
-additional columns \code{similarity}, \code{suggest_match} and \code{accept_match}. For
-each company in the \code{loanbook} matching candidates are arranged by
+A dataframe with:
+\itemize{
+\item All the columns from the \code{loanbook} dataset.
+\item All the columns from the \code{tilt} dataset butthe columns
+\code{id}, \code{company_name}, \code{postcode} and \code{country} all get the suffix "_tilt".
+\item New columns:
+\itemize{
+\item \code{company_alias}
+\item \code{company_alias_tilt}
+\item \code{similarity}
+\item \code{suggest_match}
+\item \code{accept_match}.
+For each company in the \code{loanbook} matching candidates are arranged by
 descending \code{similarity}.
+}
+}
 }
 \description{
 This function suggests that a company in your \code{loanbook} is the same as a
