@@ -31,3 +31,11 @@ test_that("with 1 match in a 2-row loanbook outputs the 1 matching company", {
   expect_equal(out$id, 2)
   expect_equal(out$company_name, "b")
 })
+
+test_that("", {
+ skip("TODO characterize thresholds")
+})
+
+test_that("", {
+ skip("TODO characterize bad inputs")
+})
