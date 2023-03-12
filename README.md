@@ -35,7 +35,7 @@ devtools::install_github("2DegreesInvesting/tilt.company.match")
 ## Example
 
 Here is a minimal example of what you can do with the package
-tilt.copmany.match. For a complete and gentle walk-through see [Get
+tilt.company.match. For a complete and gentle walk-through see [Get
 started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).
 
 ``` r
