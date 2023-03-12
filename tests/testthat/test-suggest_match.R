@@ -28,4 +28,3 @@ test_that("with no match outputs 0-rows", {
   ) |> suppressMessages()
   expect_equal(nrow(out), 0L)
 })
-
