@@ -10,7 +10,7 @@ test_that("output with a fully matched company", {
   expect_snapshot_output(as.list(out))
 })
 
-test_that("the output preserves tilt's postcode and country", {
+test_that("the output preserves tilt's postcode and country (#130)", {
   skip("FIXME #130")
   out <- suggest_match(toy(), toy())
   expect_false(is.na(out$postcode_tilt))
@@ -25,8 +25,9 @@ test_that("with no match outputs 0-rows", {
   expect_equal(nrow(out), 0L)
 })
 
-test_that("with no match throws no warning", {
+test_that("with no match throws no warning ( #131)", {
   skip("FIXME #131")
+
   expect_no_warning(
     suggest_match(toy(), toy(id = 2, company_name = "x")),
     "no non-missing arguments to max; returning -Inf"
@@ -47,8 +48,9 @@ test_that("with 1 match in a 2-row loanbook outputs the 1 matching company", {
   expect_equal(out$company_name, "b")
 })
 
-test_that("is sensitive to `suggestion_treshold", {
+test_that("`suggestion_treshold` is inclusive (#132)", {
   skip("FIXME #132")
+
   l <- toy(id = 1:3, company_name = c("aaaaa", "aaaab", "aaabb"))
   t <- toy(id = 9, company_name = c("aaaaa"))
 
@@ -75,4 +77,8 @@ test_that("", {
 
 test_that("", {
  skip("TODO characterize bad inputs")
+})
+
+test_that("empty `company_name` is handled as missing NA (#94)", {
+ skip("FIXME #94")
 })
