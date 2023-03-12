@@ -122,7 +122,7 @@ suggest_match <- function(loanbook,
   unmatched <- anti_join(
     okay_candidates %>% distinct(id, .data$company_name),
     best_candidates %>% distinct(id, .data$company_name)
-  ) |>
+  ) %>%
     suppressMessages()
 
   candidates_suggest_match <- best_candidates %>%
