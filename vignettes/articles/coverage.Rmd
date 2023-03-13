@@ -48,19 +48,14 @@ matched_share
 ## Number and share of matched companies classified by `misc_info` from total loanbook companies
 
 `misc_info` should be replaced with variables like sectors, headcount or similar
-classifier to calculate the coverage based on that classifier. To calculate the
-`misc_share` values, we need the `misc_info` column in both the tables.
-Therefore, it is recommended to check whether the `misc_info` is present in both
-of them.
-We can also check the count of companies in the desired classification through
-`x_misc` or `y_misc`.
+classifier to calculate the coverage based on that classifier. 
 
 ```{r}
-x_misc <- loanbook %>% count(misc_info)
+x_misc <- to_edit %>% count(misc_info)
 y_misc <- suggested %>% count(misc_info)
 misc_share <-
-  left_join(x_misc, y_misc, by = c("misc_info"), suffix = c("_loanbook", "_merged")) %>%
-  mutate(n_share = n_merged / n_loanbook)
+  left_join(x_misc, y_misc, by = c("misc_info"), suffix = c("_total", "_merged")) %>%
+  mutate(n_share = n_merged / n_total)
 ```
 
 ## Calculate loan exposure categorised based on `misc_info` 
