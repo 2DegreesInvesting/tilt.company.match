@@ -35,8 +35,11 @@ to_edit
 ```{r}
 accepted <- to_edit %>%
   filter(accept_match)
+accepted
 
 matched_rows <- accepted %>% nrow()
+matched_rows
+
 total_rows <- loanbook %>%
   distinct(id) %>%
   nrow()
