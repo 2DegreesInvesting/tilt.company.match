@@ -30,7 +30,7 @@ to_edit <- loanbook %>% suggest_match(tilt)
 to_edit
 ```
 
-## Share of matched companies from total loanbook companies
+## Share of matched companies after manual validation from total loanbook companies
 
 ```{r}
 accepted <- to_edit %>%
