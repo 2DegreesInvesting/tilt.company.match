@@ -65,13 +65,14 @@ misc_share <-
 ## Sum of loan values and their share from total value after classified by `misc_info`
 
 The `loan_amount` column is added as a sample column to calculate the loan
-exposure output. 
+exposure output.
 
 ```{r}
 # Sample column and dataframe
 accepted_loan <- accepted %>% mutate(loan_amount = c(1000))
 
-# Please replace the name of sample column `loan_amount` and the `accepted_loan` dataframe with the original loan column name and loanbook dataframe!
+# Please replace the name of sample column `loan_amount` and the `accepted_loan`
+# dataframe with the original loan column name and loanbook dataframe!
 exposure_sum <- accepted_loan %>%
   group_by(misc_info) %>%
   summarise(sum_expo = sum(loan_amount)) %>%
