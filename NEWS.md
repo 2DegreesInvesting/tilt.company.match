@@ -1,5 +1,9 @@
 # tilt.company.match (development version)
 
+* `report_no_matches()` is now stricter about it's inputs and errors with
+informative messages (#122). Also it no longer throws a message about unmatched
+companies because the output already provides that information.
+
 * The home page of the website now shows a minimal example and points to Get started for details (#109).
 
 * The Reference section of the website now shows the higher-level API (#117).
