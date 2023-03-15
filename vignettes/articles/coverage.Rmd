@@ -27,13 +27,16 @@ tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
 loanbook %>% check_loanbook()
 
 to_edit <- loanbook %>% suggest_match(tilt)
-to_edit
+
+# Edited file after manual validation
+edited <- vroom(example_file("demo_matched.csv"), show_col_types = FALSE)
+edited
 ```
 
 ## Share of matched companies after manual validation from total loanbook companies
 
 ```{r}
-accepted <- to_edit %>%
+accepted <- edited %>%
   filter(accept_match)
 accepted
 
@@ -59,13 +62,15 @@ y_misc <- accepted %>% count(misc_info)
 misc_share <-
   left_join(x_misc, y_misc, by = c("misc_info"), suffix = c("_total", "_merged")) %>%
   mutate(n_share = n_merged / n_total)
+misc_share
 ```
 
 ## Calculate loan exposure classified based on `misc_info` 
 
 The `loan_amount` column is added as a sample column to calculate the loan
-exposure output. Please replace `loan_amount` column and the loanbook dataset
-with the original loan column and loanbook dataset!
+exposure output. Please replace the name of sample `loan_amount` column and the
+sample loanbook dataset with the original loan amount column name and the original
+loanbook dataset!
 
 ```{r}
 accepted_loan <- accepted %>% mutate(loan_amount = c(1000))
@@ -75,6 +80,7 @@ accepted_loan <- accepted %>% mutate(loan_amount = c(1000))
 exposure_count <- accepted_loan %>%
   count(misc_info) %>%
   mutate(count_share = n / sum(n))
+exposure_count
 
 # Calculate sum of loan values and their share from total value after grouping
 # by `misc_info`
@@ -82,4 +88,5 @@ exposure_sum <- accepted_loan %>%
   group_by(misc_info) %>%
   summarise(sum_expo = sum(loan_amount)) %>%
   mutate(sum_share = sum_expo / sum(sum_expo))
+exposure_sum
 ```
