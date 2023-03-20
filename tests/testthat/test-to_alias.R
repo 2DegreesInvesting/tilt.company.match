@@ -183,7 +183,7 @@ test_that("standardizes compagnies designations", {
 })
 
 test_that("from_name_to_alias() has the correct additional designations", {
-  expect_snapshot(from_name_to_alias())
+  expect_snapshot(as.data.frame(from_name_to_alias()))
 })
 
 # pacta_data_name_reductions ----------------------------------------------
