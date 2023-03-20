@@ -129,6 +129,63 @@ test_that("standardizes legal designation of companies in Spanish", {
   expect_equal(to_alias("ABCSL"), to_alias("abc s l"))
 })
 
+
+test_that("standardizes compagnies designations", {
+  # ag
+  expect_equal(to_alias("Aktiengesellschaft"), "ag")
+  expect_equal(to_alias("Aktien gesellschaft"), "ag")
+  expect_equal(to_alias("Aktien-gesellschaft"), "ag")
+  # co
+  expect_equal(to_alias("Compagnie"), "co")
+  # gmbh
+  expect_equal(to_alias("Gesellschaft mit beschränkter Haftung"), "gmbh")
+  expect_equal(to_alias("Ges. mbH"), "gmbh")
+  expect_equal(to_alias("G.m.b.H."), "gmbh")
+  expect_equal(to_alias("gesellschaft mit beschr. Haftg."), "gmbh")
+  expect_equal(to_alias("gesellschaft mbH"), "gmbh")
+  expect_equal(to_alias("gesellschaft m.b.h."), "gmbh")
+  expect_equal(to_alias("Ges. m.b.H."), "gmbh")
+  expect_equal(to_alias("ges. mit beschränkter Haftung"), "gmbh")
+  expect_equal(to_alias("g. mit beschr. Haftg."), "gmbh")
+  expect_equal(to_alias("ges.mit beschr. Haftg."), "gmbh")
+  expect_equal(to_alias("ges. m.bh"), "gmbh")
+  expect_equal(to_alias("ges. m.b.h"), "gmbh")
+  expect_equal(to_alias("ges.m.b.h"), "gmbh")
+  # kg
+  expect_equal(to_alias("Kommanditgesellschaft"), "kg")
+  expect_equal(to_alias("Komm. ges."), "kg")
+  expect_equal(to_alias("Kommanditges."), "kg")
+  # kgaa
+  expect_equal(to_alias("Kommanditgesellschaft auf Aktien"), "kgaa")
+  expect_equal(to_alias("Kommanditgesellschaft aA"), "kgaa")
+  expect_equal(to_alias("Kommanditges. auf Aktien"), "kgaa")
+  expect_equal(to_alias("Kommanditges. aA"), "kgaa")
+  expect_equal(to_alias("kg auf aktien"), "kgaa")
+  # ohg
+  expect_equal(to_alias("Offene Handelsgesellschaft"), "ohg")
+  # se
+  expect_equal(to_alias("Societas Europaea"), "se")
+  # ug
+  expect_equal(to_alias("Unternehmergesellschaft (haftungsbeschränkt)"), "ug")
+  expect_equal(to_alias("Unternehmergesellschaft"), "ug")
+  expect_equal(to_alias("UG (haftungsbeschränkt)"), "ug")
+  # ek
+  expect_equal(to_alias("eingetragener Kaufmann"), "ek")
+  # eg
+  expect_equal(to_alias("eingetragene Genossenschaft"), "eg")
+  # eu
+  expect_equal(to_alias("Einzelunternehmen"), "eu")
+  # ev
+  expect_equal(to_alias("eingetragener Verein"), "ev")
+  # gbr
+  expect_equal(to_alias("Gesellschaft buergerliches Rechts"), "gbr")
+  expect_equal(to_alias("Gesellschaft burgerliches Rechts"), "gbr")
+})
+
+test_that("from_name_to_alias() has the correct additional designations", {
+  expect_snapshot(as.data.frame(from_name_to_alias()))
+})
+
 # pacta_data_name_reductions ----------------------------------------------
 
 # WARNING
@@ -157,14 +214,36 @@ pacta_data_name_reductions <- tibble::tribble(
   "designated activity company",             "dac",
   "limited partnership",              "lp",
   "generation",             "gen",
+  "gesellschaft mit beschrankter haftung", "gmbh",
+  "gesellschaft mit beschr haftg", "gmbh",
+  "ges mit beschrankter haftung", "gmbh",
+  "ges mit beschr haftg", "gmbh",
+  "g mit beschr haftg", "gmbh",
+  "gesellschaft m b h", "gmbh",
+  "gesellschaft mbh", "gmbh",
+  "gesellschaft buergerliches rechts", "gbr",
+  "gesellschaft burgerliches rechts", "gbr",
+  "ges mbh",            "gmbh",
+  "ges m b h", "gmbh",
+  "ges mb h", "gmbh",
+  "ges m bh", "gmbh",
+  "gesmbh", "gmbh",
   "investment",          "invest",
   "limited",             "ltd",
   "company",              "co",
+  "compagnie",            "co",
   "public ltd co",             "plc",
   "public co ltd",             "pcl",
   "corporation",            "corp",
   "ltd liability co",             "llc",
   "aktg",              "ag",
+  "aktiengesellschaft", "ag",
+  "aktien gesellschaft", "ag",
+  "aktien-gesellschaft", "ag",
+  "eingetragene genossenschaft", "eg",
+  "eingetragener kaufmann", "ek",
+  "eingetragener verein", "ev",
+  "einzelunternehmen", "eu",
   "incorporated",             "inc",
   "holdings",           "hldgs",
   "holding",           "hldgs",
@@ -172,6 +251,14 @@ pacta_data_name_reductions <- tibble::tribble(
   "government",            "govt",
   "berhad",             "bhd",
   "golden",             "gld",
+  "kommanditgesellschaft", "kg",
+  "kommanditges", "kg",
+  "komm ges", "kg",
+  "kommanditgesellschaft auf aktien", "kgaa",
+  "kommanditgesellschaft aa", "kgaa",
+  "kommanditges auf aktien", "kgaa",
+  "kommanditges aa", "kgaa",
+  "kg auf aktien", "kgaa",
   "resources",             "res",
   "resource",             "res",
   "shipping",             "shp",
@@ -185,6 +272,8 @@ pacta_data_name_reductions <- tibble::tribble(
   "financial",             "fin",
   "spolka z ",           "sp z ",
   "ograniczona odpowiedzialnoscia",              "oo",
+  "offene handelsgesellschaft", "ohg",
+  "societas europaea", "se",
   "sp z oo",           "spzoo",
   "sp z o o",           "spzoo",
   "sanayi ve ticaret",  "sanayi ticaret",
@@ -193,6 +282,9 @@ pacta_data_name_reductions <- tibble::tribble(
   "sirketi",             "sti",
   "san tic ltd sti",    "santicltdsti",
   "san tic anonim sti", "santicanonimsti",
+  "ug (haftungsbeschrankt)", "ug",
+  "unternehmergesellschaft", "ug",
+  "unternehmergesellschaft (haftungsbeschrankt)", "ug",
   "1",             "one",
   "2",             "two",
   "3",           "three",
