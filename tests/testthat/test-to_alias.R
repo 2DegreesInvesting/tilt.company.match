@@ -145,7 +145,7 @@ test_that("standardizes compagnies designations", {
   expect_equal(to_alias("gesellschaft mbH"), "gmbh")
   expect_equal(to_alias("gesellschaft m.b.h."), "gmbh")
   expect_equal(to_alias("Ges. m.b.H."), "gmbh")
-  expect_equal(to_alias("ges. mit beschränker Haftung"), "gmbh")
+  expect_equal(to_alias("ges. mit beschränkter Haftung"), "gmbh")
   expect_equal(to_alias("g. mit beschr. Haftg."), "gmbh")
   expect_equal(to_alias("ges.mit beschr. Haftg."), "gmbh")
   expect_equal(to_alias("ges. m.bh"), "gmbh")
