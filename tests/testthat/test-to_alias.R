@@ -216,7 +216,7 @@ pacta_data_name_reductions <- tibble::tribble(
   "generation",             "gen",
   "gesellschaft mit beschrankter haftung", "gmbh",
   "gesellschaft mit beschr haftg", "gmbh",
-  "ges mit beschranker haftung", "gmbh",
+  "ges mit beschrankter haftung", "gmbh",
   "ges mit beschr haftg", "gmbh",
   "g mit beschr haftg", "gmbh",
   "gesellschaft m b h", "gmbh",

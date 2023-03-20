@@ -235,7 +235,7 @@ from_name_to_alias <- function() {
     "gesellschaft mit beschr haftg", "gmbh",
     "gesellschaft m b h", "gmbh",
     "gesellschaft mbh", "gmbh",
-    "ges mit beschranker haftung", "gmbh",
+    "ges mit beschrankter haftung", "gmbh",
     "ges mit beschr haftg", "gmbh",
     "g mit beschr haftg", "gmbh",
     "ges m b h", "gmbh",
