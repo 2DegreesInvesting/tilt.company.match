@@ -173,7 +173,7 @@ datasets applies best practices commonly used in name matching algorithms:</p><u
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "companyname"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="from_name_to_alias.html">from_name_to_alias</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 61 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 96 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    from     to    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span> and <span style="color: #949494;">"</span>  <span style="color: #949494;">"</span> &amp; <span style="color: #949494;">"</span> </span>
@@ -186,7 +186,7 @@ datasets applies best practices commonly used in name matching algorithms:</p><u
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>0<span style="color: #949494;">"</span>      <span style="color: #949494;">"</span>null<span style="color: #949494;">"</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>1<span style="color: #949494;">"</span>      <span style="color: #949494;">"</span>one<span style="color: #949494;">"</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>2<span style="color: #949494;">"</span>      <span style="color: #949494;">"</span>two<span style="color: #949494;">"</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 51 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 86 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">append_replacements</span> <span class="op">&lt;-</span> <span class="fu"><a href="from_name_to_alias.html">from_name_to_alias</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">add_row</a></span><span class="op">(</span></span></span>
@@ -194,7 +194,7 @@ datasets applies best practices commonly used in name matching algorithms:</p><u
 <span class="r-in"><span>    from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AA"</span>, <span class="st">"BB"</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"beta"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">append_replacements</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 63 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 98 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    from     to     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>AA<span style="color: #949494;">"</span>     <span style="color: #949494;">"</span>alpha<span style="color: #949494;">"</span></span>
@@ -207,7 +207,7 @@ datasets applies best practices commonly used in name matching algorithms:</p><u
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>(pte)<span style="color: #949494;">"</span>  <span style="color: #949494;">""</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>(pvt)<span style="color: #949494;">"</span>  <span style="color: #949494;">""</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>0<span style="color: #949494;">"</span>      <span style="color: #949494;">"</span>null<span style="color: #949494;">"</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 53 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 88 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># And in combination with `to_alias()`</span></span></span>
 <span class="r-in"><span><span class="fu">to_alias</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AA"</span>, <span class="st">"BB"</span>, <span class="st">"1"</span><span class="op">)</span>, from_to <span class="op">=</span> <span class="va">append_replacements</span><span class="op">)</span></span></span>
