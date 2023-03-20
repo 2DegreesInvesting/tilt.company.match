@@ -10,6 +10,7 @@
 #'
 #' duplicated_paste(c("a", "a"), c(1, 1))
 #' paste(c("a", "a"), c(1, 1))
+#' @keywords internal
 duplicated_paste <- function(...) {
   duplicated(paste(...))
 }

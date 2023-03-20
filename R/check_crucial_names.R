@@ -14,6 +14,7 @@
 #' check_crucial_names(x, "a")
 #' try(check_crucial_names(x, "bad"))
 #' @export
+#' @keywords internal
 check_crucial_names <- function(x, expected_names) {
   stopifnot(rlang::is_named(x))
   stopifnot(is.character(expected_names))

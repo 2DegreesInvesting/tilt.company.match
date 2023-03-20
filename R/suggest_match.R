@@ -1,13 +1,65 @@
-#' Given a loanbook and tilt datasets returns a dataset with suggested matches
+#' Suggest matching companies in a `loanbook` and `tilt` datasets
 #'
-#' @param loanbook Path to a .csv file with your `loanbook` data.
-#' @param tilt Path to a .csv file with 2DII's `tilt` data.
-#' @param eligibility_threshold Eligibility threshold.
-#' @param suggestion_threshold Suggestion threshold.
+#' This function suggests that a company in your `loanbook` is the same as a
+#' company in the `tilt` dataset when the `similarity` between their names meets
+#' all of these conditions:
+#' * It's the highest among all other candidates.
+#' * It's above the value set in the argument `suggestion_threshold`.
+#' * It's the only such highest value in the group defined by a combination of
+#' `company_name` x `postcode` -- to avoid duplicates.
 #'
-#' @return A dataframe with suggested matching candidates.
+#' This function calculates the similarity between a standardized alias of the
+#' `company_name` from the `loanbook` and `tilt` datasets. The standardized
+#' alias makes real matches more likely by applying common best practices in
+#' names matching. Complete similarity corresponds to `1`, and complete
+#' dissimilarity corresponds to `0`.
+#'
+#' The columns `postcode` and `country` affect the quality of the matches and
+#' the amount of manual-validation work ahead:
+#' * If your `loanbook` has both `postcode` and `country` we match companies in
+#' that specific `postcode` and that specific `country`. You will likely match
+#' companies that are really the same (true positives) because it's unlikely
+#' that two companies with similar name will be located close to each other.
+#' This will cost you the minimum amount of manual-validation work ahead.
+#' * If your `loanbook` lacks `postcode` but has `country` we match companies in
+#' that specific `country` but across every `postcode`. You will possibly match
+#' companies that are not really the same (false positives) but happen to have a
+#' similar name and are located in the same `country`. This will cost you
+#' additional manual-validation work ahead.
+#' * If your `loanbook` has `postcode` but lacks `country` we match companies with
+#' the same `postcode` but  across every `country`. You will possibly match
+#' companies that are not really the same (false positives) but happen to have a
+#' similar name and the same
+#' postcode. This will cost you additional manual-validation work ahead.
+#' * If your `loanbook` lacks both `postcode` and `country` we match companies
+#' across the entire dataset.  You will most likely match companies that are not
+#' really the same (false positives). This will cost you the greatest amount of
+#' additional manual-validation work ahead.
+#'
+#' @param loanbook A `loanbook` dataframe like [demo_loanbook].
+#' @param tilt A `tilt` dataframe like [demo_tilt].
+#' @param eligibility_threshold Minimum value of `similarity` to keep a
+#'   candidate match. Values under it are most likely false positives and thus
+#'   dropped. This drastically reduce the number of candidates you'll need to
+#'   validate manually. We believe this benefit outweighs the potential loss of
+#'   a few true positives.
+#' @param suggestion_threshold Value of `similarity` above which a match may be
+#'   suggested.
+#'
+#' @return A dataframe with:
+#'   * All the columns from the `loanbook` dataset.
+#'   * All the columns from the `tilt` dataset butthe columns
+#'   `id`, `company_name`, `postcode` and `country` all get the suffix "_tilt".
+#'   * New columns:
+#'       * `company_alias`
+#'       * `company_alias_tilt`
+#'       * `similarity`
+#'       * `suggest_match`
+#'       * `accept_match`.
+#' For each company in the `loanbook` matching candidates are arranged by
+#' descending `similarity`.
+#'
 #' @export
-#'
 #' @examples
 #' library(vroom)
 #' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
@@ -30,7 +82,8 @@ suggest_match <- function(loanbook,
       by = c("country", "postcode"),
       suffix = c("", "_tilt"),
       multiple = "all"
-    )
+    ) |>
+    suppressMessages()
 
   lacks_postcode <- loanbook_alias %>%
     filter(is.na(.data$postcode) & !is.na(.data$country)) %>%
@@ -39,11 +92,13 @@ suggest_match <- function(loanbook,
       by = c("country"),
       suffix = c("", "_tilt"),
       multiple = "all"
-    )
+    ) %>%
+    suppressMessages()
 
   lacks_country <- loanbook_alias %>%
     filter(!is.na(.data$postcode) & is.na(.data$country)) %>%
-    left_join(tilt_alias, by = c("postcode"), suffix = c("", "_tilt"))
+    left_join(tilt_alias, by = c("postcode"), suffix = c("", "_tilt")) %>%
+    suppressMessages()
 
   lacks_both <- loanbook_alias %>%
     filter(is.na(.data$postcode) & is.na(.data$country)) %>%
@@ -54,6 +109,7 @@ suggest_match <- function(loanbook,
       suffix = c("", "_tilt"),
       multiple = "all"
     ) %>%
+    suppressMessages() %>%
     mutate(postcode = NA_character_)
 
   candidates <- bind_rows(lacks_none, lacks_postcode, lacks_country, lacks_both)
@@ -71,11 +127,12 @@ suggest_match <- function(loanbook,
 
   best_candidates <- okay_candidates %>%
     filter(.data$similarity > eligibility_threshold | is.na(.data$similarity))
-
+  # FIXME: Dead code?
   unmatched <- anti_join(
     okay_candidates %>% distinct(id, .data$company_name),
     best_candidates %>% distinct(id, .data$company_name)
-  )
+  ) %>%
+    suppressMessages()
 
   candidates_suggest_match <- best_candidates %>%
     # - It's the highest among all other candidates.
@@ -93,6 +150,7 @@ suggest_match <- function(loanbook,
 
   to_edit <- best_candidates %>%
     left_join(candidates_suggest_match, by = c("id", "id_tilt")) %>%
+    suppressMessages() %>%
     mutate(accept_match = NA)
 
   to_edit
@@ -100,16 +158,35 @@ suggest_match <- function(loanbook,
 
 #' Checks your `loanbook` is as we expect
 #'
-#' @param loanbook Your `loanbook` dataset.
+#' @param loanbook A `loanbook` dataframe like [demo_loanbook].
 #'
 #' @return Called for it's side effects. Returns `loanbook` invisibly.
 #' @export
 #'
 #' @examples
 #' library(vroom)
+#' library(dplyr, warn.conflicts = FALSE)
 #'
 #' loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
 #' check_loanbook(loanbook)
+#'
+#' # Do you have the expected columns?
+#' bad_name <- rename(loanbook, ids = id)
+#' try(check_loanbook(bad_name))
+#'
+#' # Do you have any duplicates in the column `id`?
+#' bad_id <- bind_rows(loanbook, slice(loanbook, 1))
+#' try(check_loanbook(bad_id))
+#'
+#' # Do you have missing values (`NA`s) in non-nullable columns?
+#' # styler: off
+#' missing_id <- tribble(
+#'   ~id,            ~company_name, ~postcode,  ~country, ~misc_info,
+#'    NA, "John Meier's Groceries",   "55555", "germany",        "Y",
+#'    11, "John Meier's Groceries",   "55555",  "norway",        "Y"
+#' )
+#' # styler: on
+#' try(check_loanbook(missing_id))
 check_loanbook <- function(loanbook) {
   expected <- c("id", "company_name", "postcode", "country")
   loanbook %>% check_crucial_names(expected)

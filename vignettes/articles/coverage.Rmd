@@ -1,0 +1,80 @@
+---
+title: "Calculate coverage statistics"
+author: "Kalash Singhal"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Setup
+
+Use the required packages, read your `loanbook` and `tilt` datasets, check your
+`loanbook` and suggest matches. For a gentle walkthrough see [Get
+started](https://2degreesinvesting.github.io/tilt.company.match/articles/tilt-company-match.html).
+
+```{r setup}
+library(dplyr, warn.conflicts = FALSE)
+library(vroom)
+library(tilt.company.match)
+
+loanbook <- vroom(example_file("demo_loanbook.csv"), show_col_types = FALSE)
+tilt <- vroom(example_file("demo_tilt.csv"), show_col_types = FALSE)
+
+loanbook %>% check_loanbook()
+
+to_edit <- loanbook %>% suggest_match(tilt)
+
+# Edited file after manual validation (File replacement from the user is required)
+edited <- vroom(example_file("demo_matched.csv"), show_col_types = FALSE)
+edited
+```
+
+## Share of matched companies after manual validation from total loanbook companies
+
+```{r}
+accepted <- edited %>%
+  filter(accept_match)
+
+matched_rows <- accepted %>% nrow()
+
+total_rows <- loanbook %>%
+  distinct(id) %>%
+  nrow()
+
+matched_share <- matched_rows / total_rows
+matched_share
+```
+
+## Number and share of matched companies classified by `misc_info` from total loanbook companies
+
+Please replace the `misc_info` column with variables like sectors, headcount or
+similar classifier to calculate the share based on that classifier.
+
+```{r}
+x_misc <- loanbook %>% count(misc_info)
+y_misc <- accepted %>% count(misc_info)
+misc_share <-
+  left_join(x_misc, y_misc, by = c("misc_info"), suffix = c("_total", "_merged")) %>%
+  mutate(n_share = n_merged / n_total)
+```
+
+## Sum of loan values and their share from total value after classified by `misc_info`
+
+The `loan_amount` column is added as a sample column to calculate the loan
+exposure output.
+
+```{r}
+# Sample column and dataframe
+accepted_loan <- accepted %>% mutate(loan_amount = c(1000))
+
+# Please replace the name of sample column `loan_amount` and the `accepted_loan`
+# dataframe with the original loan column name and loanbook dataframe!
+exposure_sum <- accepted_loan %>%
+  group_by(misc_info) %>%
+  summarise(sum_expo = sum(loan_amount)) %>%
+  mutate(sum_share = sum_expo / sum(sum_expo))
+```

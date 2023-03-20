@@ -71,6 +71,7 @@
 #' # And in combination with `to_alias()`
 #' to_alias(c("AA", "BB", "1"), from_to = append_replacements)
 #' @export
+#' @keywords internal
 to_alias <- function(x,
                      from_to = NULL,
                      ownership = NULL,
@@ -184,6 +185,7 @@ get_sym_replace <- function() {
 #' @return [tibble::tibble] with columns `from` and
 #' `to`.
 #' @export
+#' @keywords internal
 from_name_to_alias <- function() {
   # styler: off
   tibble::tribble(

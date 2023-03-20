@@ -1,8 +1,8 @@
 #' Report duplicate rows
 #'
 #' Reports duplicates in `data` on columns `cols`. More specifically, we are
-#' interested in this case on the `company_name`, `postcode` and `country` columns.
-#' Duplicates are reported via a warning.
+#' interested in this case on the `company_name`, `postcode` and `country`
+#' columns. Duplicates are reported via a warning.
 #'
 #' @param data Tibble holding a result data set.
 #' @param cols Vector of columns names on which we want to test if there are
@@ -10,6 +10,7 @@
 #'
 #' @return NULL
 #' @export
+#' @keywords internal
 report_duplicates <- function(data, cols) {
   duplicates <- data %>%
     dplyr::group_by(!!!rlang::syms(cols)) %>%
@@ -28,51 +29,6 @@ report_duplicates <- function(data, cols) {
   }
 
   return(invisible())
-}
-
-#' Reports companies that were not matched in the loanbook
-#'
-#' @param loanbook Loanbook data set
-#'
-#' @param manually_matched Tibble holding the result of the matching process, after the
-#'   user has manually selected and matched the companies in the loanbook with
-#'   the tilt data set.
-#'
-#' @return `not_matched_companies` Tibble holding id and company name of the companies
-#' not matched by the tilt data set.
-#'
-#' @export
-report_no_matches <- function(loanbook, manually_matched) {
-  # Filter first by all the manual successful matches in order to
-  # suppress the duplicates caused by the string matching.
-  matched <- manually_matched %>%
-    dplyr::filter(.data$accept_match == TRUE)
-
-  coverage <- dplyr::left_join(loanbook, matched) %>%
-    dplyr::mutate(
-      matched = dplyr::case_when(
-        accept_match == TRUE ~ "Matched",
-        is.na(accept_match) ~ "Not Matched",
-        TRUE ~ "Not Matched"
-      )
-    )
-
-  not_matched_companies <- coverage %>%
-    dplyr::filter(matched == "Not Matched") %>%
-    dplyr::distinct(.data$company_name, .data$id)
-
-  if (nrow(not_matched_companies > 0)) {
-    rlang::inform(
-      c(
-        "Companies not matched in the loanbook by the tilt data set:",
-        x = not_matched_companies %>%
-          glue::glue_data("{company_name}"),
-        i = "Did you match these companies manually correctly ?"
-      )
-    )
-  }
-
-  return(not_matched_companies)
 }
 
 #' Reports duplicates from manual matching outcome
@@ -135,4 +91,28 @@ check_duplicated_relation <- function(manually_matched) {
   rlang::inform(message = "No duplicated matches found in the data.")
 
   return(invisible(manually_matched))
+}
+
+#' Render a .Rmd file into a .md file under tests/testthat/demos
+#'
+#' One use case of this  function is when you are working on a PR and want to
+#' share the output of an .Rmd file. Once done would delete the .md file and
+#' merge the PR.
+#' @noRd
+#' @examples
+#' render_demo("vignettes/articles/tilt-company-match.Rmd")
+render_demo <- function(path) {
+  md <- path |>
+    fs::path_file() |>
+    fs::path_ext_remove() |>
+    fs::path_ext_set(".md")
+
+  parent <- fs::dir_create(here::here(testthat::test_path("demos")))
+  rmarkdown::render(
+    path,
+    "md_document",
+    output_file = fs::path(parent, md)
+  )
+
+  invisible(path)
 }

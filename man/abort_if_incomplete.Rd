@@ -36,3 +36,4 @@ data \%>\%
   abort_if_incomplete() \%>\%
   try()
 }
+\keyword{internal}

@@ -18,3 +18,4 @@ convert from a name to its alias. You may amend this table and pass it to
 \details{
 Source: @jdhoffa https://github.com/RMI-PACTA/r2dii.dataraw/pull/8
 }
+\keyword{internal}

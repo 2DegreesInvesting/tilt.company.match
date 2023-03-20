@@ -21,6 +21,7 @@ Imports:
     stringdist,
     stringi,
     tibble,
+    vctrs,
     vroom
 Suggests:
     fs,

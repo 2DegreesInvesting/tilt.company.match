@@ -92,3 +92,4 @@ person(given = "Evgeny", family = "Petrovsky", role = c("aut",
 
 Adapted from: https://github.com/RMI-PACTA/r2dii.match/blob/main/R/to_alias.R
 }
+\keyword{internal}
